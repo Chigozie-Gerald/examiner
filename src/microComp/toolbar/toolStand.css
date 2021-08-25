@@ -1,0 +1,97 @@
+.toolStand {
+  width: 20rem;
+  position: fixed;
+  left: 4.25rem;
+  bottom: 0;
+  background-color: #f0f0f0;
+  box-shadow: 0px 1.2px 3.6px rgba(0, 0, 0, 0.03),
+    0px 6.4px 14.4px rgba(0, 0, 0, 0.07);
+}
+.toolStand_title {
+  height: 3.75rem;
+  display: flex;
+  padding: 0 1.25rem;
+}
+.toolStand_title h3 {
+  flex: 1;
+  font-size: 1.25rem;
+  font-weight: 500;
+  display: inline-flex;
+}
+.toolStand_icon_wrap {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0 0.5rem;
+  padding: 0.5rem 0;
+}
+.tsIcons {
+  height: 1.5rem;
+  width: 1.5rem;
+  background-color: #fff;
+  border-radius: 50%;
+}
+.toolStandItems {
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+.toolStandItems:nth-child(1) {
+  padding-top: 0;
+}
+.tsHeader {
+  min-height: 1.75rem;
+  display: flex;
+  align-items: center;
+  padding: 0 1.25rem;
+}
+.tsProps {
+  padding: 0 1.25rem;
+  display: flex;
+  align-items: center;
+  min-height: 1.75rem;
+  transition: all 200ms ease;
+}
+.tsProps.active {
+  background-color: #fafafa;
+}
+.tsProps:hover {
+  background-color: #ebebeb;
+}
+.tsProps.active:hover,
+.tsProps.active {
+  background-color: #fafafa;
+}
+
+.tsProps.Md {
+  min-height: 2.25rem;
+}
+.tsProps.Lg {
+  min-height: 2.75rem;
+}
+.tsPropsIcon {
+  height: 1.75rem;
+  border-radius: 0.5rem;
+  width: 1.75rem;
+  background-color: #ddd;
+}
+.tsPropsIcon.empty {
+  background-color: inherit;
+}
+.tsPropsIconText {
+  flex: 1;
+  padding: 0 0.75rem;
+}
+.tsPropsIconText.bold {
+  font-weight: 600;
+}
+.tsPropsTop,
+.tsPropsBtm {
+  font-size: 0.75rem;
+}
+.tsPropsTop {
+  font-weight: 500;
+  min-height: 1rem;
+}
+.tsPropsBtm {
+  min-height: 00.75rem;
+  font-size: 0.625rem;
+}

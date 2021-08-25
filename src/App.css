@@ -1,38 +1,131 @@
+* {
+  box-sizing: border-box;
+  color: #424242;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: local('Roboto'),
+    url('./Roboto/Roboto-Regular.ttf') format('truetype');
+}
+* {
+  font-weight: 400;
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
+    sans-serif;
+}
+
 .App {
   text-align: center;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+a {
+  text-decoration: none;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.Link,
+.Link:hover,
+.Link:active {
+  border-radius: inherit;
+  cursor: pointer !important;
+  text-decoration: none !important;
+  color: inherit !important;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  flex-direction: inherit;
+  transition: all 200ms ease;
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.inline {
+  display: inline-flex;
+  justify-self: flex-start;
+}
+.auto {
+  width: auto !important;
+  height: auto !important;
+}
+.exam_logo_lg {
+  height: 13rem;
+  width: auto;
+}
+.floater {
+  border-radius: 0.25rem;
+  font-size: 0.65rem;
+  color: rgb(33, 46, 83);
+  background-color: rgba(213, 231, 255, 0.3);
+  padding: 0.25rem;
+}
+.box {
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.14),
+    0px 0px 2px rgba(0, 0, 0, 0.12);
+  background-color: #fff;
+  border-radius: 0.25rem;
+}
+textarea:hover,
+textarea:focus,
+textarea {
+  outline: none;
+}
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.app_wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 6rem 3rem 2rem;
+}
+.w100 {
+  max-width: 100%;
+  width: 100%;
+}
+.header1 {
+  font-weight: 500;
+  font-size: 1.3rem;
+  margin-top: 1.25rem;
+  margin-bottom: 0.25rem;
+  color: #384d77;
+}
+.header2 {
+  margin: 0.25rem 0;
+  font-size: 1.1rem;
+  color: #9d9eb9 !important;
+}
+.fdCol {
+  display: flex;
+  flex-direction: column;
+}
+button {
+  border-radius: 0.25rem;
+  padding: 0.5rem 1.25rem;
+  outline: none;
+  border: none;
+  background-color: inherit;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
-
-.App-link {
-  color: #61dafb;
+.welcome_btn {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  min-height: 3rem;
+  font-size: 1rem;
+  color: #6264a7;
+  border-radius: 0.5rem;
+  border: 1px solid #6264a7;
+  transition: all 100ms ease;
 }
+.welcome_btn:hover {
+  border: 2px solid rgb(81, 83, 138);
+}
+.exam_logo_sm {
+  height: 1.1rem;
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  width: auto;
+  margin-right: 0.5rem;
 }

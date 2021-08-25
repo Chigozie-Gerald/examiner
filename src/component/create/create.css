@@ -1,0 +1,120 @@
+.createWrap {
+  background-color: #f5f5f5;
+  padding: 1rem 6vmax;
+  --genPad: 0.75rem;
+}
+.createTitle {
+  display: flex;
+  padding-right: var(--genPad);
+}
+.createTitleFloat {
+  border-radius: 0.25rem;
+  font-size: 0.65rem;
+  color: rgb(33, 46, 83);
+  background-color: rgba(213, 231, 255, 0.3);
+  position: absolute;
+  top: var(--genPad);
+  right: var(--genPad);
+  padding: 0.25rem;
+}
+.createWrap p {
+  font-size: 1.5rem;
+  font-weight: 500;
+  flex: 1;
+  margin: 1.25rem 0;
+}
+.createWrap_box {
+  display: flex;
+}
+.create_right {
+  padding: var(--genPad);
+  height: 100vh;
+  overflow-y: auto;
+  --width: 30vmax;
+  --topHeight: 3rem;
+  width: var(--width);
+  flex: 1;
+}
+.create_left {
+  padding: var(--genPad);
+  position: relative;
+  width: 60vmax;
+  padding-right: 1rem;
+  padding-left: 0;
+}
+.createbtn {
+  min-height: 3rem;
+}
+.createRightBox {
+  margin-top: var(--genPad);
+  box-shadow: 0px 0.5px 0.45px rgba(0, 0, 0, 0.11),
+    0px 0.8px 1.8px rgba(0, 0, 0, 0.13);
+}
+.createRightBox.first {
+  margin-top: 0;
+  min-height: 3rem;
+  padding: 0.75rem;
+}
+.createRightNext {
+  margin-top: var(--genPad);
+  min-height: 3rem;
+}
+.createInputWrap {
+  overflow: hidden;
+  position: relative;
+  padding: 1rem;
+}
+.createInputTop {
+  background-color: rgb(245, 245, 245);
+  width: 100%;
+  min-height: 3rem;
+  margin-bottom: 0.5rem;
+  border-radius: 0.25rem;
+  display: flex;
+  padding: 0.5rem;
+}
+.createITLeft {
+  flex: 1;
+}
+.createITRight {
+  min-width: 7rem;
+  padding: 0.5rem;
+  color: #fff;
+  font-size: 0.75rem;
+  background-color: #494a68;
+}
+
+.createInputField {
+  border: 1px dashed #e0e0e0;
+  border-radius: inherit;
+  width: 100%;
+  height: 12.5rem;
+  display: flex;
+  resize: none;
+  padding: 1rem;
+}
+.createInputField:hover,
+.createInputField:focus {
+  border: 2px dashed #e0e0e0;
+  outline: none;
+}
+.createRightBox.first .top {
+  min-height: 3rem;
+}
+.createRightBox.first .bottom {
+  background-color: rgba(213, 231, 255, 0.3);
+  min-height: 2rem;
+  --margin: 1.25rem;
+  margin-left: var(--margin);
+  width: calc(100% - var(--margin));
+  border-radius: inherit;
+  padding: 0.5rem;
+  font-size: 0.65rem;
+}
+.createRightBox ul {
+  margin: 0;
+  padding-left: 2rem;
+}
+.createRightBox li {
+  padding-top: 0.25rem;
+}

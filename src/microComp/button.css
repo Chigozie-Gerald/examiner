@@ -1,0 +1,16 @@
+.app_btn {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  min-height: 3rem;
+  font-size: 1rem;
+  color: #6264a7;
+  border-radius: 0.5rem;
+  border: 1px solid #6264a7;
+  transition: all 100ms ease;
+}
+.app_btn:hover {
+  border: 2px solid rgb(81, 83, 138);
+}

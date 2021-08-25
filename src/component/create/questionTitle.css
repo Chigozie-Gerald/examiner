@@ -1,0 +1,18 @@
+.questionTWrap {
+  padding: 0.5rem 0;
+}
+.QTtitle {
+  font-size: 1.15rem;
+}
+.QTlabel {
+  font-size: 0.75rem;
+}
+.questionTWrap input {
+  margin: 0.25rem 0;
+  border-radius: 0.25rem;
+  border: 1px solid #e0e0e0;
+}
+.questionTWrap input::placeholder {
+  color: #a7a7a7;
+  font-size: 0.75rem;
+}
