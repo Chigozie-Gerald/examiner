@@ -1,0 +1,67 @@
+.map_wrap {
+  background-color: #327cb1;
+  height: 100vh;
+  display: flex;
+  position: relative;
+  padding: 2rem 3rem;
+}
+.map_box {
+  border: 1px solid #4997cf;
+  background-color: #fff;
+  border-radius: 3px;
+  display: flex;
+  flex: 1;
+  box-shadow: -5px 0 14px rgba(0, 0, 0, 0.15),
+    2px 11px 10px rgba(0, 0, 0, 0.11);
+}
+.map_left {
+  width: 20rem;
+  padding: 1rem;
+  border-radius: inherit;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  overflow: auto;
+}
+.map_right {
+  background-color: #327cb12f;
+  flex: 1;
+}
+.map_div {
+  padding: 2rem 0;
+  border-bottom: 2px solid rgb(212, 212, 212);
+}
+.map_div:nth-child(2) {
+  border-bottom: none;
+}
+.map_float {
+  display: flex;
+  padding: 4rem;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.66);
+}
+.map_float_box {
+  border-radius: 3px;
+  width: 55rem;
+  z-index: 9;
+  max-width: 70%;
+  box-shadow: var(--shadow);
+  background-color: #fff;
+  flex: 1;
+  margin: 0 auto;
+}
+.map_float_head {
+  padding: 1rem;
+  display: flex;
+  justify-content: flex-end;
+}
+.map_float_icon {
+  height: 2rem;
+  width: 2rem;
+  cursor: pointer;
+  border-radius: 50%;
+  background-color: rgb(73, 73, 73);
+}

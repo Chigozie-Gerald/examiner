@@ -1,0 +1,66 @@
+.cD_wrap {
+  background-color: #eee;
+  display: flex;
+  padding: 3rem 0;
+  flex: 1;
+}
+.cD_box {
+  position: relative;
+  box-shadow: 0 1.2px 3.6px rgba(0, 0, 0, 0.11),
+    0 6.4px 14.4px rgba(0, 0, 0, 0.13);
+  width: 65%;
+  max-width: 600px;
+  margin: 0 auto;
+  border-radius: 00.25rem;
+  background-color: #fff;
+}
+.cD_body {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+}
+.cD_duration {
+  display: flex;
+}
+.cD_duration_bord_wrap {
+  padding: 0.5rem;
+  align-self: stretch;
+  align-content: flex-end;
+  display: flex;
+  flex-direction: column;
+}
+.cD_duration_bord {
+  width: 7.5rem;
+  flex: 1;
+}
+.cD_duration_bord:nth-child(2) {
+  --bcColor: rgb(219, 219, 219);
+  border-top: 1px dashed var(--bcColor);
+  position: relative;
+}
+.circleFloat {
+  --size: 0.5rem;
+  height: var(--size);
+  width: var(--size);
+  border-radius: 50%;
+  position: absolute;
+  top: calc(-1 * var(--size) / 2 - 0.5px);
+  background-color: var(--bcColor);
+}
+.circleFloat:nth-child(1) {
+  left: calc(-1 * var(--size) / 2);
+}
+.circleFloat:nth-child(2) {
+  right: calc(-1 * var(--size) / 2);
+}
+.cD_btn {
+  border-top: 1px solid #f0f0f0;
+  bottom: 0;
+  left: 0;
+  border-radius: inherit;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+  padding: 1rem;
+  display: flex;
+  justify-content: flex-end;
+}

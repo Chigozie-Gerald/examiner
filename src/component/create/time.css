@@ -1,0 +1,67 @@
+.time_wrap {
+  margin: 1rem 0;
+  border-radius: 00.5rem;
+  max-width: 20rem;
+  width: 100%;
+  display: flex;
+  padding: 0.75rem;
+  background-color: #fcfcfc;
+  border: 1px solid #f2f2f2;
+  --radius: 00.25rem;
+  border-radius: var(--radius);
+}
+.time_wrap.inner {
+  box-shadow: var(--ltShadow);
+  margin: 0;
+  box-shadow: none;
+}
+.time_inner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-right: 0.75rem;
+}
+.time_input {
+  border-radius: var(--radius);
+  height: 2rem;
+  width: 100%;
+  border: 1px solid #f0f0f0;
+  transition: var(--transition);
+}
+.time_input:focus {
+  border: 1.5px solid var(--primary);
+}
+.time_label {
+  background-color: rgb(245, 245, 245);
+  border-radius: 0.15rem;
+  padding: 0.15rem 0.5rem;
+  margin: 0.25rem 0;
+  align-self: flex-start;
+  font-size: 0.6rem;
+  font-weight: 300;
+}
+.time_div_wrap {
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid #eee;
+  padding-left: 0.75rem;
+}
+.time_sect {
+  flex: 1;
+  padding: 0.35rem;
+  color: var(--color);
+  background-color: #eee;
+  border-radius: var(--radius);
+  font-size: 0.65rem;
+  background-color: #eee;
+  transition: var(--transition);
+  cursor: pointer;
+}
+.time_sect:nth-child(2) {
+  margin-top: 0.35rem;
+  background-color: #eee;
+}
+.time_sect.active {
+  color: #fff;
+  background-color: var(--primary);
+}

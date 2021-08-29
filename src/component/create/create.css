@@ -1,7 +1,12 @@
 .createWrap {
-  background-color: #f5f5f5;
-  padding: 1rem 6vmax;
+  background-color: #eee;
+  display: flex;
+  flex: 1;
   --genPad: 0.75rem;
+}
+.createQ {
+  padding: 2rem 0;
+  margin: 0 auto;
 }
 .createTitle {
   display: flex;
@@ -18,17 +23,15 @@
   padding: 0.25rem;
 }
 .createWrap p {
-  font-size: 1.5rem;
-  font-weight: 500;
+  font-size: 1.15rem;
   flex: 1;
-  margin: 1.25rem 0;
+  margin: 0;
 }
 .createWrap_box {
   display: flex;
 }
 .create_right {
   padding: var(--genPad);
-  height: 100vh;
   overflow-y: auto;
   --width: 30vmax;
   --topHeight: 3rem;
@@ -38,7 +41,8 @@
 .create_left {
   padding: var(--genPad);
   position: relative;
-  width: 60vmax;
+  width: 65%;
+  max-width: 600px;
   padding-right: 1rem;
   padding-left: 0;
 }

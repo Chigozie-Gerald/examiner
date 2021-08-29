@@ -1,8 +1,25 @@
 * {
   box-sizing: border-box;
+  --color: rgb(121, 121, 121);
   color: #424242;
+  --lteBlue: rgb(213, 231, 255, 0.3);
+  --blue: rgb(66, 133, 244);
+  --yellow: #fbbc04;
+  --red: #ea4335;
+  --green: #34a853;
+  --activeBorder: 1px solid #3c3e8b;
+  --btnColFocus: #3c3e8b;
+  --btnCol: #5154af;
+  --primary: #494a68;
+  --transition: all 200ms ease;
+  --ltShadow: 0px 0.5px 0.45px rgba(0, 0, 0, 0.11),
+    0px 0.8px 1.8px rgba(0, 0, 0, 0.13);
+  --shadow: 0px 2px 4px rgba(0, 0, 0, 0.14),
+    0px 0px 2px rgba(0, 0, 0, 0.12);
 }
-
+.noShow {
+  display: none !important;
+}
 @font-face {
   font-family: 'Roboto';
   src: local('Roboto'),
@@ -20,6 +37,27 @@
 }
 a {
   text-decoration: none;
+}
+.h100 {
+  min-height: 100vh;
+}
+.btn {
+  min-width: 5rem;
+  cursor: pointer;
+  padding: 0.5rem 0.25rem;
+  color: #fff;
+  background-color: #3c3e8b;
+  background-color: var(--btnCol);
+  box-shadow: 0px 0.5px 0.45px rgb(0, 0, 0, 0.11),
+    0px 0.8px 1.8px rgb(0, 0, 0, 0.13);
+  transition: var(--transition);
+}
+.btn:hover {
+  background-color: var(--btnColFocus);
+  background-color: #62a7a7;
+  background-color: var(--btnColFocus);
+  box-shadow: 0px 0.5px 0.45px rgb(0, 0, 0, 0.18),
+    0px 0.8px 1.8px rgb(0, 0, 0, 0.821);
 }
 .Link,
 .Link:hover,
@@ -76,6 +114,12 @@ textarea {
   flex-direction: column;
   align-items: center;
   padding: 6rem 3rem 2rem;
+}
+.img_div_contain {
+  object-fit: contain;
+  height: 100%;
+  width: 100%;
+  border-radius: inherit;
 }
 .w100 {
   max-width: 100%;

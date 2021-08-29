@@ -1,26 +1,67 @@
 import React, { PureComponent } from 'react';
-import Button from '../../microComp/button';
+import { Route, Switch, withRouter } from 'react-router-dom';
+import NotFound from '../notFound';
 import './create.css';
+import CreateDetails from './createDetails';
 import QuestionLink from './questionLink';
 import QuestionTitle from './questionTitle';
 
 class Create extends PureComponent {
   state = {
     question: ``,
+    /*name: true,
+    group_id,
+    avg_duration,
+    max_question,
+    max_count,
+    author1_id,
+    category,
+    section,
+    expiresAt,
+    opensAt,
+    author_id,
+    questions: [
+      { question, option, answer, essay, time, start, stop },
+    ],*/
   };
+  //Select name, set max and duration, add questions
   handleChange = (e) => {
     this.setState({
       [e.target.name]: e.target.value,
     });
   };
   render() {
+    console.log(this.props.match?.url);
     return (
-      <div className="createWrap">
+      <div className="createWrap h100">
+        <Switch>
+          <Route
+            exact
+            path={`${this.props.match?.url}`}
+            render={(props) => <CreateDetails {...props} />}
+          />
+          <Route
+            path={`${this.props.match?.url}/questions`}
+            render={(props) => <CreateQuestion {...props} />}
+          />
+          <Route exact render={(props) => <NotFound {...props} />} />
+        </Switch>
+      </div>
+    );
+  }
+}
+
+export default withRouter(Create);
+
+export class CreateQuestion extends PureComponent {
+  state = {
+    question: ``,
+  };
+  render() {
+    return (
+      <div className="fdCol createQ">
         <div className="createTitle">
-          <p>Create Exam</p>
-          <div className="createbtn">
-            <Button text="To dashboard" link="/dashboard" />
-          </div>
+          <p>Add Questions</p>
         </div>
         <div className="createWrap_box">
           <div className="create_left">
@@ -45,7 +86,14 @@ class Create extends PureComponent {
               />
               <div className="createInputTop">
                 <div className="createITLeft"></div>
-                <button className="createITRight">
+                <button
+                  onClick={() =>
+                    this.props.history
+                      ? this.props.history.push(`/`)
+                      : true
+                  }
+                  className="createITRight"
+                >
                   Add Question
                 </button>
               </div>
@@ -94,5 +142,3 @@ class Create extends PureComponent {
     );
   }
 }
-
-export default Create;

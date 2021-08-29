@@ -10,7 +10,8 @@ import NotFound from './component/notFound';
 import Dashboard from './component/dashboard/dashboard';
 import Create from './component/create/create';
 import Login from './component/account/login';
-import write from './component/write';
+import Write from './component/write/write';
+import Map from './component/map/map';
 
 class App extends PureComponent {
   render() {
@@ -18,7 +19,8 @@ class App extends PureComponent {
       { route: 'create', comp: Create },
       { route: 'dashboard', comp: Dashboard },
       { route: 'login', comp: Login },
-      { route: 'write', comp: write },
+      { route: 'write', comp: Write },
+      { route: 'map', comp: Map },
     ];
     const height = 3;
     return (

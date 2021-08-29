@@ -1,0 +1,131 @@
+.examWrite_header {
+  height: var(--height);
+  padding: 0 1rem;
+  align-items: center;
+  display: flex;
+  position: fixed;
+  align-items: center;
+  top: 0;
+  left: 0;
+  box-shadow: 0px 2px 4px rgb(0, 0, 0, 0.14),
+    0px 0px 2px rgb(0, 0, 0, 0.12);
+  background-color: #fff;
+}
+.examWrite_header .content {
+  flex: 1;
+}
+.examWrite_wrap {
+  background-color: #f5f5f5;
+  --height: 3rem;
+  min-height: 100vh;
+  display: flex;
+}
+.examWrite_body {
+  margin-top: var(--height);
+  padding: 2rem 0;
+  display: flex;
+  justify-content: center;
+}
+.examWrite_left,
+.examWrite_right {
+  display: flex;
+}
+.examWrite_left {
+  width: 60vmax;
+  padding: 0 1.5rem 0 0;
+}
+.examWrite_right {
+  width: 25vmax;
+  padding: 0 0 0 1.5rem;
+}
+.examWrite_right_box,
+.examWrite_left_box {
+  box-shadow: 0px 2px 4px rgb(0, 0, 0, 0.14),
+    0px 0px 2px rgb(0, 0, 0, 0.12);
+  background-color: #fff;
+  border-radius: 0.25rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  padding-bottom: 2rem;
+}
+.examWrite_right_box {
+  padding: 0;
+  box-shadow: 0px 0.5px 0.45px rgb(0, 0, 0, 0.11),
+    0px 0.8px 1.8px rgb(0, 0, 0, 0.13);
+}
+.examWrite_L_header {
+  padding: 0.5rem 0;
+  color: #3c3e8b;
+  font-weight: 500;
+}
+.examWrite_L_body {
+  flex: 1;
+}
+.examWrite_L_option {
+  border: 1.5px dashed #ebebeb;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  height: 12rem;
+  color: #3c3e8b;
+}
+.examWrite_L_btn {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+  gap: 2rem;
+}
+.examLogin_btn {
+  justify-self: flex-end;
+}
+.examLogin_btn.next {
+  background-color: #f3f3f3;
+  background-color: #3dbb3b;
+}
+.examLogin_btn.prev {
+  background-color: #fff;
+  border: 1px solid rgb(233, 233, 233);
+  color: #3c3e8b;
+  justify-self: flex-end;
+}
+.examWrite_right_grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  max-height: 80%;
+  --gap: 0.5rem;
+  gap: var(--gap);
+  overflow-y: auto;
+  background-color: #f5f5f5;
+  padding: var(--gap);
+}
+.examWrite_right_grid_box {
+  position: relative;
+}
+.examWrite_right_grid_box::before {
+  padding-top: 100%;
+  content: '';
+  display: block;
+}
+.examWrite_right_grid_box .inner {
+  background-color: #ffff;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.examWrite_right_grid .float {
+  position: absolute;
+  padding: 0.25rem 0.5rem;
+  height: 1.3rem;
+  background-color: rgb(133, 133, 133);
+  color: #fff;
+  box-shadow: 0px 0.5px 0.45px rgb(0, 0, 0, 0.11),
+    0px 0.8px 1.8px rgb(0, 0, 0, 0.13);
+  border-radius: 0.8rem;
+  bottom: 0.75rem;
+  right: 0.75rem;
+  font-size: 00.65rem;
+}
