@@ -3,6 +3,7 @@ import './questionLink.css';
 
 class QuestionLink extends PureComponent {
   render() {
+    const { data, handleDel, handleEdit } = this.props;
     return !this.props.data ? (
       <div className="questionLink_wrap w100 more center">
         More Questions
@@ -14,15 +15,24 @@ class QuestionLink extends PureComponent {
             Question {this.props.number}
           </div>
           <div className="qlBtn">
-            <div className="qlIcon"></div>
-            <div className="qlIcon"></div>
+            <div className="qlIcon center">
+              <i
+                className="material-icons edit"
+                onClick={() =>
+                  handleEdit(data, this.props.number - 1)
+                }
+              ></i>
+            </div>
+            <div className="qlIcon center">
+              <i
+                className="material-icons close"
+                onClick={() => handleDel(this.props.number - 1)}
+              ></i>
+            </div>
           </div>
         </div>
-        <div className="qlText">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          Nostrum magni saepe soluta officia cupiditate.
-        </div>
-        <div className="qlBot">4 options</div>
+        <div className="qlText">{data.title}</div>
+        <div className="qlBot ellipsis">{data.details}</div>
       </div>
     );
   }

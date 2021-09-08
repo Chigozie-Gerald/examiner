@@ -1,0 +1,88 @@
+.tagList_wrap {
+  height: 100vh;
+  padding: 2rem;
+  padding-top: 1rem;
+  background-color: rgb(248, 248, 248);
+}
+.tagList_box {
+  position: relative;
+  flex: 1;
+  height: inherit;
+  height: 100%;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background-color: rgb(255, 255, 255);
+  gap: 1rem;
+  max-width: 40rem;
+  padding: 1rem 2rem;
+  padding-bottom: 4rem;
+  margin: 0 auto;
+  box-shadow: var(--shadow);
+  border-radius: 0.5rem;
+}
+.tagList_box .float {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem 2rem;
+}
+.tagList_box button {
+  padding: 0.5rem 1rem;
+}
+.tagList_inner {
+  cursor: pointer;
+  position: relative;
+  height: 10rem;
+  border-radius: 4px;
+  padding: 0.5rem;
+  background-color: rgb(251, 251, 251);
+  border: 1px solid #eee;
+  font-size: 0.8rem;
+  flex-direction: column;
+  display: flex;
+  box-shadow: var(--ltShadow);
+  transition: var(--transition);
+}
+.tagList_inner_float {
+  background-color: var(--blue);
+  z-index: 999999999999999;
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  height: 1.5rem;
+  width: 1.5rem;
+  border-radius: 50%;
+}
+.tagList_inner_float i {
+  color: #fff;
+}
+.tagList_create .btn {
+  padding: 0.5rem;
+  font-size: 0.7rem !important;
+}
+.tagList_inner_top {
+  transition: var(--transition);
+  display: flex;
+  position: relative;
+  background-color: #eee;
+  flex: 1;
+}
+.tagList_inner_btm {
+  padding-top: 1rem;
+  font-size: 0.7rem;
+}
+.tagList_inner span {
+  font-size: 0.6rem;
+  padding-top: 0.25rem;
+  color: rgb(152, 152, 152);
+}
+.tagList_inner:hover {
+  background-color: rgb(240, 240, 240);
+}
+.tagList_inner:hover .tagList_inner_top {
+  background-color: rgb(213, 213, 213);
+}

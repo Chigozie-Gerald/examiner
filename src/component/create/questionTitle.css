@@ -14,7 +14,8 @@
   transition: var(--transition);
 }
 .questionTWrap input:focus {
-  border: var(--activeBorder);
+  /*border: var(--activeBorder);*/
+  outline: 3px solid hsla(238, 37%, 50%, 0.5) !important;
 }
 .questionTWrap input::placeholder {
   color: #a7a7a7;

@@ -13,6 +13,7 @@
 }
 .examWrite_header .content {
   flex: 1;
+  padding-left: 10vmax;
 }
 .examWrite_wrap {
   background-color: #f5f5f5;
@@ -23,19 +24,91 @@
 .examWrite_body {
   margin-top: var(--height);
   padding: 2rem 0;
+  padding-bottom: 0.5rem;
+  --totalWidth: 80vmax;
+  --BigWidth: 45vmax;
+  --SmallWidth: calc(var(--totalWidth) - var(--BigWidth));
   display: flex;
   justify-content: center;
+}
+.examWrite_body.second {
+  padding: 0.25rem 1rem;
+  margin-top: 0;
+  --totalWidth: 80vmax;
+  --BigWidth: 45vmax;
+  --SmallWidth: calc(var(--totalWidth) - var(--BigWidth));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.examWrite_body.second .examWrite_left {
+  height: 3rem;
+  background-color: #fff;
+  box-shadow: var(--shadow);
+  display: flex;
+  border-radius: 0.25rem;
+}
+.examWrite_left_inner {
+  padding: 0 1rem;
+  font-size: 0.8rem;
+  align-items: center;
+  display: flex;
+  justify-content: flex-start;
+  flex: 1;
+}
+.examWrite_left_inner.two {
+  justify-content: flex-end;
+}
+.examWrite_left_inner.one span {
+  margin-right: 0.75rem;
+}
+.examWrite_left_inner.two span {
+  background-color: var(--blue);
+  margin-left: 0.75rem;
+  color: #fff;
+}
+.examWrite_left_inner.two span i {
+  color: #fff;
+}
+.examWrite_left_inner span {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  box-shadow: var(--shadow);
+}
+.examWrite_left_inner span:hover {
+  background-color: rgb(236, 236, 236);
+}
+.examWrite_left_inner.two span:hover {
+  background-color: rgb(55, 114, 208);
 }
 .examWrite_left,
 .examWrite_right {
   display: flex;
 }
 .examWrite_left {
-  width: 60vmax;
+  width: var(--BigWidth);
+  z-index: 9;
   padding: 0 1.5rem 0 0;
+  padding-right: 0;
 }
 .examWrite_right {
+  width: var(--SmallWidth);
+  padding: 0;
+  font-size: 0.8rem;
+  padding: 1rem;
+  transform: translateX(calc(var(--SmallWidth) * -1));
+  border-radius: 0 0.25rem 0.25rem 0;
+  background-color: rgb(236, 236, 236);
+  transition: all 300ms ease-in;
+}
+.examWrite_right.active {
+  transform: translateX(0vmax);
+  box-shadow: var(--shadow);
+}
+.examWrite_right.opt {
   width: 25vmax;
+  background-color: #fff;
   padding: 0 0 0 1.5rem;
 }
 .examWrite_right_box,
@@ -61,32 +134,30 @@
   font-weight: 500;
 }
 .examWrite_L_body {
-  flex: 1;
-}
-.examWrite_L_option {
-  border: 1.5px dashed #ebebeb;
-  border-radius: 0.25rem;
-  padding: 0.5rem;
-  height: 12rem;
-  color: #3c3e8b;
+  border: 1.5px dashed #dddddd;
+  border-radius: inherit;
+  padding: 1rem 00.5rem;
+  margin: 1rem 0;
+  font-size: 0.8rem;
 }
 .examWrite_L_btn {
   display: flex;
+  flex: 1;
   justify-content: flex-end;
   margin-top: 1rem;
   gap: 2rem;
 }
 .examLogin_btn {
+  align-self: flex-start;
   justify-self: flex-end;
 }
 .examLogin_btn.next {
+  color: #3c3e8b;
   background-color: #f3f3f3;
-  background-color: #3dbb3b;
 }
 .examLogin_btn.prev {
   background-color: #fff;
   border: 1px solid rgb(233, 233, 233);
-  color: #3c3e8b;
   justify-self: flex-end;
 }
 .examWrite_right_grid {

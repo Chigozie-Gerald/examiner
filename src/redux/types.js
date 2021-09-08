@@ -1,0 +1,18 @@
+export const QUESTION_SUCCESS = 'QUESTION_SUCCESS';
+export const QUESTION_ERROR = 'QUESTION_ERROR';
+export const TAG_SUCCESS = 'TAG_SUCCESS';
+export const TAG_ERROR = 'TAG_ERROR';
+
+export const QUESTIONLOADING = 'QUESTIONLOADING';
+export const QUESTIONLOADED = 'QUESTIONLOADED';
+export const TAGLOADING = 'TAGLOADING';
+export const TAGLOADED = 'TAGLOADED';
+export const AUTH_ERROR = 'AUTH_ERROR';
+export const GET_ERROR = 'GET_ERROR';
+export const CLEAR_ERROR = 'CLEAR_ERROR';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGIN_ERROR = 'LOGIN_ERROR';
+export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
+
+export const TAG_EDITED = 'TAG_EDITED';
+export const QUESTION_DELETED = 'QUESTION_DELETED';

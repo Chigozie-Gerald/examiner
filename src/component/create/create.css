@@ -50,7 +50,6 @@
   min-height: 3rem;
 }
 .createRightBox {
-  margin-top: var(--genPad);
   box-shadow: 0px 0.5px 0.45px rgba(0, 0, 0, 0.11),
     0px 0.8px 1.8px rgba(0, 0, 0, 0.13);
 }
@@ -59,33 +58,25 @@
   min-height: 3rem;
   padding: 0.75rem;
 }
-.createRightNext {
-  margin-top: var(--genPad);
-  min-height: 3rem;
-}
 .createInputWrap {
   overflow: hidden;
   position: relative;
   padding: 1rem;
 }
 .createInputTop {
-  background-color: rgb(245, 245, 245);
+  background-color: rgba(245, 245, 245, 0);
   width: 100%;
   min-height: 3rem;
-  margin-bottom: 0.5rem;
   border-radius: 0.25rem;
   display: flex;
-  padding: 0.5rem;
+  padding-top: 1rem;
 }
 .createITLeft {
   flex: 1;
 }
 .createITRight {
   min-width: 7rem;
-  padding: 0.5rem;
-  color: #fff;
   font-size: 0.75rem;
-  background-color: #494a68;
 }
 
 .createInputField {
@@ -121,4 +112,40 @@
 }
 .createRightBox li {
   padding-top: 0.25rem;
+}
+.createRightBox .sm {
+  background-color: rgba(213, 231, 255, 0.3);
+  min-height: 2rem;
+  border-radius: inherit;
+  padding: 0.5rem;
+  font-size: 0.65rem;
+}
+.createRightBox .sm.invis {
+  visibility: hidden;
+  display: none;
+}
+.createITRight:disabled {
+  background-color: #5154af8e !important;
+  box-shadow: none !important;
+  cursor: not-allowed;
+}
+.notify_create {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 0.5rem;
+  background-color: rgba(235, 180, 0, 0.449);
+  font-size: 0.7rem;
+  box-shadow: var(--ltShadow);
+}
+.create_select {
+  padding: 0.5rem;
+  margin-top: 1rem;
+  border: 1px solid #eee;
+  border-radius: 0.25rem;
+}
+.create_select:focus {
+  padding: 0.5rem;
+  margin-top: 1rem;
+  outline: 3px solid hsla(238, 37%, 50%, 0.5) !important;
 }

@@ -1,19 +1,26 @@
 import React, { PureComponent } from 'react';
+import './material-design-icons-iconfont-master/material-design-icons-iconfont-master/dist/material-design-icons.css';
 import './App.css';
-import {
-  Switch,
-  Route,
-  BrowserRouter as Router,
-  Link,
-} from 'react-router-dom';
+import { Switch, Route, Link, withRouter } from 'react-router-dom';
 import NotFound from './component/notFound';
 import Dashboard from './component/dashboard/dashboard';
 import Create from './component/create/create';
 import Login from './component/account/login';
 import Write from './component/write/write';
 import Map from './component/map/map';
+import Histo from './component/histo/histo';
+import TagCreate from './component/create/tagCreate';
+import TagList from './component/tag/tagList';
+import { loadQuestion, loadTag } from './redux/loader/loader';
+import { connect } from 'react-redux';
 
 class App extends PureComponent {
+  componentDidMount = () => {
+    this.props.loadQuestion();
+    this.props.loadTag();
+    this.props.history.push(`/tagList`);
+  };
+
   render() {
     const links = [
       { route: 'create', comp: Create },
@@ -21,29 +28,39 @@ class App extends PureComponent {
       { route: 'login', comp: Login },
       { route: 'write', comp: Write },
       { route: 'map', comp: Map },
+      { route: 'tagCreate', comp: TagCreate },
+      { route: 'histo', comp: Histo },
+      { route: 'tagList', comp: TagList },
     ];
     const height = 3;
     return (
-      <Router>
-        <Switch>
-          <Route exact path="/" render={(props) => <AppCont />} />
-          {/* Dynamically creating routes */}
-          {links.map((path) => (
-            <Route
-              path={`/${path.route}`}
-              render={(props) => (
-                <path.comp height={`${height}rem`} />
-              )}
-            />
-          ))}
-          <Route exact render={(props) => <NotFound {...props} />} />
-        </Switch>
-      </Router>
+      <Switch>
+        <Route exact path="/" render={(props) => <AppCont />} />
+        {/* Dynamically creating routes */}
+        {links.map((path, n) => (
+          <Route
+            path={`/${path.route}`}
+            render={(props) => <path.comp height={`${height}rem`} />}
+            key={`App_link_${n}_path`}
+          />
+        ))}
+        <Route exact render={(props) => <NotFound {...props} />} />
+      </Switch>
     );
   }
 }
 
-export default App;
+const mapStateToProps = (state) => ({});
+
+const mapDispatchToProps = (dispatch) => ({
+  loadQuestion: () => dispatch(loadQuestion()),
+  loadTag: () => dispatch(loadTag()),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withRouter(App));
 
 class AppCont extends PureComponent {
   render() {

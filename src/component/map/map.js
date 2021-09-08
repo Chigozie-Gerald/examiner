@@ -1,11 +1,13 @@
 import React, { PureComponent } from 'react';
 import QuestionTitle from '../create/questionTitle';
 import './map.css';
+import scriptLoader from 'react-async-script-loader';
 
 class Map extends PureComponent {
   constructor(props) {
     super(props);
     this.handleShow = this.handleShow.bind(this);
+    this.map = null;
   }
   state = {
     show: false,
@@ -14,6 +16,54 @@ class Map extends PureComponent {
     e.stopPropagation();
     this.setState({ show: !this.state.show });
   };
+
+  componentWillReceiveProps({ isScriptLoaded, isScriptLoadSucceed }) {
+    if (isScriptLoaded && !this.props.isScriptLoaded) {
+      // load finished
+      if (isScriptLoadSucceed) {
+        this.map = new window.google.maps.Map(
+          document.getElementById('map'),
+          {
+            center: { lat: -34.397, lng: 150.644 },
+            zoom: 8,
+          },
+        );
+        const drawingManager =
+          new window.google.maps.drawing.DrawingManager({
+            drawingMode:
+              window.google.maps.drawing.OverlayType.MARKER,
+            drawingControl: true,
+            drawingControlOptions: {
+              position: window.google.maps.ControlPosition.TOP_CENTER,
+              drawingModes: [
+                window.google.maps.drawing.OverlayType.MARKER,
+                window.google.maps.drawing.OverlayType.CIRCLE,
+                window.google.maps.drawing.OverlayType.POLYGON,
+                window.google.maps.drawing.OverlayType.POLYLINE,
+                window.google.maps.drawing.OverlayType.RECTANGLE,
+              ],
+            },
+            markerOptions: {
+              icon: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+            },
+            circleOptions: {
+              fillColor: '#ffff00',
+              fillOpacity: 1,
+              strokeWeight: 5,
+              clickable: false,
+              editable: true,
+              zIndex: 1,
+            },
+          });
+        drawingManager.setMap(this.map);
+      } else {
+        console.log(`ifnsksf`);
+        this.props.onError();
+      }
+    } else {
+      console.log(`Still loading`);
+    }
+  }
 
   render() {
     return (
@@ -66,11 +116,16 @@ class Map extends PureComponent {
               Run Model
             </button>
           </div>
-          <div className="map_right"></div>
+          <div useRef="map" id="map" className="map_right">
+            {!this.map && <div className="center">Loading...</div>}
+          </div>
         </div>
       </div>
     );
   }
 }
 
-export default Map;
+export default scriptLoader([
+  'https://polyfill.io/v3/polyfill.min.js?features=default',
+  'https://maps.googleapis.com/maps/api/js?key=AIzaSyB2kQCbfbKCfO8_PNgyNj0zIZOKe2DG-hI&libraries=drawing',
+])(Map);

@@ -2,10 +2,6 @@ import React, { PureComponent } from 'react';
 import './questionTitle.css';
 
 class QuestionTitle extends PureComponent {
-  state = { text: '' };
-  handleChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
   render() {
     const data = this.props?.data;
     const size = [1.15, 1, 0.75];
@@ -28,9 +24,10 @@ class QuestionTitle extends PureComponent {
           <input
             className="w100"
             type="text"
+            autoFocus={data.autoFocus || false}
             value={data?.text}
-            onChange={this.handleChange}
-            name="text"
+            onChange={data.onChange}
+            name={data?.name || 'text'}
             placeholder={data?.placeholder ? data?.placeholder : ''}
           />
         ) : (

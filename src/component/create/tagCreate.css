@@ -1,0 +1,33 @@
+.tagCreate_wrap {
+  height: 100vh;
+  padding: 4rem;
+  display: flex;
+  justify-content: center;
+  background-color: #eee;
+}
+.tagCreate_box {
+  padding: 3rem;
+  width: 100%;
+  max-width: 40rem;
+  background-color: #fff;
+  box-shadow: var(--shadow);
+}
+.floater.tagger {
+  align-items: center;
+  display: flex;
+  margin-bottom: 1rem;
+}
+.floater.tag {
+  background-color: rgba(209, 5, 5, 0.238);
+  color: rgb(140, 0, 0);
+  font-size: 0.6rem !important;
+}
+.floater i {
+  padding-right: 2rem;
+  color: rgb(140, 0, 0);
+  font-size: 0.6rem !important;
+}
+.floater.trans {
+  visibility: hidden;
+  font-size: 0.6rem !important;
+}
