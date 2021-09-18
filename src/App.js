@@ -13,12 +13,15 @@ import TagCreate from './component/create/tagCreate';
 import TagList from './component/tag/tagList';
 import { loadQuestion, loadTag } from './redux/loader/loader';
 import { connect } from 'react-redux';
+import WriteOpen from './component/write/writeOpen';
 
 class App extends PureComponent {
   componentDidMount = () => {
     this.props.loadQuestion();
     this.props.loadTag();
-    this.props.history.push(`/tagList`);
+    if (this.props.location.pathname === `/`) {
+      this.props.history.push(`/tagList`);
+    }
   };
 
   render() {
@@ -31,6 +34,7 @@ class App extends PureComponent {
       { route: 'tagCreate', comp: TagCreate },
       { route: 'histo', comp: Histo },
       { route: 'tagList', comp: TagList },
+      { route: 'writeOpen', comp: WriteOpen },
     ];
     const height = 3;
     return (

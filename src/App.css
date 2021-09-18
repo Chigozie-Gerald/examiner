@@ -135,6 +135,31 @@ textarea {
   width: 100%;
   border-radius: inherit;
 }
+.img_div_cover {
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+  border-radius: inherit;
+}
+.mt1 {
+  margin-top: 1rem;
+}
+.scroller::-webkit-scrollbar {
+  width: 0.5rem;
+}
+.scroller::-webkit-scrollbar-track {
+  background-color: #eee;
+  /* border-radius: 1rem; */
+  overflow: hidden;
+  padding: 0 0.25rem;
+}
+.scroller::-webkit-scrollbar-thumb {
+  background-color: #aaa;
+}
+.scroller::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(159, 159, 159);
+}
+
 .w100 {
   max-width: 100%;
   width: 100%;

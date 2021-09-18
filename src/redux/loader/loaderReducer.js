@@ -22,7 +22,6 @@ const loaderReducer = (state = initialState, action) => {
   switch (action.type) {
     case QUESTION_SUCCESS: {
       //For question creation
-      console.log(action.payload, `in reducer`);
       const list = [...state.questions, action.payload];
       return {
         ...state,
@@ -36,14 +35,13 @@ const loaderReducer = (state = initialState, action) => {
       return {
         ...state,
         questionError:
-          action.payload?.error ||
+          action?.payload?.error ||
           "Questions couldn't be created/loaded",
         questionLoading: false,
       };
     }
     case TAG_SUCCESS: {
       //For tag creation
-      console.log(`tag success reducer`);
       return {
         ...state,
         tagError: '',

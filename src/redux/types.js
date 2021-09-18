@@ -11,8 +11,11 @@ export const AUTH_ERROR = 'AUTH_ERROR';
 export const GET_ERROR = 'GET_ERROR';
 export const CLEAR_ERROR = 'CLEAR_ERROR';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
-export const LOGIN_ERROR = 'LOGIN_ERROR';
-export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 
+export const COMBINE_SUCCESS = 'COMBINE_SUCCESS';
+export const FIND_SUCCESS = 'FIND_SUCCESS';
+
+export const QUESTION_EDITED = 'QUESTION_EDITED';
+export const TAG_DELETED = 'TAG_DELETED';
 export const TAG_EDITED = 'TAG_EDITED';
 export const QUESTION_DELETED = 'QUESTION_DELETED';

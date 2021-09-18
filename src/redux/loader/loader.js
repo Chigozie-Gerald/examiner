@@ -43,7 +43,7 @@ export const loadQuestion = () => {
       })
       .catch((err) => {
         dispatch(
-          getError(err.response.data.msg, err.response.status),
+          getError(err?.response?.data?.msg, err?.response?.status),
         );
       });
   };
@@ -61,7 +61,7 @@ export const loadTag = () => {
       })
       .catch((err) => {
         dispatch(
-          getError(err.response.data.msg, err.response.status),
+          getError(err?.response?.data?.msg, err?.response?.status),
         );
       });
   };

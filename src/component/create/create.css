@@ -12,6 +12,22 @@
   display: flex;
   padding-right: var(--genPad);
 }
+.createWrap p {
+  font-size: 1.15rem;
+  margin: 0;
+  margin-right: auto;
+}
+.createTitle p {
+  border-radius: 00.25rem;
+  display: inline-flex;
+  padding: 0 1rem;
+  min-width: 10rem;
+  font-size: 0.8rem;
+  align-items: center;
+  background-color: #fff;
+  border: none;
+  box-shadow: var(--shadow);
+}
 .createTitleFloat {
   border-radius: 0.25rem;
   font-size: 0.65rem;
@@ -22,11 +38,7 @@
   right: var(--genPad);
   padding: 0.25rem;
 }
-.createWrap p {
-  font-size: 1.15rem;
-  flex: 1;
-  margin: 0;
-}
+
 .createWrap_box {
   display: flex;
 }
@@ -42,7 +54,7 @@
   padding: var(--genPad);
   position: relative;
   width: 65%;
-  max-width: 600px;
+  max-width: 500px;
   padding-right: 1rem;
   padding-left: 0;
 }
@@ -80,7 +92,7 @@
 }
 
 .createInputField {
-  border: 1px dashed #e0e0e0;
+  border: 2px solid rgb(233, 233, 233);
   border-radius: inherit;
   width: 100%;
   height: 12.5rem;
@@ -90,7 +102,7 @@
 }
 .createInputField:hover,
 .createInputField:focus {
-  border: 2px dashed #e0e0e0;
+  border: 2px dashed rgb(233, 233, 233);
   outline: none;
 }
 .createRightBox.first .top {
@@ -148,4 +160,25 @@
   padding: 0.5rem;
   margin-top: 1rem;
   outline: 3px solid hsla(238, 37%, 50%, 0.5) !important;
+}
+.imagee {
+  height: 100px;
+  width: 100px;
+  margin-left: auto;
+  border: 1px dashed rgb(155, 155, 155);
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+  position: relative;
+}
+.imagee span {
+  position: absolute;
+  top: 0.35rem;
+  padding: 0.15rem;
+  right: 0.35rem;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.401);
+}
+.imagee span i {
+  font-size: 1rem;
+  color: #fff;
 }

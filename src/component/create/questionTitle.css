@@ -1,5 +1,6 @@
 .questionTWrap {
   padding: 0.5rem 0;
+  position: relative;
 }
 .QTtitle {
   font-size: 1.15rem;
@@ -13,6 +14,9 @@
   border: 1px solid #e0e0e0;
   transition: var(--transition);
 }
+.questionTWrap input.iconed {
+  padding-right: 2.1rem;
+}
 .questionTWrap input:focus {
   /*border: var(--activeBorder);*/
   outline: 3px solid hsla(238, 37%, 50%, 0.5) !important;
@@ -20,4 +24,51 @@
 .questionTWrap input::placeholder {
   color: #a7a7a7;
   font-size: 0.75rem;
+}
+.QTlabelIcon {
+  position: absolute;
+  bottom: 16.5px;
+  bottom: 13px;
+  right: 1px;
+  height: 32px;
+  width: 2rem;
+  display: flex;
+  cursor: pointer;
+  border-top-right-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  border-left: 1px solid #eee;
+}
+.QTlabelIcon i {
+  font-size: 1.5rem;
+  color: #454545;
+}
+.input_file {
+  display: none;
+}
+.questionFormat {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  right: 0rem;
+  gap: 2.5px;
+  top: 1.2rem;
+  position: absolute;
+}
+.questionBoldWrap {
+  height: 1.5rem;
+  width: 1.5rem;
+  padding: 0.125rem;
+  border: 2px solid #ddd;
+  border-radius: 00.25rem;
+  background-color: #fff;
+  transition: var(--transition);
+}
+
+.questionBoldWrap:hover {
+  border-color: var(--blue);
+}
+.questionBoldWrap i {
+  font-size: 1.2rem;
 }

@@ -1,0 +1,72 @@
+.selectWrap {
+  border: 1px solid #eee;
+  box-shadow: var(--shadow);
+  border-radius: 0.25rem;
+  font-size: 0.8rem;
+  margin-top: -2px;
+  position: relative;
+  overflow: hidden;
+  --width: 14rem;
+  max-width: var(--width);
+}
+.selectBox {
+  font-style: italic;
+  color: rgb(171, 171, 171);
+  width: var(--width);
+  cursor: pointer;
+  padding: 0.5rem;
+}
+.selectBox.bold {
+  font-weight: 600;
+  color: #424242;
+  font-style: normal;
+}
+.selectBox_float_box {
+  height: 0;
+  background-color: #fff;
+  overflow: hidden;
+  top: 2rem;
+  left: 0;
+  transition: var(--transition);
+}
+.selectBox_float {
+  cursor: pointer;
+  border-top: 1px solid #eee;
+  padding: 0.5rem;
+  font-size: 0.7rem;
+  transition: var(--transition);
+}
+
+.selectBox_float:hover {
+  background-color: rgba(173, 216, 230, 0.4);
+}
+.selectBox_float.chosen {
+  background-color: rgba(173, 216, 230, 0.7);
+}
+.selectBox_float.chosen:hover {
+  background-color: rgba(173, 216, 230, 0.8);
+}
+.selectBox_float:nth-child(1) {
+  border-top: none;
+}
+.selectBox_float:last-child {
+  border-bottom: none;
+}
+.selectBox_float_box.open {
+  max-height: 10rem;
+  overflow-y: auto;
+  animation-timing-function: ease-in-out;
+  animation-name: slideDown;
+  animation-duration: 400ms;
+  animation-fill-mode: both;
+}
+@keyframes slideDown {
+  from {
+    height: 0;
+    opacity: 0.4;
+  }
+  to {
+    height: 10rem;
+    opacity: 1;
+  }
+}

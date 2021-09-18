@@ -16,20 +16,59 @@ class QuestionTitle extends PureComponent {
 
     return (
       <div className="questionTWrap">
+        {data?.labelIcon && (
+          <div className="questionFormat">
+            <span
+              onClick={() => data?.labelFunc(`<`)}
+              className="questionBoldWrap center"
+            >
+              <i className="material-icons format_italic"></i>
+            </span>
+            <span
+              onClick={() => data?.labelFunc(`~`)}
+              className="questionBoldWrap center"
+            >
+              <i className="material-icons format_underline"></i>
+            </span>
+            <span
+              onClick={() => data?.labelFunc()}
+              className="questionBoldWrap center"
+            >
+              <i className="material-icons format_bold"></i>
+            </span>
+          </div>
+        )}
         <div style={{ fontSize: `${font()}rem` }} className="QTtitle">
           {data?.title}
         </div>
         <div className="QTlabel">{data?.label}</div>
         {data?.hasInput ? (
           <input
-            className="w100"
+            className={`w100 ${data?.hasIcon ? 'iconed' : ''}`}
             type="text"
+            autoComplete="off"
             autoFocus={data.autoFocus || false}
             value={data?.text}
             onChange={data.onChange}
             name={data?.name || 'text'}
             placeholder={data?.placeholder ? data?.placeholder : ''}
           />
+        ) : (
+          ''
+        )}
+        {data?.hasInput && data?.hasIcon ? (
+          <div className="QTlabelIcon">
+            <label htmlFor="inputFile" className="center">
+              <i className="material-icons image"></i>
+            </label>
+            <input
+              onChange={data?.iconChange}
+              type="file"
+              name="file"
+              className="noShow"
+              id="inputFile"
+            />
+          </div>
         ) : (
           ''
         )}

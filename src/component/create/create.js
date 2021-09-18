@@ -11,9 +11,10 @@ import QuestionTitle from './questionTitle';
 class Create extends PureComponent {
   state = {
     tag: '',
-    title: '',
+    title: '?',
+    tagNAME: '',
     details: '',
-    image: '',
+    image: null,
     questions: [],
     errorText: '',
     editting: false,
@@ -53,7 +54,7 @@ class Create extends PureComponent {
           }
         }),
         editting: false,
-        title: '',
+        title: '?',
         details: '',
         image: '',
       });
@@ -68,7 +69,7 @@ class Create extends PureComponent {
             image: this.state.image,
           },
         ],
-        title: '',
+        title: '?',
         details: '',
         image: '',
       });
@@ -81,14 +82,26 @@ class Create extends PureComponent {
   };
   componentDidMount = () => {
     const { history, location } = this.props;
-    if (!location?.state?.tag) {
+    if (!location?.state?.tag?._id) {
       history.replace('/tagList');
       return;
     }
-    this.setState({ tag: this.props.location?.state?.tag || '' });
+    this.setState({
+      tag: location?.state?.tag?._id || '',
+      tagNAME: location?.state?.tag?.name,
+    });
   };
+  removeImage = () => {
+    this.setState({ image: null });
+  };
+
+  onChangeImage = (e) => {
+    this.setState({ image: e.target.files[0] });
+  };
+
   handleSubmit = (e) => {
     e.preventDefault();
+
     if (
       this.state.questions.length > 0 ||
       (this.state.title && this.state.details && this.state.tag)
@@ -111,7 +124,7 @@ class Create extends PureComponent {
         this.setState(
           {
             tag: '',
-            title: '',
+            title: '?',
             details: '',
             image: '',
             questions: [],
@@ -137,11 +150,15 @@ class Create extends PureComponent {
                 {...props}
                 data={{
                   tags: this.props.tags,
+                  tagNAME: this.state.tagNAME,
                   editting: this.state.editting,
                   questions: this.state.questions,
                   title: this.state.title,
                   details: this.state.details,
                   errorText: this.state.errorText,
+                  fileValue: this.state.image ? this.state.image : ``,
+                  removeImage: this.removeImage,
+                  iconChange: this.onChangeImage,
                   handleEdit: this.handleEdit,
                   handleDel: this.handleDel,
                   handleErrorClear: this.handleErrorClear,
@@ -179,28 +196,117 @@ export default connect(
 )(withRouter(Create));
 
 export class CreateQuestion extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.textareaRef = React.createRef();
+  }
   state = {
     question: '',
+    selected: [],
+    textSelect: '',
   };
+  handleSelected = (start, stop) => {
+    if (start !== stop) {
+      console.log(start, stop, `starrt stio`);
+      this.setState({
+        selected: [start, stop],
+        textSelect: this.props.data.details.substring(start, stop),
+      });
+      ////////////////////////////////////////////////////
+      ///////////////////////////////////////////////////
+      //////////////////////////////////////////////////
+    }
+  };
+
+  handleFormat = (start, stop, stringMark = `*`) => {
+    const details = this.props.data.details;
+    if (start === stop) {
+      console.log(`leavinf`, start, stop);
+      return;
+    }
+
+    let preString = details.substring(0, start);
+    let postString = details.substring(stop, details.length);
+    let textExtract = details.substring(start, stop);
+    textExtract = this.revEngineer(textExtract, stringMark);
+
+    //Add the extract to the details pre and post strings
+    const newString = preString + textExtract + postString;
+
+    const name = this.textareaRef.current.name;
+    const value = newString;
+    //Create obj for workaround because name couldnt be extracted from react ref
+    const obj = { target: { name, value } };
+    this.props.data.onChange(obj);
+    this.setState({
+      selected: [],
+    });
+
+    /*
+    Take a string, add ** to each ends
+    if trimmable, Translocate trimmable spaces to before the **
+    Split the string into arrays by `enter` white spaces
+    First: add ** to back, last: add ** to front, in between, add ** to both sides
+    convert all horiz white spaces in each array to underscore
+    Fix in the \n to after all array
+    */
+  };
+
+  revEngineer = (string, bold = `*`) => {
+    const stringMark =
+      typeof bold === `string` ? bold.repeat(2) : `**`;
+    const topSpace = string.search(/\S|$/);
+    const botSpace =
+      string.length - string.trim().length - string.search(/\S|$/);
+    string = string.trim();
+    string = stringMark + string + stringMark;
+    let arr = string.split(/(?:\r\n|\n)/g);
+    arr = arr.map((str, n) => {
+      const tS = string.search(/\S|$/);
+      const bS =
+        string.length - string.trim().length - string.search(/\S|$/);
+      if (n > 0) {
+        str = ' '.repeat(tS) + stringMark + str.trim();
+      }
+      if (n < arr.length - 1) {
+        str = str.trim() + stringMark + ' '.repeat(bS);
+      }
+      return str.split(` `).join(`_`);
+    });
+    let finalString = arr.join('\n');
+
+    finalString =
+      ' '.repeat(topSpace) + finalString + ' '.repeat(botSpace);
+    return finalString;
+  };
+
   render() {
     const {
+      tagNAME,
       handleEdit,
+      iconChange,
       editting,
       onChange,
       handleDel,
       questions,
       title,
       details,
+      removeImage,
       handleSubmit,
       handleAdd,
       errorText,
+      fileValue,
       handleErrorClear,
     } = this.props.data;
     return (
       <div className="fdCol createQ">
         <div className="createTitle">
-          <p>Add Questions</p>
-          <button onClick={handleSubmit} className="btn">
+          <p>{tagNAME ? tagNAME + ' tag' : ''}</p>
+          <button
+            disabled={!(questions.length || (title && details))}
+            onClick={handleSubmit}
+            className="createITRight btn"
+          >
             Finish
           </button>
         </div>
@@ -227,8 +333,11 @@ export class CreateQuestion extends PureComponent {
               <QuestionTitle
                 data={{
                   onChange: onChange,
+                  iconChange: iconChange,
+                  fileValue: fileValue,
                   text: title,
                   hasInput: true,
+                  hasIcon: true,
                   title: 'Question',
                   autoFocus: true,
                   title_size: `md`,
@@ -238,12 +347,37 @@ export class CreateQuestion extends PureComponent {
                   label: `Kindly type a question that isn't ambiguous`,
                 }}
               />
+              {fileValue ? (
+                <div className="imagee">
+                  <span onClick={removeImage} className="center">
+                    <i className="material-icons close"></i>
+                  </span>
+                  <img
+                    src={URL.createObjectURL(fileValue)}
+                    alt=""
+                    className="img_div_cover"
+                  />
+                </div>
+              ) : (
+                ``
+              )}
               <QuestionTitle
                 data={{
                   hasInput: false,
                   title_size: `md`,
                   title: 'Body',
-                  label: `This section is more or less the answer to the question written above`,
+                  labelIcon: true,
+                  labelFunc: (stringMark = `*`) => {
+                    const start = this.state.selected[0];
+                    const stop = this.state.selected[1];
+                    if (this.props.data?.onChange) {
+                      this.handleFormat(start, stop, stringMark);
+                      //this.props.data.onChange(obj);
+                    } else {
+                      return;
+                    }
+                  },
+                  label: `This section is  the answer to the question written above`,
                 }}
               />
 
@@ -251,9 +385,16 @@ export class CreateQuestion extends PureComponent {
                 className="createInputField"
                 type="text"
                 name="details"
+                ref={this.textareaRef}
                 id=""
                 value={details}
                 onChange={onChange}
+                onSelect={() =>
+                  this.handleSelected(
+                    this.textareaRef.current.selectionStart,
+                    this.textareaRef.current.selectionEnd,
+                  )
+                }
               />
 
               <div className="createInputTop">

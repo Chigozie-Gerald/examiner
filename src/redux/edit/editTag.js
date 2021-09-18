@@ -1,7 +1,7 @@
-import { TAG_EDITED, TAG_DELETED, EDITING_TAG } from '../types';
+import { TAG_EDITED, TAG_DELETED } from '../types';
 import axios from 'axios';
 import { getError } from '../error/errorAction';
-import { loadTag } from '../loader/loader';
+import { loadQuestion, loadTag } from '../loader/loader';
 
 export const editTagSuccess = () => {
   return {
@@ -14,10 +14,12 @@ export const deleteTagSuccess = () => {
   };
 };
 
-export const editTag = () => {
+export const editTag = (_id, name) => {
   return (dispatch) => {
+    const BODY = { _id, name };
+    console.log(BODY);
     axios
-      .get('http://localhost:6060/api/profile/questionReadAll', {
+      .post('http://localhost:6060/api/tagEdit', BODY, {
         'content-type': 'application/json',
       })
       .then(() => {
@@ -27,17 +29,19 @@ export const editTag = () => {
       })
       .catch((err) => {
         dispatch(
-          getError(err.response.data.msg, err.response.status),
+          getError(err?.response?.data?.msg, err?.response?.status),
         );
       });
   };
 };
 
-export const deleteTag = () => {
+export const deleteTag = (_id) => {
   return (dispatch) => {
+    const BODY = { _id };
     axios
-      .get('http://localhost:6060/api/profile/questionReadAll', {
+      .post('http://localhost:6060/api/questionDelete', {
         'content-type': 'application/json',
+        BODY,
       })
       .then(() => {
         dispatch(deleteTagSuccess());
@@ -46,7 +50,7 @@ export const deleteTag = () => {
       })
       .catch((err) => {
         dispatch(
-          getError(err.response.data.msg, err.response.status),
+          getError(err?.response?.data?.msg, err?.response?.status),
         );
       });
   };

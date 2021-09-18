@@ -5,7 +5,7 @@ import rootReducer from './index';
 function saveToLocalStorage(state) {
   try {
     const serializedState = JSON.stringify(state);
-    localStorage.setItem('online-exam-state', serializedState);
+    sessionStorage.setItem('online-exam-state', serializedState);
   } catch (e) {
     console.log(e);
   }
@@ -13,7 +13,9 @@ function saveToLocalStorage(state) {
 
 function LoadFromLocalStorage() {
   try {
-    const serializedState = localStorage.getItem('online-exam-state');
+    const serializedState = sessionStorage.getItem(
+      'online-exam-state',
+    );
     if (serializedState === null) return undefined;
     return JSON.parse(serializedState);
   } catch (e) {

@@ -37,12 +37,16 @@ export const createQuestion = (body) => {
   return (dispatch) => {
     dispatch(questionLoading());
     body.forEach((body) => {
-      const BODY = JSON.stringify(body);
-
+      const fd = new FormData();
+      fd.append(`tag`, body.tag);
+      fd.append(`title`, body.title);
+      fd.append(`details`, body.details);
+      fd.append(`image`, body.image);
       axios
-        .post('http://localhost:6060/api/questionCreate', BODY, {
+        .post('http://localhost:6060/api/questionCreate', fd, {
           headers: {
-            'content-type': 'application/json',
+            'content-type':
+              'multipart/form-data; chatset=utf-8; boundary: "????"',
           },
         })
         .then((details) => {
@@ -54,9 +58,9 @@ export const createQuestion = (body) => {
           // console.log(err.response.data, "errordetails");
           dispatch(
             getError(
-              err.response.data.msg,
-              err.response.status,
-              err.response.data.id,
+              err?.response?.data?.msg,
+              err?.response?.status,
+              err?.response?.id,
               'QUESTION_FAILED',
             ),
           );
@@ -83,19 +87,12 @@ export const createTag = (body) => {
         console.log(`tag Creat action`);
       })
       .catch((err) => {
-        console.log(
-          err.response.data.msg,
-          err.response.status,
-          'Tag creation failed',
-          err.response.data?.id,
-          'details',
-        );
         dispatch(
           getError(
-            err.response.data.msg,
-            err.response.status,
+            err?.response?.data?.msg,
+            err?.response?.status,
             'Tag creation failed',
-            err.response.data?.id,
+            err?.response?.data?.id,
           ),
         );
         dispatch(tagError());

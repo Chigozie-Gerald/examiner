@@ -29,7 +29,9 @@ class TagCreate extends PureComponent {
   componentDidUpdate(prevProps) {
     const { error, tags, history, tagLoading } = this.props;
     if (error.id === 'TAG_CREATE_ERROR') {
-      this.setState({ errorText: error.type });
+      this.setState({
+        errorText: error.msg || 'Something went wrong',
+      });
       this.props.clearError();
     } else if (
       this.state.clicked &&
@@ -39,9 +41,10 @@ class TagCreate extends PureComponent {
     ) {
       this.props.clearError();
       this.setState({ clicked: false }, () => {
+        console.log(tags[tags.length - 1], `1111111`);
         history.push({
           pathname: '/create',
-          state: { tag: tags[tags.length - 1]._id },
+          state: { tag: tags[tags.length - 1] },
         });
       });
     }

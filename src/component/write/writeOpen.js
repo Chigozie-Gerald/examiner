@@ -2,23 +2,16 @@ import React, { PureComponent } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import './write.css';
-import {
-  formatter,
-  handleFormat,
-  handleSelected,
-  transform,
-} from '../../microComp/formatter';
-import Select from '../select/select';
 import '../account/login.css';
 import {
   deleteQuestion,
   editQuestion,
 } from '../../redux/edit/editQuestion';
-import QuestionTitle from '../create/questionTitle';
 import { randomize } from '../../microComp/randomize';
+import { EditWrite } from './write';
 const assert = require('assert');
 
-class Write extends PureComponent {
+class WriteOpen extends PureComponent {
   constructor(props) {
     super(props);
     let tag =
@@ -294,13 +287,11 @@ class Write extends PureComponent {
 
   clean = (text) => {
     let single = /\*\*[A-z0-9\W]+\*\*/gi;
-    let line = /~~[A-z0-9\W]+~~/gi;
+    //let line = /~~[A-z0-9\W]+~~/gi;
     if (single.test(text)) {
       text = text.split(`**`).join(``);
-    } else if (line.test(text)) {
-      text = text.split(`~~`).join(``);
     } else {
-      text = text.split(`<<`).join(``);
+      text = text.split(`~~`).join(``);
     }
     return text;
   };
@@ -310,16 +301,14 @@ class Write extends PureComponent {
     const arr = text.map((data) => {
       let single = new RegExp(/\*\*[A-z0-9\W]+\*\*/gi);
       let line = new RegExp(/~~[A-z0-9\W]+~~/gi);
-      let italicize = new RegExp(/<<[A-z0-9\W]+<</gi);
       const bold = single.test(data);
       const underline = line.test(data);
-      const italic = italicize.test(data);
-      if (!bold && !underline && !italic) {
+      if (!bold && !underline) {
         return data + ` `;
       } else {
         return {
           text: ` ` + this.clean(data) + ` `,
-          format: bold ? `bold` : underline ? `underline` : `italic`,
+          format: bold ? `bold` : `underline`,
         };
       }
     });
@@ -332,14 +321,7 @@ class Write extends PureComponent {
   render() {
     const { tags } = this.props;
     const num = this.state.randArr[this.state.number];
-    console.log(
-      [`Length of question array:`, this.state.questions.length],
-      [`Length of rand array:`, this.state.randArr.length],
-      this.state.randArr,
-      this.state.number,
-      num,
-      `num`,
-    );
+
     const quest = this.state.questions[num];
     return (
       <div className="examWrite_wrap fdCol">
@@ -449,34 +431,30 @@ class Write extends PureComponent {
             }`}
           >
             {this.state.questions.length > 0
-              ? formatter(this.state.questions[num]?.details).map(
-                  (data, n) => (
-                    <p key={`formatter_key${n}`}>
-                      {transform(data).map((txt, m) => {
-                        if (typeof txt === `object`) {
-                          return txt.format === `bold` ? (
-                            <b key={`formatter_key_bold_${m}`}>
-                              {txt.text.replace(/_/g, ` `)}
-                            </b>
-                          ) : txt.format === `underline` ? (
-                            <span
-                              style={{ textDecoration: 'underline' }}
-                            >
-                              {txt.text.replace(/_/g, ` `)}
-                            </span>
-                          ) : (
-                            <span style={{ fontStyle: 'italic' }}>
-                              {txt.text.replace(/_/g, ` `)}
-                            </span>
-                          );
-                        } else {
-                          return txt;
-                        }
-                      })}
-                      <br />
-                    </p>
-                  ),
-                )
+              ? this.formatter(
+                  this.state.questions[num]?.details,
+                ).map((data, n) => (
+                  <p key={`formatter_key${n}`}>
+                    {this.transform(data).map((txt, m) => {
+                      if (typeof txt === `object`) {
+                        return txt.format === `bold` ? (
+                          <b key={`formatter_key_bold_${m}`}>
+                            {txt.text.replace(/_/g, ` `)}
+                          </b>
+                        ) : (
+                          <span
+                            style={{ textDecoration: 'underline' }}
+                          >
+                            {txt.text.replace(/_/g, ` `)}
+                          </span>
+                        );
+                      } else {
+                        return txt;
+                      }
+                    })}
+                    <br />
+                  </p>
+                ))
               : ''}
           </div>
         </div>
@@ -530,149 +508,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withRouter(Write));
-
-export class OptionWrite extends PureComponent {
-  render() {
-    const arr = ['#b6ffb5', '#eeeeee', '#fffad1'];
-    return (
-      <div className="examWrite_right opt">
-        <div className="examWrite_right_box w100">
-          <div className="examWrite_right_grid">
-            {new Array(30).fill(0).map((a, n) => (
-              <div
-                key={`examWrite_right_grid_${n}`}
-                className="examWrite_right_grid_box"
-              >
-                <div
-                  className="inner center"
-                  style={{
-                    backgroundColor:
-                      arr[Math.floor(Math.random() * 3)],
-                  }}
-                >
-                  {n + 1}
-                </div>
-              </div>
-            ))}
-            <div className="float">2 more rows</div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-}
-
-export class EditWrite extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.textareaRef = React.createRef();
-  }
-  state = {
-    question: '',
-    selected: [],
-    textSelect: '',
-  };
-  func = (obj) => {
-    console.log(obj, 123232);
-    this.setState(obj, () => console.log(this.state));
-  };
-  render() {
-    const {
-      tags,
-      handleOpenEdit,
-      handleChange,
-      state,
-      getTag,
-      handleEditQuestion,
-      handleTagSelect,
-    } = this.props.data;
-
-    return (
-      <div className="examWrite_float">
-        <div className="examWrite_float_box">
-          <div
-            onClick={handleOpenEdit}
-            className="examWrite_inner_float center"
-          >
-            <i className="material-icons close"></i>
-          </div>
-          <QuestionTitle
-            data={{
-              onChange: handleChange,
-              text: state.editObj.title,
-              hasInput: true,
-              title: 'Question',
-              autoFocus: true,
-              title_size: `md`,
-              name: 'title',
-              placeholder:
-                'Example: What is the Axillary Tail of Spence?',
-              label: `Kindly type a question that isn't ambiguous`,
-            }}
-          />
-          <QuestionTitle
-            data={{
-              hasInput: false,
-              title_size: `md`,
-              title: 'Body',
-              labelIcon: true,
-              labelFunc: (stringMark = `*`) => {
-                console.log(`fordsn`);
-                const start = this.state.selected[0];
-                const stop = this.state.selected[1];
-
-                if (handleChange) {
-                  handleFormat(
-                    start,
-                    stop,
-                    stringMark,
-                    state.editObj.details,
-                    this.textareaRef.current.name,
-                    handleChange,
-                    this.func,
-                  );
-                } else {
-                  return;
-                }
-              },
-              label: `This section is  the answer to the question written above`,
-            }}
-          />
-          <textarea
-            className="createInputField"
-            type="text"
-            name="details"
-            ref={this.textareaRef}
-            id=""
-            value={state.editObj.details}
-            onChange={handleChange}
-            onSelect={() =>
-              handleSelected(
-                this.textareaRef.current.selectionStart,
-                this.textareaRef.current.selectionEnd,
-                this.func,
-                state.editObj.details,
-              )
-            }
-          />
-          <span>
-            <Select
-              data={{
-                selected: getTag(),
-                holder: 'Select a Tag',
-                data: tags,
-                func: handleTagSelect,
-              }}
-            />
-          </span>
-          <span>
-            <button onClick={handleEditQuestion} className="btn">
-              Finish
-            </button>
-          </span>
-        </div>
-      </div>
-    );
-  }
-}
+)(withRouter(WriteOpen));

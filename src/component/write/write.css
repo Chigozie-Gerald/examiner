@@ -1,12 +1,10 @@
 .examWrite_header {
   height: var(--height);
+  height: 48px !important;
   padding: 0 1rem;
   align-items: center;
   display: flex;
-  position: fixed;
   align-items: center;
-  top: 0;
-  left: 0;
   box-shadow: 0px 2px 4px rgb(0, 0, 0, 0.14),
     0px 0px 2px rgb(0, 0, 0, 0.12);
   background-color: #fff;
@@ -15,21 +13,31 @@
   flex: 1;
   padding-left: 10vmax;
 }
+.examWrite_right b {
+  font-weight: 600;
+}
+br {
+  line-height: 2rem;
+}
 .examWrite_wrap {
   background-color: #f5f5f5;
   --height: 3rem;
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
+  padding-bottom: 3rem;
 }
 .examWrite_body {
-  margin-top: var(--height);
   padding: 2rem 0;
   padding-bottom: 0.5rem;
+  overflow-y: auto;
   --totalWidth: 80vmax;
   --BigWidth: 45vmax;
   --SmallWidth: calc(var(--totalWidth) - var(--BigWidth));
   display: flex;
   justify-content: center;
+}
+.examWrite_body.top {
+  flex: 1;
 }
 .examWrite_body.second {
   padding: 0.25rem 1rem;
@@ -97,10 +105,15 @@
   padding: 0;
   font-size: 0.8rem;
   padding: 1rem;
+  display: flex;
+  flex-direction: column;
   transform: translateX(calc(var(--SmallWidth) * -1));
   border-radius: 0 0.25rem 0.25rem 0;
   background-color: rgb(236, 236, 236);
   transition: all 300ms ease-in;
+}
+.examWrite_right p {
+  margin: 00.125rem 0;
 }
 .examWrite_right.active {
   transform: translateX(0vmax);
@@ -119,9 +132,77 @@
   border-radius: 0.25rem;
   overflow-y: auto;
   display: flex;
+  position: relative;
   flex-direction: column;
   padding: 1rem;
   padding-bottom: 2rem;
+}
+.examWrite_inner_float {
+  background-color: var(--blue);
+  background-color: rgba(255, 255, 255, 0);
+  z-index: 999999999999999;
+  position: absolute;
+  --top: 0.75rem;
+  --floatSize: 1.5rem;
+  right: var(--top);
+  top: var(--top);
+  height: var(--floatSize);
+  width: var(--floatSize);
+  border-radius: 50%;
+  transition: all 200ms ease;
+}
+.examWrite_inner_float.two {
+  right: calc(var(--top) + var(--floatSize) + 6px);
+  background-color: #fafafa;
+  background-color: rgba(255, 255, 255, 0);
+  background-color: #eee;
+}
+.examWrite_inner_float:hover {
+  background-color: rgba(195, 220, 255, 0.333);
+}
+.examWrite_inner_float.two:hover {
+  background-color: rgba(218, 218, 218, 0.918);
+}
+.examWrite_inner_float i {
+  font-size: 1rem;
+  color: #fff;
+  color: var(--blue);
+}
+.examWrite_inner_float.two i {
+  font-size: 1.2rem;
+  border-radius: 50%;
+  padding: 2px;
+  color: #454545;
+}
+.examWrite_inner_delete_pane {
+  box-shadow: var(--shadow);
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  position: absolute;
+  top: 2rem;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #eee;
+  justify-content: center;
+  width: 8rem;
+  background-color: #fff;
+  font-size: 0.7rem;
+}
+.examWrite_inner_delete_pane p {
+  margin: 0;
+  margin: 1rem 0;
+}
+.examWrite_inner_delete_pane button {
+  font-size: 0.7rem;
+  padding: 0.3rem;
+  width: 100%;
+}
+.examWrite_inner_delete_pane span {
+  display: flex;
+  justify-content: flex-end;
+  top: 1rem;
+  right: 1rem;
 }
 .examWrite_right_box {
   padding: 0;
@@ -140,9 +221,16 @@
   margin: 1rem 0;
   font-size: 0.8rem;
 }
+.examWrite_L_image {
+  flex: 1;
+  overflow-y: auto;
+}
+.examWrite_L_image_inner {
+  min-height: 15rem;
+  position: relative;
+}
 .examWrite_L_btn {
   display: flex;
-  flex: 1;
   justify-content: flex-end;
   margin-top: 1rem;
   gap: 2rem;
@@ -199,4 +287,38 @@
   bottom: 0.75rem;
   right: 0.75rem;
   font-size: 00.65rem;
+}
+.examWrite_float {
+  position: absolute;
+  z-index: 99999;
+  padding-top: 5rem;
+  background-color: rgba(0, 0, 0, 0.673);
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.examWrite_float_box {
+  background-color: #fff;
+  width: 70%;
+  max-width: 40rem;
+  padding: 1rem;
+  margin: 0 auto;
+  border-radius: 0.25rem;
+  position: relative;
+  box-shadow: var(--shadow);
+}
+.examWrite_float_box > span {
+  display: flex;
+  margin-top: 1rem;
+  justify-content: flex-start;
+}
+.examWrite_float_box span:nth-child(2) {
+  justify-content: flex-end;
+}
+.examWrite_float_box textarea {
+  border-color: rgb(233, 233, 233);
+}
+.examWrite_float_box textarea {
+  height: 10rem;
 }
