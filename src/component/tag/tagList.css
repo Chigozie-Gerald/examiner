@@ -40,7 +40,7 @@
   display: flex;
 }
 .tagList_left_search form input {
-  padding-left: 0.75rem;
+  padding-left: 1rem;
   padding-right: 0.75rem;
 }
 .tagList_left_search .btn {

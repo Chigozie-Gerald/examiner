@@ -9,48 +9,53 @@ import {
 } from '../../redux/edit/editQuestion';
 import { randomize } from '../../microComp/randomize';
 import { EditWrite } from './write';
+import { formatter, transform } from '../../microComp/formatter';
+import axios from 'axios';
 const assert = require('assert');
 
 class WriteOpen extends PureComponent {
   constructor(props) {
     super(props);
-    let tag =
-      this.props.location?.state?.tag ||
-      sessionStorage.getItem(`writeTag`);
-
-    const allQuest = !!this.props.location?.state?.allQuest;
-    sessionStorage.setItem(`allQuest`, allQuest);
-    if (allQuest) {
-      if (
-        !JSON.parse(sessionStorage.getItem(`randomWriteArray`))?.arr
-      ) {
-        const RAND = JSON.stringify({
-          arr: randomize(this.props.questions.length, true),
-        });
-        sessionStorage.setItem(`randomWriteArray`, RAND);
-      }
-    } else if (tag) {
-      sessionStorage.setItem(`writeTag`, tag);
-      sessionStorage.setItem(
-        `writeLink`,
-        this.props.location.pathname,
+    const questions =
+      this.props.location?.state?.questionsWriteOpen ||
+      sessionStorage.getItem(`questionWriteOpen`);
+    //Set Open Details Data
+    if (
+      !JSON.parse(sessionStorage.getItem(`openDetails`)) &&
+      (this.props.location?.state?.openDetails?.combine ||
+        this.props.location?.state?.openDetails?.search)
+    ) {
+      const DETAILS = JSON.stringify(
+        this.props.location?.state?.openDetails,
       );
-      const questions = this.props.questions.filter(
-        (data) => data.tag._id === tag || '',
-      );
-      if (
-        !JSON.parse(sessionStorage.getItem(`randomWriteArray`))?.arr
-      ) {
-        const RAND = JSON.stringify({
-          arr: randomize(questions.length, false),
-        });
-        sessionStorage.setItem(`randomWriteArray`, RAND);
-      }
+      sessionStorage.setItem(`openDetails`, DETAILS);
     }
+
+    //Set Question Details Data
+    if (
+      !JSON.parse(sessionStorage.getItem(`questionWriteOpen`))?.arr &&
+      this.props.location?.state?.questionsWriteOpen?.length
+    ) {
+      const QUEST = JSON.stringify({
+        question: this.props.location?.state?.questionsWriteOpen,
+      });
+      sessionStorage.setItem(`questionWriteOpen`, QUEST);
+    }
+
+    //Set Randomize Details Data
+    if (
+      !JSON.parse(sessionStorage.getItem(`randomWriteArrayOpen`))?.arr
+    ) {
+      const RAND = JSON.stringify({
+        arr: randomize(questions.length, true),
+      });
+      sessionStorage.setItem(`randomWriteArrayOpen`, RAND);
+    }
+
     this.state = {
       randArr:
-        JSON.parse(sessionStorage.getItem(`randomWriteArray`)).arr ||
-        [],
+        JSON.parse(sessionStorage.getItem(`randomWriteArrayOpen`))
+          .arr || [],
       clicked: false,
       number: 0,
       openDelete: false,
@@ -178,7 +183,7 @@ class WriteOpen extends PureComponent {
 
   updateRand = (number) => {
     const rand = JSON.parse(
-      sessionStorage.getItem(`randomWriteArray`),
+      sessionStorage.getItem(`randomWriteArrayOpen`),
     ).arr;
     const newRand = [];
     let elemValue = rand[number];
@@ -203,37 +208,79 @@ class WriteOpen extends PureComponent {
     });
     return RAND;
   };
-  componentDidUpdate = (prevProps) => {
+
+  handleSearch = async (body) => {
+    return axios
+      .post(
+        'http://localhost:6060/api/finder',
+        JSON.stringify(body),
+        {
+          headers: {
+            'content-type': 'application/json',
+          },
+        },
+      )
+      .then((details) => {
+        return details?.data?.questions;
+      })
+      .catch(() => {
+        return;
+      });
+  };
+  handleCombineSubmit = async (body) => {
+    return axios
+      .post(
+        'http://localhost:6060/api/combine',
+        JSON.stringify(body),
+        {
+          headers: {
+            'content-type': 'application/json',
+          },
+        },
+      )
+      .then((details) => {
+        return details?.data?.questions;
+      })
+      .catch(() => {
+        return;
+      });
+  };
+
+  componentDidUpdate = async (prevProps) => {
     const { questions } = this.props;
     try {
       assert.deepStrictEqual(prevProps.questions, questions);
       return;
     } catch {
       let quest = [];
-      const tag = sessionStorage.getItem(`writeTag`);
-      const allQuest = sessionStorage.getItem(`allQuest`);
-      if (allQuest === `true`) {
-        console.log(`all quest is try`);
-        quest = questions;
+      //If question i brought in isnt equal to present questions, change
+      //Current questions are
+      if (JSON.parse(sessionStorage.getItem(`openDetails`)).combine) {
+        let body = JSON.parse(
+          sessionStorage.getItem(`openDetails`),
+        ).combine;
+        quest = await this.handleCombineSubmit(body);
       } else {
-        quest = questions.filter(
-          (data) => data.tag._id === tag || '',
-        );
+        let body = JSON.parse(
+          sessionStorage.getItem(`openDetails`),
+        ).search;
+        quest = await this.handleSearch(body);
       }
+
       if (quest.length === 0) {
-        console.log(this.state.randArr, `move update`);
         this.props.history.replace(`/tagList`);
       } else {
         if (this.state.questions.length !== quest.length) {
           sessionStorage.setItem(
-            `randomWriteArray`,
+            `randomWriteArrayOpen`,
             this.updateRand(this.state.number),
           );
         }
+        sessionStorage.setItem(`questionWriteOpen`, quest);
         this.setState({
           questions: quest,
           randArr:
-            JSON.parse(sessionStorage.getItem(`randomWriteArray`))
+            JSON.parse(sessionStorage.getItem(`randomWriteArrayOpen`))
               .arr || [],
           number:
             this.state.number === quest.length
@@ -244,21 +291,17 @@ class WriteOpen extends PureComponent {
     }
   };
   componentDidMount = () => {
-    let tag =
-      this.props.location?.state?.tag ||
-      sessionStorage.getItem(`writeTag`);
-
-    const allQuest = !!this.props.location?.state?.allQuest;
-    if (allQuest) {
-      if (this.props.questions === 0) {
-        this.props.history.replace(`/tagList`);
-      } else {
-        this.setState({ questions: this.props.questions });
-      }
-    } else if (tag) {
-      const questions = this.props.questions.filter(
-        (data) => data.tag._id === tag || '',
-      );
+    //Set questions
+    //Leave if no questions
+    const questions =
+      this.props.location?.state?.questionsWriteOpen ||
+      JSON.parse(sessionStorage.getItem(`questionWriteOpen`))
+        .question;
+    if (!sessionStorage.getItem(`openDetails`)) {
+      this.props.history.replace(`/tagList`);
+      return;
+    }
+    if (questions) {
       if (questions.length === 0) {
         this.props.history.replace(`/tagList`);
       } else {
@@ -269,10 +312,9 @@ class WriteOpen extends PureComponent {
     }
   };
   componentWillUnmount = () => {
-    sessionStorage.removeItem(`writeTag`);
-    sessionStorage.removeItem(`writeLink`);
-    sessionStorage.removeItem(`allQuest`);
-    sessionStorage.removeItem(`randomWriteArray`);
+    sessionStorage.removeItem(`randomWriteArrayOpen`);
+    sessionStorage.removeItem(`questionWriteOpen`);
+    sessionStorage.removeItem(`openDetails`);
   };
   handleDecrease = () => {
     if (this.state.number === 0) {
@@ -285,43 +327,9 @@ class WriteOpen extends PureComponent {
     }
   };
 
-  clean = (text) => {
-    let single = /\*\*[A-z0-9\W]+\*\*/gi;
-    //let line = /~~[A-z0-9\W]+~~/gi;
-    if (single.test(text)) {
-      text = text.split(`**`).join(``);
-    } else {
-      text = text.split(`~~`).join(``);
-    }
-    return text;
-  };
-
-  transform = (text) => {
-    text = text.split(` `);
-    const arr = text.map((data) => {
-      let single = new RegExp(/\*\*[A-z0-9\W]+\*\*/gi);
-      let line = new RegExp(/~~[A-z0-9\W]+~~/gi);
-      const bold = single.test(data);
-      const underline = line.test(data);
-      if (!bold && !underline) {
-        return data + ` `;
-      } else {
-        return {
-          text: ` ` + this.clean(data) + ` `,
-          format: bold ? `bold` : `underline`,
-        };
-      }
-    });
-    return arr;
-  };
-
-  formatter = (text) => {
-    return text.split(/(?:\r\n|\n)/g);
-  };
   render() {
     const { tags } = this.props;
     const num = this.state.randArr[this.state.number];
-
     const quest = this.state.questions[num];
     return (
       <div className="examWrite_wrap fdCol">
@@ -431,30 +439,30 @@ class WriteOpen extends PureComponent {
             }`}
           >
             {this.state.questions.length > 0
-              ? this.formatter(
-                  this.state.questions[num]?.details,
-                ).map((data, n) => (
-                  <p key={`formatter_key${n}`}>
-                    {this.transform(data).map((txt, m) => {
-                      if (typeof txt === `object`) {
-                        return txt.format === `bold` ? (
-                          <b key={`formatter_key_bold_${m}`}>
-                            {txt.text.replace(/_/g, ` `)}
-                          </b>
-                        ) : (
-                          <span
-                            style={{ textDecoration: 'underline' }}
-                          >
-                            {txt.text.replace(/_/g, ` `)}
-                          </span>
-                        );
-                      } else {
-                        return txt;
-                      }
-                    })}
-                    <br />
-                  </p>
-                ))
+              ? formatter(this.state.questions[num]?.details).map(
+                  (data, n) => (
+                    <p key={`formatter_key${n}`}>
+                      {transform(data).map((txt, m) => {
+                        if (typeof txt === `object`) {
+                          return txt.format === `bold` ? (
+                            <b key={`formatter_key_bold_${m}`}>
+                              {txt.text.replace(/_/g, ` `)}
+                            </b>
+                          ) : (
+                            <span
+                              style={{ textDecoration: 'underline' }}
+                            >
+                              {txt.text.replace(/_/g, ` `)}
+                            </span>
+                          );
+                        } else {
+                          return txt;
+                        }
+                      })}
+                      <br />
+                    </p>
+                  ),
+                )
               : ''}
           </div>
         </div>

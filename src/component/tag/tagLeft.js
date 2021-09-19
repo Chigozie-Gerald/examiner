@@ -24,7 +24,6 @@ export class TagLeft extends PureComponent {
     combineResponse: [],
   };
   handleChange = (e) => {
-    console.log(e.target.name);
     this.setState(
       {
         [e.target.name]: e.target.value,
@@ -44,11 +43,28 @@ export class TagLeft extends PureComponent {
       },
     );
   };
-  Click = (e, quest) => {
+  Click = (e, quest, search) => {
     e.stopPropagation();
     this.props.history.push({
       pathname: `/writeOpen`,
-      state: { tag: ``, quest },
+      state: {
+        questionsWriteOpen: quest,
+        openDetails: {
+          search: search
+            ? {
+                hasImage: this.state.hasImage,
+                search: this.state.search,
+              }
+            : ``,
+          combine: !search
+            ? {
+                tagIds: this.state.combineTags.map(
+                  (data) => data._id,
+                ),
+              }
+            : ``,
+        },
+      },
     });
   };
   handleCheck = (e) => {
@@ -284,7 +300,8 @@ export class TagLeft extends PureComponent {
                   data={{
                     click: this.Click,
                     tags: [],
-                    length: this.state.questions.length,
+                    questions: this.state.questions,
+                    search: true,
                   }}
                 />
               ) : (
@@ -357,7 +374,8 @@ export class TagLeft extends PureComponent {
                       data={{
                         click: this.Click,
                         tags: this.state.combineTags,
-                        length: this.state.combineResponse.length,
+                        questions: this.state.combineResponse,
+                        search: false,
                       }}
                     />
                   ) : (
@@ -394,9 +412,13 @@ export default connect(
 
 export class TagLeftQuest extends PureComponent {
   render() {
-    const { tags, length, click } = this.props.data;
+    const { tags, questions, click, search } = this.props.data;
+    const length = questions.length;
     return (
-      <div onClick={click} className="tagLeftPane">
+      <div
+        onClick={(e) => click(e, questions, search)}
+        className="tagLeftPane"
+      >
         {tags.length ? (
           <div className="first">
             {tags.map((data, n) =>
