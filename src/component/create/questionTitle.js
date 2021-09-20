@@ -16,32 +16,40 @@ class QuestionTitle extends PureComponent {
 
     return (
       <div className="questionTWrap">
-        {data?.labelIcon && (
-          <div className="questionFormat">
-            <span
-              onClick={() => data?.labelFunc(`<`)}
-              className="questionBoldWrap center"
+        <div className="QTwrapper w100">
+          <div className="fdCol QTHeadSect">
+            <div
+              style={{ fontSize: `${font()}rem` }}
+              className="QTtitle ellipsis"
             >
-              <i className="material-icons format_italic"></i>
-            </span>
-            <span
-              onClick={() => data?.labelFunc(`~`)}
-              className="questionBoldWrap center"
-            >
-              <i className="material-icons format_underline"></i>
-            </span>
-            <span
-              onClick={() => data?.labelFunc()}
-              className="questionBoldWrap center"
-            >
-              <i className="material-icons format_bold"></i>
-            </span>
+              {data?.title}
+            </div>
+            <div className="QTlabel w100 ellipsis">{data?.label}</div>
           </div>
-        )}
-        <div style={{ fontSize: `${font()}rem` }} className="QTtitle">
-          {data?.title}
+          {data?.labelIcon && (
+            <div className="questionFormat">
+              <span
+                onClick={() => data?.labelFunc(`<`)}
+                className="questionBoldWrap center"
+              >
+                <i className="material-icons format_italic"></i>
+              </span>
+              <span
+                onClick={() => data?.labelFunc(`~`)}
+                className="questionBoldWrap center"
+              >
+                <i className="material-icons format_underline"></i>
+              </span>
+              <span
+                onClick={() => data?.labelFunc()}
+                className="questionBoldWrap center"
+              >
+                <i className="material-icons format_bold"></i>
+              </span>
+            </div>
+          )}
         </div>
-        <div className="QTlabel">{data?.label}</div>
+
         {data?.hasInput ? (
           <input
             className={`w100 ${data?.hasIcon ? 'iconed' : ''}`}

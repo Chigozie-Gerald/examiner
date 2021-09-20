@@ -329,8 +329,10 @@ class WriteOpen extends PureComponent {
 
   render() {
     const { tags } = this.props;
+    let regExStr;
     const num = this.state.randArr[this.state.number];
     const quest = this.state.questions[num];
+
     return (
       <div className="examWrite_wrap fdCol">
         {this.state.openEdit ? (
@@ -354,7 +356,7 @@ class WriteOpen extends PureComponent {
               <span>
                 {sessionStorage.getItem(`allQuest`) === `true`
                   ? `All Questions`
-                  : this.state.questions[0]?.tag?.name}
+                  : quest?.tag?.name}
               </span>
             </span>
           </div>

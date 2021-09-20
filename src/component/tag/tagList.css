@@ -299,8 +299,23 @@
 .tagList_inner.allQuest .tagList_inner_btm.noSee {
   color: var(--bcCol);
 }
-@media (min-width: 100px) {
+@media (min-width: 1000px) {
   .tagList_left {
     width: 20rem;
+  }
+}
+@media (max-width: 700px) {
+  .tagList_box .inner {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 500px) {
+  .tagList_box .inner {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 300px) {
+  .tagList_box .inner {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
   }
 }

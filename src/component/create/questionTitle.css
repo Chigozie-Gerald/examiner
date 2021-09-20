@@ -7,6 +7,7 @@
 }
 .QTlabel {
   font-size: 0.75rem;
+  max-width: 16rem;
 }
 .questionTWrap input {
   margin: 0.25rem 0;
@@ -53,8 +54,10 @@
   grid-template-columns: repeat(3, 1fr);
   right: 0rem;
   gap: 2.5px;
+  padding-left: 1rem;
   top: 1.2rem;
-  position: absolute;
+  align-items: flex-end;
+  /*position: absolute;*/
 }
 .questionBoldWrap {
   height: 1.5rem;
@@ -71,4 +74,12 @@
 }
 .questionBoldWrap i {
   font-size: 1.2rem;
+}
+.QTwrapper {
+  display: flex;
+  padding: 0;
+  padding-right: 0;
+}
+.QTHeadSect {
+  flex: 1;
 }
