@@ -7,13 +7,13 @@ import Dashboard from './component/dashboard/dashboard';
 import Create from './component/create/create';
 import Login from './component/account/login';
 import Write from './component/write/write';
-import Map from './component/map/map';
 import Histo from './component/histo/histo';
 import TagCreate from './component/create/tagCreate';
 import TagList from './component/tag/tagList';
 import { loadQuestion, loadTag } from './redux/loader/loader';
 import { connect } from 'react-redux';
 import WriteOpen from './component/write/writeOpen';
+import DragBox from './microComp/dragBox';
 
 class App extends PureComponent {
   componentDidMount = () => {
@@ -30,7 +30,6 @@ class App extends PureComponent {
       { route: 'dashboard', comp: Dashboard },
       { route: 'login', comp: Login },
       { route: 'write', comp: Write },
-      { route: 'map', comp: Map },
       { route: 'tagCreate', comp: TagCreate },
       { route: 'histo', comp: Histo },
       { route: 'tagList', comp: TagList },
@@ -38,18 +37,23 @@ class App extends PureComponent {
     ];
     const height = 3;
     return (
-      <Switch>
-        <Route exact path="/" render={(props) => <AppCont />} />
-        {/* Dynamically creating routes */}
-        {links.map((path, n) => (
-          <Route
-            path={`/${path.route}`}
-            render={(props) => <path.comp height={`${height}rem`} />}
-            key={`App_link_${n}_path`}
-          />
-        ))}
-        <Route exact render={(props) => <NotFound {...props} />} />
-      </Switch>
+      <>
+        <DragBox />
+        <Switch>
+          <Route exact path="/" render={(props) => <AppCont />} />
+          {/* Dynamically creating routes */}
+          {links.map((path, n) => (
+            <Route
+              path={`/${path.route}`}
+              render={(props) => (
+                <path.comp height={`${height}rem`} />
+              )}
+              key={`App_link_${n}_path`}
+            />
+          ))}
+          <Route exact render={(props) => <NotFound {...props} />} />
+        </Switch>
+      </>
     );
   }
 }

@@ -7,7 +7,7 @@
 }
 .QTlabel {
   font-size: 0.75rem;
-  max-width: 16rem;
+  /*max-width: 16rem;*/
 }
 .questionTWrap input {
   margin: 0.25rem 0;
@@ -52,6 +52,7 @@
 .questionFormat {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   right: 0rem;
   gap: 2.5px;
   padding-left: 1rem;
@@ -65,6 +66,7 @@
   padding: 0.125rem;
   border: 2px solid #ddd;
   border-radius: 00.25rem;
+  position: relative;
   background-color: #fff;
   transition: var(--transition);
 }
@@ -81,5 +83,25 @@
   padding-right: 0;
 }
 .QTHeadSect {
+  flex: 1;
+}
+.questionBoldWrap_sort {
+  background-color: #fff;
+  text-align: center;
+  font-size: 0.7rem;
+  padding: 0.5rem;
+  position: absolute;
+  --width: 7rem;
+  width: var(--width);
+  border: 1px solid #eee;
+  left: calc(0.1rem - var(--width));
+  display: flex;
+  flex-direction: column;
+}
+.questionBoldWrap_sort button {
+  padding: 0;
+  font-size: inherit;
+  padding: 0.125rem;
+  margin-top: 0.5rem;
   flex: 1;
 }

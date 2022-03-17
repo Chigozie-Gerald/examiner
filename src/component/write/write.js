@@ -183,30 +183,18 @@ class Write extends PureComponent {
     });
   };
 
-  updateRand = (number) => {
+  updateRand = (addition = false) => {
     const rand = JSON.parse(
       sessionStorage.getItem(`randomWriteArray`),
     ).arr;
-    const newRand = [];
-    let elemValue = rand[number];
-    //Random array should be updated on a delete or pseudo delete
-    //This occurs with a change in previous and new state questions length
-    //This involves removing an element in the array with same value
-    //Reducing elements that are greater than it and
-
-    for (let i = 0; i < rand.length; i++) {
-      const data = rand[i];
-      if (data > elemValue) {
-        newRand.push(data - 1);
-      } else if (number === i) {
-        continue;
-      } else {
-        newRand.push(data);
-      }
+    if (!addition) {
+      rand.pop();
+    } else {
+      const len = rand.length;
+      rand.push(len);
     }
-
     const RAND = JSON.stringify({
-      arr: newRand,
+      arr: rand,
     });
     return RAND;
   };
@@ -216,6 +204,7 @@ class Write extends PureComponent {
       assert.deepStrictEqual(prevProps.questions, questions);
       return;
     } catch {
+      //Something was added, removed or editted
       let quest = [];
       const tag = sessionStorage.getItem(`writeTag`);
       const allQuest = sessionStorage.getItem(`allQuest`);
@@ -228,13 +217,16 @@ class Write extends PureComponent {
         );
       }
       if (quest.length === 0) {
+        //Happens when all the questions have been deleted
         console.log(this.state.randArr, `move update`);
         this.props.history.replace(`/tagList`);
       } else {
         if (this.state.questions.length !== quest.length) {
           sessionStorage.setItem(
             `randomWriteArray`,
-            this.updateRand(this.state.number),
+            this.updateRand(
+              quest.length > this.state.questions.length,
+            ),
           );
         }
         this.setState({
@@ -332,14 +324,7 @@ class Write extends PureComponent {
   render() {
     const { tags } = this.props;
     const num = this.state.randArr[this.state.number];
-    console.log(
-      [`Length of question array:`, this.state.questions.length],
-      [`Length of rand array:`, this.state.randArr.length],
-      this.state.randArr,
-      this.state.number,
-      num,
-      `num`,
-    );
+
     const quest = this.state.questions[num];
     return (
       <div className="examWrite_wrap fdCol">
@@ -450,32 +435,40 @@ class Write extends PureComponent {
           >
             {this.state.questions.length > 0
               ? formatter(this.state.questions[num]?.details).map(
-                  (data, n) => (
-                    <p key={`formatter_key${n}`}>
-                      {transform(data).map((txt, m) => {
-                        if (typeof txt === `object`) {
-                          return txt.format === `bold` ? (
-                            <b key={`formatter_key_bold_${m}`}>
-                              {txt.text.replace(/_/g, ` `)}
-                            </b>
-                          ) : txt.format === `underline` ? (
-                            <span
-                              style={{ textDecoration: 'underline' }}
-                            >
-                              {txt.text.replace(/_/g, ` `)}
-                            </span>
-                          ) : (
-                            <span style={{ fontStyle: 'italic' }}>
-                              {txt.text.replace(/_/g, ` `)}
-                            </span>
-                          );
-                        } else {
-                          return txt;
-                        }
-                      })}
-                      <br />
-                    </p>
-                  ),
+                  (data, n) => {
+                    return (
+                      <p key={`formatter_key${n}`}>
+                        {transform(data).map((txt, m) => {
+                          if (typeof txt === `object`) {
+                            return txt.format === `bold` ? (
+                              <b key={`formatter_key_bold_${m}`}>
+                                {txt.text}
+                              </b>
+                            ) : txt.format === `underline` ? (
+                              <span
+                                key={`formatter_key_span_${m}`}
+                                style={{
+                                  textDecoration: 'underline',
+                                }}
+                              >
+                                {txt.text}
+                              </span>
+                            ) : (
+                              <span
+                                key={`formatter_key_italic_${m}`}
+                                style={{ fontStyle: 'italic' }}
+                              >
+                                {txt.text}
+                              </span>
+                            );
+                          } else {
+                            return txt;
+                          }
+                        })}
+                        <br />
+                      </p>
+                    );
+                  },
                 )
               : ''}
           </div>

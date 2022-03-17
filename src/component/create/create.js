@@ -75,10 +75,16 @@ class Create extends PureComponent {
       });
     }
   };
-  handleChange = (e) => {
-    this.setState({
-      [e.target.name]: e.target.value,
-    });
+  handleChange = (e, area = ``) => {
+    if (area) {
+      this.setState({
+        [area.name]: area.value,
+      });
+    } else {
+      this.setState({
+        [e.target.name]: e.target.value,
+      });
+    }
   };
   componentDidMount = () => {
     const { history, location } = this.props;
@@ -217,7 +223,24 @@ export class CreateQuestion extends PureComponent {
       //////////////////////////////////////////////////
     }
   };
-
+  handleSort = () => {
+    const text = this.props.data.details
+      .split(/(?:\r\n|\n)/g)
+      .sort((a, b) => {
+        if (a > b) {
+          return 1;
+        } else if (a < b) {
+          return -1;
+        } else {
+          return 0;
+        }
+      })
+      .join(`\n`);
+    const name = `details`;
+    const value = text;
+    const obj = { name, value };
+    this.props.data.onChange(null, obj);
+  };
   handleFormat = (start, stop, stringMark = `*`) => {
     const details = this.props.data.details;
     if (start === stop) {
@@ -271,7 +294,7 @@ export class CreateQuestion extends PureComponent {
       if (n < arr.length - 1) {
         str = str.trim() + stringMark + ' '.repeat(bS);
       }
-      return str.split(` `).join(`_`);
+      return str;
     });
     let finalString = arr.join('\n');
 
@@ -367,6 +390,7 @@ export class CreateQuestion extends PureComponent {
                   title_size: `md`,
                   title: 'Body',
                   labelIcon: true,
+                  sort: this.handleSort,
                   labelFunc: (stringMark = `*`) => {
                     const start = this.state.selected[0];
                     const stop = this.state.selected[1];

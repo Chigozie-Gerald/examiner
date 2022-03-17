@@ -26,6 +26,9 @@ br {
   display: flex;
   padding-bottom: 3rem;
 }
+.examWrite_wrap::selection {
+  background-color: #691313 !important;
+}
 .examWrite_body {
   padding: 2rem 0;
   padding-bottom: 0.5rem;

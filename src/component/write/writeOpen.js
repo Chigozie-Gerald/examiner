@@ -19,38 +19,32 @@ class WriteOpen extends PureComponent {
     const questions =
       this.props.location?.state?.questionsWriteOpen ||
       sessionStorage.getItem(`questionWriteOpen`);
+    let randomSess = sessionStorage.getItem(`randomWriteArrayOpen`);
+    let questSess = sessionStorage.getItem(`questionWriteOpen`);
+
     //Set Open Details Data
-    if (
-      !JSON.parse(sessionStorage.getItem(`openDetails`)) &&
-      (this.props.location?.state?.openDetails?.combine ||
-        this.props.location?.state?.openDetails?.search)
-    ) {
-      const DETAILS = JSON.stringify(
-        this.props.location?.state?.openDetails,
-      );
-      sessionStorage.setItem(`openDetails`, DETAILS);
-    }
+
+    const DETAILS = JSON.stringify(
+      this.props.location?.state?.openDetails,
+    );
+    sessionStorage.setItem(`openDetails`, DETAILS);
 
     //Set Question Details Data
-    if (
-      !JSON.parse(sessionStorage.getItem(`questionWriteOpen`))?.arr &&
-      this.props.location?.state?.questionsWriteOpen?.length
-    ) {
-      const QUEST = JSON.stringify({
-        question: this.props.location?.state?.questionsWriteOpen,
-      });
-      sessionStorage.setItem(`questionWriteOpen`, QUEST);
-    }
+
+    const QUEST = JSON.stringify({
+      question: this.props.location?.state?.questionsWriteOpen,
+    });
+    sessionStorage.setItem(`questionWriteOpen`, questSess || QUEST);
 
     //Set Randomize Details Data
-    if (
-      !JSON.parse(sessionStorage.getItem(`randomWriteArrayOpen`))?.arr
-    ) {
-      const RAND = JSON.stringify({
-        arr: randomize(questions.length, true),
-      });
-      sessionStorage.setItem(`randomWriteArrayOpen`, RAND);
-    }
+    const arr = randomize(questions.length, true);
+    const RAND = JSON.stringify({
+      arr,
+    });
+    sessionStorage.setItem(
+      `randomWriteArrayOpen`,
+      randomSess || RAND,
+    );
 
     this.state = {
       randArr:
@@ -181,30 +175,18 @@ class WriteOpen extends PureComponent {
     });
   };
 
-  updateRand = (number) => {
+  updateRand = (addition = false) => {
     const rand = JSON.parse(
       sessionStorage.getItem(`randomWriteArrayOpen`),
     ).arr;
-    const newRand = [];
-    let elemValue = rand[number];
-    //Random array should be updated on a delete or pseudo delete
-    //This occurs with a change in previous and new state questions length
-    //This involves removing an element in the array with same value
-    //Reducing elements that are greater than it and
-
-    for (let i = 0; i < rand.length; i++) {
-      const data = rand[i];
-      if (data > elemValue) {
-        newRand.push(data - 1);
-      } else if (number === i) {
-        continue;
-      } else {
-        newRand.push(data);
-      }
+    if (!addition) {
+      rand.pop();
+    } else {
+      const len = rand.length;
+      rand.push(len);
     }
-
     const RAND = JSON.stringify({
-      arr: newRand,
+      arr: rand,
     });
     return RAND;
   };
@@ -268,12 +250,16 @@ class WriteOpen extends PureComponent {
       }
 
       if (quest.length === 0) {
+        console.log(`leaving`);
         this.props.history.replace(`/tagList`);
       } else {
         if (this.state.questions.length !== quest.length) {
+          console.log(111111111111111111111111);
           sessionStorage.setItem(
             `randomWriteArrayOpen`,
-            this.updateRand(this.state.number),
+            this.updateRand(
+              quest.length > this.state.questions.length,
+            ),
           );
         }
         sessionStorage.setItem(`questionWriteOpen`, quest);
@@ -293,28 +279,34 @@ class WriteOpen extends PureComponent {
   componentDidMount = () => {
     //Set questions
     //Leave if no questions
+
     const questions =
       this.props.location?.state?.questionsWriteOpen ||
       JSON.parse(sessionStorage.getItem(`questionWriteOpen`))
         .question;
-    if (!sessionStorage.getItem(`openDetails`)) {
+    if (
+      !this.props.location?.state?.openDetails?.search &&
+      !this.props.location?.state?.openDetails?.combine
+    ) {
+      console.log(`lerming`);
+      console.log(this.props.location?.state?.openDetails);
       this.props.history.replace(`/tagList`);
       return;
     }
     if (questions) {
       if (questions.length === 0) {
+        console.log(`leavinfdg`);
         this.props.history.replace(`/tagList`);
       } else {
         this.setState({ questions });
       }
     } else {
+      console.log(`leaving`);
       this.props.history.replace(`/tagList`);
     }
   };
   componentWillUnmount = () => {
-    sessionStorage.removeItem(`randomWriteArrayOpen`);
-    sessionStorage.removeItem(`questionWriteOpen`);
-    sessionStorage.removeItem(`openDetails`);
+    console.log(`changerr`);
   };
   handleDecrease = () => {
     if (this.state.number === 0) {
@@ -329,10 +321,9 @@ class WriteOpen extends PureComponent {
 
   render() {
     const { tags } = this.props;
-    let regExStr;
+
     const num = this.state.randArr[this.state.number];
     const quest = this.state.questions[num];
-
     return (
       <div className="examWrite_wrap fdCol">
         {this.state.openEdit ? (

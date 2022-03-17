@@ -1,5 +1,4 @@
 exports.randomize = (number, shuffle = false) => {
-  console.log(number, `number`);
   let array = new Array(number).fill(0).map((data, n) => n);
   if (shuffle) {
     var t, i;
@@ -12,6 +11,5 @@ exports.randomize = (number, shuffle = false) => {
     }
   }
 
-  console.log(array);
   return array;
 };

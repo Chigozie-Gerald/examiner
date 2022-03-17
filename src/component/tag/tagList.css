@@ -179,7 +179,7 @@
   background-color: var(--blue);
   background-color: rgba(255, 255, 255, 0);
   box-shadow: var(--shadow);
-  z-index: 999999999999999;
+  z-index: 9;
   position: absolute;
   --top: 0.75rem;
   right: var(--top);
@@ -299,6 +299,7 @@
 .tagList_inner.allQuest .tagList_inner_btm.noSee {
   color: var(--bcCol);
 }
+
 @media (min-width: 1000px) {
   .tagList_left {
     width: 20rem;

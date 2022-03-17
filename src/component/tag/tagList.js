@@ -6,7 +6,15 @@ import TagLeft from './tagLeft';
 import './tagList.css';
 
 class TagList extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.coordinateX = 0;
+    this.coordinateY = 0;
+  }
   state = {
+    X: 16,
+    Y: window.innerHeight - 352,
+    shouldMove: false,
     editOpen: false,
     editText: '',
   };
@@ -44,12 +52,74 @@ class TagList extends PureComponent {
       state: { tag },
     });
   };
+  /*
+  eventCheck = (elem) => {
+    this.mover(elem, this.coordinateX, this.coordinateY);
+  };
+  dragMouseDown = (e) => {
+    //Will be called when mouse presses down in the vicinity of the element
+    this.setState({
+      shouldMove: true,
+      //This is to tell the events if something had initially started
+    });
+    this.coordinateX = e.clientX;
+    this.coordinateY = e.clientY;
+    /*The coordinates above were gotten from
+    the elements event variables
+    They represent initial values which are independent of the ones the window
+    event uses
+    The reason for attaching them to a this statement is to ensure its global availability
+    This is so because it is necessary for removing event handlers*=/
+    console.log(`start`);
+    window.addEventListener(`mousemove`, this.eventCheck);
+  };
 
+  closeDragElement = () => {
+    //Calls when the mouse is up
+    console.log(`close`, this.container.getBoundingClientRect().top);
+    window.removeEventListener(`mousemove`, this.eventCheck);
+    this.setState({
+      shouldMove: false,
+      X: this.container.getBoundingClientRect().left,
+      Y: this.container.getBoundingClientRect().top,
+      //This sets the style parameters to the final values gotten from the movers
+    });
+  };
+
+  mover = (e, X, Y) => {
+    console.log(`mover`);
+    if (this.state.shouldMove) {
+      let leftVal = this.state.X + e.clientX - X,
+        topValue = this.state.Y + e.clientY - Y;
+      //Initial values - Continuous values
+      if (leftVal < 0) leftVal = 0;
+      if (topValue < 0) topValue = 0;
+      this.container.style.left = `${leftVal}px`;
+      this.container.style.top = `${topValue}px`;
+    }
+  };
+  assignRef = (e) => (this.container = e);*/
+  componentDidMount() {
+    //Sets the space above the element before any action is taken
+    sessionStorage.removeItem(`randomWriteArrayOpen`);
+    sessionStorage.removeItem(`questionWriteOpen`);
+    sessionStorage.removeItem(`openDetails`);
+  }
   render() {
     const { tags, questions } = this.props;
 
     return (
       <div className="tagList_wrap w100 center">
+        {/*
+        <div
+          ref={this.assignRef}
+          className="dict_wrap box"
+          onMouseDown={this.dragMouseDown}
+          onMouseUp={this.closeDragElement}
+        >
+          {},{},{}
+        </div>
+        */}
         <TagLeft
           data={{
             handleAddQuest: this.handleAddQuest,

@@ -16,7 +16,7 @@ exports.revEngineer = (string, bold = `*`) => {
     if (n < arr.length - 1) {
       str = str.trim() + stringMark + ' '.repeat(bS);
     }
-    return str.split(` `).join(`_`);
+    return str;
   });
   let finalString = arr.join('\n');
 
@@ -78,19 +78,14 @@ exports.handleSelected = (start, stop, func, details) => {
 };
 
 exports.clean = (text) => {
-  let single = /\*\*[A-z0-9\W]+\*\*/gi;
-  let line = /~~[A-z0-9\W]+~~/gi;
-  if (single.test(text)) {
-    text = text.split(`**`).join(``);
-  } else if (line.test(text)) {
-    text = text.split(`~~`).join(``);
-  } else {
-    text = text.split(`<<`).join(``);
-  }
-  return text;
+  //removes the special characters
+  return text.replace(/\*\*|~~|<</g, ``);
 };
 
-exports.transform = (text) => {
+exports.transformer = (text) => {
+  //Converts each sentence to an array of words
+  //text for boldness or the likes
+  //Returns the text or an object if special
   text = text.split(` `);
   const arr = text.map((data) => {
     let single = new RegExp(/\*\*[A-z0-9\W]+\*\*/gi);
@@ -112,5 +107,45 @@ exports.transform = (text) => {
 };
 
 exports.formatter = (text) => {
+  //Split text based on line spaces
   return text.split(/(?:\r\n|\n)/g);
+};
+
+exports.cleaner = (text) => {
+  //removes the special characters
+  return text.replace(/\*\*|~~|<</g, ``);
+};
+
+exports.transform = (text) => {
+  //Return matches for strings that
+  /*
+  - Start and end with `[[` `]]` with any intervening character |
+  - Start and end with `{{` `}}` with any intervening character |
+  - Start and END with whitespaces of any length (zero or more) with any intervening character
+  */
+  text = text.match(
+    /\*\*.*?\*\*|~~.*?~~?|<<.*?<<?|\s*[^**~~<<]+\s*/g,
+  );
+  const arr = !text
+    ? [``]
+    : text.map((data) => {
+        const boldTest = new RegExp(/\*\*.*?\*\*/); //Test bold
+        const lineTest = new RegExp(/~~.*?~~?/); //Test line
+        const italicTest = new RegExp(/<<.*?<<?/); //Test italic
+        const bold = boldTest.test(data);
+        const line = lineTest.test(data);
+        const italic = italicTest.test(data);
+
+        if (!bold && !line && !italic) {
+          //No processing needed when special characters do not exist
+          return data;
+        } else {
+          return {
+            text: this.cleaner(data),
+            format: bold ? `bold` : line ? `underline` : `italic`,
+          };
+        }
+      });
+  return arr;
+  //Nesetd formatters will always return an array instead of an object, hence the need to flatten the array
 };

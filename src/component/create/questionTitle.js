@@ -2,6 +2,11 @@ import React, { PureComponent } from 'react';
 import './questionTitle.css';
 
 class QuestionTitle extends PureComponent {
+  state = { show: false };
+
+  handleShow = () => {
+    this.setState({ show: !this.state.show });
+  };
   render() {
     const data = this.props?.data;
     const size = [1.15, 1, 0.75];
@@ -28,6 +33,20 @@ class QuestionTitle extends PureComponent {
           </div>
           {data?.labelIcon && (
             <div className="questionFormat">
+              <span
+                onClick={this.handleShow}
+                className="questionBoldWrap center"
+              >
+                <i className="material-icons sort"></i>
+                {this.state.show && (
+                  <div className="questionBoldWrap_sort box">
+                    Are you sure you want to Sort
+                    <button className="btn" onClick={data?.sort}>
+                      Click here
+                    </button>
+                  </div>
+                )}
+              </span>
               <span
                 onClick={() => data?.labelFunc(`<`)}
                 className="questionBoldWrap center"

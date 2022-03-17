@@ -2,6 +2,12 @@
 
 # dependencies
 /node_modules
+/cert
+certificate.conf
+certificate.crt
+certificate.key
+keytmp.pem
+.env
 /.pnp
 .pnp.js
 
