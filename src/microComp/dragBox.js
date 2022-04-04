@@ -22,7 +22,7 @@ export class DragBox extends PureComponent {
     trackNum: 0,
     text: ``,
     result: [],
-    rawResult: { title: ``, details: `` },
+    rawResult: { title: ``, details: ``, added: false },
     expand: false,
     X: 16,
     Y: window.innerHeight - 352,
@@ -194,7 +194,7 @@ Hence, this only happens when the Starnum value is not 0
             },
           )
           .then((details) => {
-            const result = details?.data.map((data) =>
+            const result = details?.data?.text.map((data) =>
               formatter(data).map((da, n) => transform(da)),
             );
 
@@ -202,9 +202,13 @@ Hence, this only happens when the Starnum value is not 0
               searching: false,
               result,
               rawResult:
-                details?.data?.length > 0
-                  ? { title: value, details: details?.data }
-                  : { title: ``, details: `` },
+                details?.data?.text?.length > 0
+                  ? {
+                      title: value,
+                      details: details?.data.text,
+                      added: details?.data?.added,
+                    }
+                  : { title: ``, details: ``, added: false },
               notFound: result.length ? false : true,
               trackNum: update ? 0 : this.state.trackNum,
               tracker: update
@@ -212,7 +216,9 @@ Hence, this only happens when the Starnum value is not 0
                 : this.state.tracker,
             });
           })
-          .catch(() => {
+          .catch((e) => {
+            this.setState({ searching: false });
+            alert(e.response?.data || `Something went wrong`);
             return;
           });
       });
@@ -531,12 +537,31 @@ Hence, this only happens when the Starnum value is not 0
         </div>
         <div className="dragBox_bottom w100">
           <div className="dragBox_bottom_btn_wrap">
-            <div
-              className="dragBox_bottom_btn center box"
-              onClick={this.handleFav}
-            >
-              Add
-            </div>
+            {this.state.rawResult.details && (
+              <div
+                className={`dragBox_bottom_btn center box ${
+                  this.state.rawResult.added ? `mute` : ``
+                }`}
+                onClick={() => {
+                  if (
+                    !this.state.rawResult.added &&
+                    this.state.rawResult.details
+                  ) {
+                    const added = {
+                      ...this.state.rawResult,
+                      added: true,
+                    };
+                    console.log(added, this.state.rawResult);
+                    this.setState({ rawResult: { ...added } });
+                    this.handleFav();
+                  } else {
+                    console.log(`Cannot add`);
+                  }
+                }}
+              >
+                {this.state.rawResult.added ? `Already Added` : `Add`}
+              </div>
+            )}
           </div>
           <i
             onClick={this.expand}

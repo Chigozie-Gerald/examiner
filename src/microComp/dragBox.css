@@ -184,7 +184,8 @@
 .dragBox_bottom_btn:hover {
   opacity: 0.93;
 }
-.dragBox_bottom_btn.mute:hover .dragBox_bottom_btn.mute {
+.dragBox_bottom_btn.mute:hover,
+.dragBox_bottom_btn.mute {
   cursor: default;
   background-color: rgb(208, 208, 208);
   color: #858585;

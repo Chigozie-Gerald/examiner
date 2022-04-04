@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
-import '../map/map.css';
 import NotFound from '../notFound';
 import HistoAnswer from './HistoAnswer';
 import HistoCreate from './histoCreate';
