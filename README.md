@@ -1,8 +1,8 @@
-# GET THE BACKEND CLONED
+## GET THE BACKEND CLONED
 
 Ensure you have the [backend repo](https://github.com/Chigozie-Gerald/examiner_api) cloned for this to work properly. Kindly read the readMe.md file over there 
 
-# Getting Started with Create React App
+## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
