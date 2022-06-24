@@ -12,6 +12,25 @@
   background-color: #fff;
   box-shadow: var(--shadow);
 }
+.tagCreateImgCont {
+  display: flex;
+  /* background-color: black;
+  height: 4rem; */
+  margin-left: 0;
+  margin-bottom: 0.75rem;
+  position: relative;
+  cursor: pointer;
+  font-size: 12px;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+}
+.tagCreateImgCont:hover {
+  outline: 3px solid hsla(238, 37%, 50%, 0.5) !important;
+}
+
 .floater.tagger {
   align-items: center;
   display: flex;

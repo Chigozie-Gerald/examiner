@@ -29,44 +29,46 @@ class QuestionTitle extends PureComponent {
             >
               {data?.title}
             </div>
-            <div className="QTlabel w100 ellipsis">{data?.label}</div>
+            <div className="QTlabel w100">{data?.label}</div>
           </div>
-          {data?.labelIcon && (
-            <div className="questionFormat">
-              <span
-                onClick={this.handleShow}
-                className="questionBoldWrap center"
-              >
-                <i className="material-icons sort"></i>
-                {this.state.show && (
-                  <div className="questionBoldWrap_sort box">
-                    Are you sure you want to Sort
-                    <button className="btn" onClick={data?.sort}>
-                      Click here
-                    </button>
-                  </div>
-                )}
-              </span>
-              <span
-                onClick={() => data?.labelFunc(`<`)}
-                className="questionBoldWrap center"
-              >
-                <i className="material-icons format_italic"></i>
-              </span>
-              <span
-                onClick={() => data?.labelFunc(`~`)}
-                className="questionBoldWrap center"
-              >
-                <i className="material-icons format_underline"></i>
-              </span>
-              <span
-                onClick={() => data?.labelFunc()}
-                className="questionBoldWrap center"
-              >
-                <i className="material-icons format_bold"></i>
-              </span>
-            </div>
-          )}
+          <div className="questionFormat_cont">
+            {data?.labelIcon && (
+              <div className="questionFormat">
+                <span
+                  onClick={this.handleShow}
+                  className="questionBoldWrap center"
+                >
+                  <i className="material-icons sort"></i>
+                  {this.state.show && (
+                    <div className="questionBoldWrap_sort box">
+                      Are you sure you want to Sort
+                      <button className="btn" onClick={data?.sort}>
+                        Click here
+                      </button>
+                    </div>
+                  )}
+                </span>
+                <span
+                  onClick={() => data?.labelFunc(`<`)}
+                  className="questionBoldWrap center"
+                >
+                  <i className="material-icons format_italic"></i>
+                </span>
+                <span
+                  onClick={() => data?.labelFunc(`~`)}
+                  className="questionBoldWrap center"
+                >
+                  <i className="material-icons format_underline"></i>
+                </span>
+                <span
+                  onClick={() => data?.labelFunc()}
+                  className="questionBoldWrap center"
+                >
+                  <i className="material-icons format_bold"></i>
+                </span>
+              </div>
+            )}
+          </div>
         </div>
 
         {data?.hasInput ? (

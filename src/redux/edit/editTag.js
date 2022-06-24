@@ -14,12 +14,16 @@ export const deleteTagSuccess = () => {
   };
 };
 
-export const editTag = (_id, name) => {
+export const editTag = (_id, edit_data) => {
   return (dispatch) => {
-    const BODY = { _id, name };
-    console.log(BODY);
+    const body = { _id, ...edit_data };
+    const fd = new FormData();
+    Object.keys(body).forEach((key) => {
+      fd.append(key, body[key]);
+    });
+
     axios
-      .post('http://localhost:6060/api/tagEdit', BODY, {
+      .post('http://localhost:6060/api/tagEdit', fd, {
         'content-type': 'application/json',
       })
       .then(() => {

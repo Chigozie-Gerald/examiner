@@ -218,7 +218,7 @@ Hence, this only happens when the Starnum value is not 0
           })
           .catch((e) => {
             this.setState({ searching: false });
-            alert(e.response?.data || `Something went wrong`);
+            alert(e.response?.data || `Cannot find that word`);
             return;
           });
       });
@@ -257,7 +257,8 @@ Hence, this only happens when the Starnum value is not 0
             finalVal + this.container.getBoundingClientRect().height
           }px`;
         } else {
-          this.container.style.height = `10rem`;
+          this.containerBox.style.height = `0rem`;
+          this.container.style.height = `6rem`;
         }
       });
     }
@@ -312,6 +313,7 @@ Hence, this only happens when the Starnum value is not 0
   };
 
   assignRef = (e) => (this.container = e);
+  assignBoxRef = (e) => (this.containerBox = e);
   componentDidMount() {
     this.setState({
       Y: this.container.getBoundingClientRect().top,
@@ -396,6 +398,7 @@ Hence, this only happens when the Starnum value is not 0
           </div>
         </div>
         <div
+          ref={this.assignBoxRef}
           className={`dragBox_body scroller ${
             this.state.expand ? 'open' : ''
           } w100`}

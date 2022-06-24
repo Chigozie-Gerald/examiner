@@ -17,9 +17,10 @@ class TagList extends PureComponent {
     shouldMove: false,
     editOpen: false,
     editText: '',
+    image: null,
   };
+
   handleEditTag = (e, number, name) => {
-    console.log(name, name, name);
     e.stopPropagation();
     if (this.state.editOpen) {
       this.setState({ editOpen: false, editText: `` });
@@ -27,15 +28,29 @@ class TagList extends PureComponent {
       this.setState({ editOpen: number + 1, editText: name });
     }
   };
+
+  handleCloseEditTag = () => {
+    this.setState({ editOpen: false, editText: `` });
+  };
+
+  removeDropOnClick = () => {
+    this.handleCloseEditTag();
+  };
+
+  componentWillUnmount() {
+    window.removeEventListener('click', this.removeDropOnClick);
+  }
+
   handleChange = (e) => {
-    e.stopPropagation();
     this.setState({ editText: e.target.value });
   };
   handleEdit = (e, data) => {
     e.stopPropagation();
-    const text = this.state.editText;
-    this.setState({ editOpen: false, editText: `` }, () =>
-      this.props.editTag(data._id, text),
+    const name = this.state.editText;
+    const image = this.state.image;
+    this.setState(
+      { editOpen: false, editText: ``, image: null },
+      () => this.props.editTag(data._id, { name, image }),
     );
   };
   Click = (e, data, allQuest) => {
@@ -52,55 +67,19 @@ class TagList extends PureComponent {
       state: { tag },
     });
   };
-  /*
-  eventCheck = (elem) => {
-    this.mover(elem, this.coordinateX, this.coordinateY);
-  };
-  dragMouseDown = (e) => {
-    //Will be called when mouse presses down in the vicinity of the element
-    this.setState({
-      shouldMove: true,
-      //This is to tell the events if something had initially started
-    });
-    this.coordinateX = e.clientX;
-    this.coordinateY = e.clientY;
-    /*The coordinates above were gotten from
-    the elements event variables
-    They represent initial values which are independent of the ones the window
-    event uses
-    The reason for attaching them to a this statement is to ensure its global availability
-    This is so because it is necessary for removing event handlers*=/
-    console.log(`start`);
-    window.addEventListener(`mousemove`, this.eventCheck);
+
+  removeImage = () => {
+    this.setState({ image: null });
   };
 
-  closeDragElement = () => {
-    //Calls when the mouse is up
-    console.log(`close`, this.container.getBoundingClientRect().top);
-    window.removeEventListener(`mousemove`, this.eventCheck);
-    this.setState({
-      shouldMove: false,
-      X: this.container.getBoundingClientRect().left,
-      Y: this.container.getBoundingClientRect().top,
-      //This sets the style parameters to the final values gotten from the movers
-    });
+  onChangeImage = (e) => {
+    console.log(e.target.files[0]);
+    this.setState({ image: e.target.files[0] });
   };
 
-  mover = (e, X, Y) => {
-    console.log(`mover`);
-    if (this.state.shouldMove) {
-      let leftVal = this.state.X + e.clientX - X,
-        topValue = this.state.Y + e.clientY - Y;
-      //Initial values - Continuous values
-      if (leftVal < 0) leftVal = 0;
-      if (topValue < 0) topValue = 0;
-      this.container.style.left = `${leftVal}px`;
-      this.container.style.top = `${topValue}px`;
-    }
-  };
-  assignRef = (e) => (this.container = e);*/
   componentDidMount() {
     //Sets the space above the element before any action is taken
+    window.addEventListener('click', this.removeDropOnClick);
     sessionStorage.removeItem(`randomWriteArrayOpen`);
     sessionStorage.removeItem(`questionWriteOpen`);
     sessionStorage.removeItem(`openDetails`);
@@ -157,12 +136,15 @@ class TagList extends PureComponent {
                   <TagListPane
                     key={`tagList_inner_key_${n}`}
                     data={{
+                      removeImage: this.removeImage,
+                      onChangeImage: this.onChangeImage,
                       handleAddQuest: this.handleAddQuest,
                       handleEditTag: this.handleEditTag,
                       handleChange: this.handleChange,
                       handleEdit: this.handleEdit,
                       Click: this.Click,
                       editText: this.state.editText,
+                      image: this.state.image,
                       editOpen: this.state.editOpen,
                       questions: questions,
                       data,
@@ -219,8 +201,11 @@ export class TagListPane extends PureComponent {
   state = {
     hoverName: false,
   };
+
   render() {
     const {
+      removeImage,
+      onChangeImage,
       allQuest,
       Click,
       handleAddQuest,
@@ -231,6 +216,7 @@ export class TagListPane extends PureComponent {
       editOpen,
       handleChange,
       editText,
+      image,
       n,
     } = this.props.data;
 
@@ -254,29 +240,65 @@ export class TagListPane extends PureComponent {
               className="tagList_inner_float two center"
             >
               <i className="material-icons edit"></i>
-              {editOpen && editOpen === n + 1 ? (
-                <div
-                  onClick={(e) => e.stopPropagation()}
-                  className="tagList_input fdCol"
-                >
-                  <input
-                    type="text"
-                    onChange={handleChange}
-                    value={editText}
-                  />
-                  <button
-                    onClick={(e) => handleEdit(e, data)}
-                    className="btn sm"
-                  >
-                    Edit
-                  </button>
-                </div>
-              ) : (
-                ''
-              )}
             </div>
           )}
-          <div className="tagList_inner_top"></div>
+          {!allQuest && editOpen && editOpen === n + 1 ? (
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="tagList_input fdCol"
+            >
+              <input
+                type="text"
+                onChange={handleChange}
+                value={editText}
+              />
+              {image ? (
+                <div className="imagee tagCreateImgCont">
+                  <span onClick={removeImage} className="center">
+                    <i className="material-icons close"></i>
+                  </span>
+                  <img
+                    src={URL.createObjectURL(image)}
+                    alt=""
+                    className="img_div_cover"
+                  />
+                </div>
+              ) : (
+                <div>
+                  <label
+                    htmlFor="inputFile"
+                    className="imagee tagCreateImgCont center"
+                  >
+                    Add Optional Photo
+                  </label>
+                  <input
+                    onChange={onChangeImage}
+                    type="file"
+                    name="file"
+                    className="noShow"
+                    id="inputFile"
+                  />
+                </div>
+              )}
+              <button
+                onClick={(e) => handleEdit(e, data)}
+                className="btn sm"
+              >
+                Edit
+              </button>
+            </div>
+          ) : (
+            ''
+          )}
+          <div className="tagList_inner_top">
+            {data?.imageAddress && (
+              <img
+                alt=""
+                className="img_div_cover"
+                src={`http://localhost:6060/api/loadImage/${data?.imageAddress}`}
+              />
+            )}
+          </div>
           <div
             onMouseOver={() => this.setState({ hoverName: n + 1 })}
             onMouseOut={() => this.setState({ hoverName: false })}

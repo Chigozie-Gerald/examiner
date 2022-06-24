@@ -11,6 +11,16 @@ class TagCreate extends PureComponent {
     text: '',
     errorText: '',
     clicked: false,
+    image: null,
+  };
+
+  removeImage = () => {
+    this.setState({ image: null });
+  };
+
+  onChangeImage = (e) => {
+    console.log(e.target.files[0]);
+    this.setState({ image: e.target.files[0] });
   };
 
   handleChange = (e) => {
@@ -20,7 +30,10 @@ class TagCreate extends PureComponent {
     e.preventDefault();
     if (!this.state.text) return;
     this.setState({ clicked: true }, () => {
-      this.props.createTag({ name: this.state.text });
+      this.props.createTag({
+        name: this.state.text,
+        image: this.state.image,
+      });
     });
   };
   handleErrorClear = () => {
@@ -82,6 +95,35 @@ class TagCreate extends PureComponent {
                 label: `Suggest a name for the Tag you're about creating`,
               }}
             />
+
+            {this.state.image ? (
+              <div className="imagee tagCreateImgCont">
+                <span onClick={this.removeImage} className="center">
+                  <i className="material-icons close"></i>
+                </span>
+                <img
+                  src={URL.createObjectURL(this.state.image)}
+                  alt=""
+                  className="img_div_cover"
+                />
+              </div>
+            ) : (
+              <div>
+                <label
+                  htmlFor="inputFile"
+                  className="imagee tagCreateImgCont center"
+                >
+                  Add Optional Photo
+                </label>
+                <input
+                  onChange={this.onChangeImage}
+                  type="file"
+                  name="file"
+                  className="noShow"
+                  id="inputFile"
+                />
+              </div>
+            )}
             <button onClick={this.handleSubmit} className="btn">
               Create
             </button>

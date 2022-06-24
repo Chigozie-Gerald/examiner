@@ -5,7 +5,7 @@
   --genPad: 0.75rem;
 }
 .createQ {
-  padding: 2rem 0;
+  padding: 2rem 1rem;
   margin: 0 auto;
 }
 .createTitle {
@@ -47,8 +47,25 @@
   overflow-y: auto;
   --width: 30vmax;
   --topHeight: 3rem;
+  max-height: 30rem;
   width: var(--width);
   flex: 1;
+}
+.create_right::-webkit-scrollbar {
+  width: 0.5rem;
+}
+.create_right::-webkit-scrollbar-track {
+  background-color: #eee;
+  /* border-radius: 1rem; */
+  overflow: hidden;
+  padding: 0 0.25rem;
+}
+.create_right::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  background-color: rgb(196, 198, 203);
+}
+.create_right::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(180, 184, 188);
 }
 .create_left {
   padding: var(--genPad);

@@ -73,9 +73,13 @@ export const createQuestion = (body) => {
 export const createTag = (body) => {
   return (dispatch) => {
     dispatch(tagLoading());
-    const BODY = JSON.stringify(body);
+    const fd = new FormData();
+    Object.keys(body).forEach((key) => {
+      fd.append(key, body[key]);
+    });
+
     axios
-      .post('http://localhost:6060/api/tag', BODY, {
+      .post('http://localhost:6060/api/tag', fd, {
         headers: {
           'content-type': 'application/json',
         },

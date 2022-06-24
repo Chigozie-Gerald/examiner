@@ -46,6 +46,10 @@
   font-size: 1.5rem;
   color: #454545;
 }
+.questionFormat_cont {
+  align-items: flex-end;
+  display: flex;
+}
 .input_file {
   display: none;
 }

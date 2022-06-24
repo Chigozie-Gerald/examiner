@@ -61,13 +61,13 @@ class Create extends PureComponent {
     } else {
       this.setState({
         questions: [
-          ...this.state.questions,
           {
             tag: this.state.tag,
             title: this.state.title,
             details: this.state.details,
             image: this.state.image,
           },
+          ...this.state.questions,
         ],
         title: '?',
         details: '',
@@ -102,6 +102,7 @@ class Create extends PureComponent {
   };
 
   onChangeImage = (e) => {
+    console.log(e.target.files[0]);
     this.setState({ image: e.target.files[0] });
   };
 
@@ -401,7 +402,7 @@ export class CreateQuestion extends PureComponent {
                       return;
                     }
                   },
-                  label: `This section is  the answer to the question written above`,
+                  label: `This section is the answer to the question written above`,
                 }}
               />
 
@@ -437,19 +438,17 @@ export class CreateQuestion extends PureComponent {
           </div>
           <div className="create_right">
             <div className="box createRightBox">
-              {questions.map(
-                (data, n) =>
-                  n < 5 && (
-                    <QuestionLink
-                      data={data}
-                      handleDel={handleDel}
-                      handleEdit={handleEdit}
-                      key={`${n}_question_list`}
-                      number={n + 1}
-                    />
-                  ),
-              )}
-              <div
+              {questions.map((data, n) => (
+                <QuestionLink
+                  data={data}
+                  handleDel={handleDel}
+                  handleEdit={handleEdit}
+                  key={`${n}_question_list`}
+                  number={questions.length - n}
+                  total={questions.length}
+                />
+              ))}
+              {/* <div
                 className={`box createRightBox sm ellipsis center ${
                   questions.length > 5 ? `` : `invis`
                 }`}
@@ -457,7 +456,7 @@ export class CreateQuestion extends PureComponent {
                 View{' '}
                 {questions.length > 5 ? questions.length - 5 : ``}{' '}
                 more question(s)
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

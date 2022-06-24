@@ -3,7 +3,7 @@ import './questionLink.css';
 
 class QuestionLink extends PureComponent {
   render() {
-    const { data, handleDel, handleEdit } = this.props;
+    const { data, handleDel, handleEdit, total } = this.props;
     return !this.props.data ? (
       <div className="questionLink_wrap w100 more center">
         More Questions
@@ -19,14 +19,14 @@ class QuestionLink extends PureComponent {
               <i
                 className="material-icons edit"
                 onClick={() =>
-                  handleEdit(data, this.props.number - 1)
+                  handleEdit(data, total - this.props.number)
                 }
               ></i>
             </div>
             <div className="qlIcon center">
               <i
                 className="material-icons close"
-                onClick={() => handleDel(this.props.number - 1)}
+                onClick={() => handleDel(total - this.props.number)}
               ></i>
             </div>
           </div>
