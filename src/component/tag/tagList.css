@@ -159,7 +159,7 @@
 }
 .tagList_inner {
   flex: 1;
-  --floatSize: 1.5rem;
+  --floatSize: 1.2rem;
   cursor: pointer;
   position: relative;
   height: var(--height);
@@ -185,9 +185,15 @@
   right: var(--top);
   top: var(--top);
   height: var(--floatSize);
-  width: var(--floatSize);
-  border-radius: 50%;
+  /* width: var(--floatSize); */
+  padding: 0 4px;
+  border-radius: calc(var(--floatSize) / 2);
 }
+.tagList_inner_float i.reduced {
+  font-size: 0.8rem;
+  color: var(--primary);
+}
+
 .tagList_inner_float.two {
   right: calc(var(--top) + var(--floatSize));
   background-color: #fafafa;
@@ -195,9 +201,10 @@
   background-color: rgba(255, 255, 255, 0);
 }
 .tagList_inner_float i {
-  font-size: 1.2rem;
+  font-size: 1rem;
   color: #fff;
   color: var(--blue);
+  margin-left: 4px;
 }
 .tagList_inner_float.two i {
   font-size: 1rem;

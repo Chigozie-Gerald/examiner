@@ -227,20 +227,18 @@ export class TagListPane extends PureComponent {
           className={`tagList_inner ${allQuest ? 'allQuest' : ''}`}
         >
           {!allQuest && (
-            <div
-              onClick={(e) => handleAddQuest(e, data)}
-              className="tagList_inner_float center"
-            >
-              <i className="material-icons add"></i>
-            </div>
-          )}
-          {!allQuest && (
-            <div
-              onClick={(e) => handleEditTag(e, n, data?.name)}
-              className="tagList_inner_float two center"
-            >
-              <i className="material-icons edit"></i>
-            </div>
+            <>
+              <div className="tagList_inner_float center">
+                <i
+                  onClick={(e) => handleEditTag(e, n, data?.name)}
+                  className="material-icons edit reduced"
+                ></i>
+                <i
+                  onClick={(e) => handleAddQuest(e, data)}
+                  className="material-icons add"
+                ></i>
+              </div>
+            </>
           )}
           {!allQuest && editOpen && editOpen === n + 1 ? (
             <div

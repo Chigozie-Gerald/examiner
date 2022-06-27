@@ -3,17 +3,17 @@
   "name": "Examiner",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "examLogoSm.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "Logo_192.png",
+      "src": "examLogoSm.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "Logo_512.png",
+      "src": "examLogoLg.png",
       "type": "image/png",
       "sizes": "512x512"
     }
