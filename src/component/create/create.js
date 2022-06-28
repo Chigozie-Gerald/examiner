@@ -212,6 +212,7 @@ export class CreateQuestion extends PureComponent {
     selected: [],
     textSelect: '',
   };
+
   handleSelected = (start, stop) => {
     if (start !== stop) {
       console.log(start, stop, `starrt stio`);
@@ -224,8 +225,16 @@ export class CreateQuestion extends PureComponent {
       //////////////////////////////////////////////////
     }
   };
-  handleSort = () => {
-    const text = this.props.data.details
+  handleSort = (start, stop) => {
+    const details = this.props.data.details;
+    if (start === stop) {
+      return;
+    }
+
+    const preString = details.substring(0, start);
+    const postString = details.substring(stop, details.length);
+    const textExtract = details.substring(start, stop);
+    const text = textExtract
       .split(/(?:\r\n|\n)/g)
       .sort((a, b) => {
         if (a > b) {
@@ -238,14 +247,19 @@ export class CreateQuestion extends PureComponent {
       })
       .join(`\n`);
     const name = `details`;
-    const value = text;
+    const newString = preString + text + postString;
+    const value = newString;
+
     const obj = { name, value };
     this.props.data.onChange(null, obj);
+
+    this.setState({
+      selected: [],
+    });
   };
   handleFormat = (start, stop, stringMark = `*`) => {
     const details = this.props.data.details;
     if (start === stop) {
-      console.log(`leavinf`, start, stop);
       return;
     }
 
@@ -391,7 +405,11 @@ export class CreateQuestion extends PureComponent {
                   title_size: `md`,
                   title: 'Body',
                   labelIcon: true,
-                  sort: this.handleSort,
+                  sort: () => {
+                    const start = this.state.selected[0];
+                    const stop = this.state.selected[1];
+                    this.handleSort(start, stop);
+                  },
                   labelFunc: (stringMark = `*`) => {
                     const start = this.state.selected[0];
                     const stop = this.state.selected[1];
@@ -412,6 +430,7 @@ export class CreateQuestion extends PureComponent {
                 name="details"
                 ref={this.textareaRef}
                 id=""
+                // onKeyDown={this.downButton}
                 value={details}
                 onChange={onChange}
                 onSelect={() =>
