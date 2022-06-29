@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Route, Switch, withRouter } from 'react-router-dom';
+import { makeRipple } from '../../microComp/ripple';
 import { createQuestion } from '../../redux/create/create';
 import NotFound from '../notFound';
 import './create.css';
@@ -342,7 +343,10 @@ export class CreateQuestion extends PureComponent {
           <p>{tagNAME ? tagNAME + ' tag' : ''}</p>
           <button
             disabled={!(questions.length || (title && details))}
-            onClick={handleSubmit}
+            onClick={(e) => {
+              makeRipple(e, true);
+              handleSubmit(e);
+            }}
             className="createITRight btn"
           >
             Finish
@@ -445,7 +449,10 @@ export class CreateQuestion extends PureComponent {
                 <div className="createITLeft"></div>
                 <button
                   disabled={!title || !details}
-                  onClick={() => handleAdd(editting)}
+                  onClick={(e) => {
+                    makeRipple(e, true);
+                    handleAdd(editting);
+                  }}
                   className="createITRight btn"
                 >
                   {typeof editting === `number`

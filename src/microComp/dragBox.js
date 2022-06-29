@@ -20,12 +20,13 @@ export class DragBox extends PureComponent {
     tracker: [],
     pastTracker: [`value`, `index`],
     trackNum: 0,
+    collapse: false,
     text: ``,
     result: [],
     rawResult: { title: ``, details: ``, added: false },
     expand: false,
-    X: 16,
-    Y: window.innerHeight - 352,
+    X: null,
+    Y: null,
     shouldMove: false,
   };
 
@@ -70,6 +71,7 @@ export class DragBox extends PureComponent {
     this.mover(elem, this.coordinateX, this.coordinateY);
   };
   dragMouseDown = (e) => {
+    e.preventDefault();
     //Will be called when mouse presses down in the vicinity of the element
     this.setState({
       shouldMove: true,
@@ -100,13 +102,33 @@ export class DragBox extends PureComponent {
   mover = (e, X, Y) => {
     //Sets the top and left values as element moves
     if (this.state.shouldMove) {
-      let leftVal = this.state.X + e.clientX - X,
-        topValue = this.state.Y + e.clientY - Y;
-      //Space available (up or left) + Initial values - Continuous values
-      if (leftVal < 0) leftVal = 0;
-      if (topValue < 0) topValue = 0;
-      this.container.style.left = `${leftVal}px`;
-      this.container.style.top = `${topValue}px`;
+      if (!this.state.X || !this.state.Y) {
+        this.setState(
+          {
+            X: this.container.getBoundingClientRect().left,
+            Y: this.container.getBoundingClientRect().top,
+          },
+          () => {
+            let leftVal = this.state.X + e.clientX - X,
+              topValue = this.state.Y + e.clientY - Y;
+            //Space available (up or left) + Initial values - Continuous values
+            if (leftVal < 0) leftVal = 0;
+            if (topValue < 0) topValue = 0;
+            this.container.style.left = `${leftVal}px`;
+            this.container.style.top = `${topValue}px`;
+          },
+        );
+      } else {
+        let leftVal = this.state.X + e.clientX - X,
+          topValue = this.state.Y + e.clientY - Y;
+        //Space available (up or left) + Initial values - Continuous values
+        if (leftVal < 0) leftVal = 0;
+        if (topValue < 0) topValue = 0;
+        this.container.style.left = `${leftVal}px`;
+        this.container.style.top = `${topValue}px`;
+      }
+    } else {
+      window.removeEventListener(`mousemove`, this.eventCheck);
     }
   };
 
@@ -224,7 +246,14 @@ Hence, this only happens when the Starnum value is not 0
       });
     });
   };
-  expand = () => {
+  max = (num1, num2) => {
+    if (num1 > num2) {
+      return num1;
+    } else {
+      return num2;
+    }
+  };
+  expand = (collapse = false) => {
     /*
     this.container.getBoundingClientRect() gives you the height width
     ... and distance between the div and the top, left, right and bottom
@@ -240,27 +269,45 @@ Hence, this only happens when the Starnum value is not 0
       diff <= 36 &&
       this.container.getBoundingClientRect().height === 160
     ) {
-      return;
+      if (collapse) {
+        this.setState({ expand: false, collapse: true }, () => {
+          this.container.style.height = `3.4rem`;
+        });
+      } else {
+        return;
+      }
     } else {
-      this.setState({ expand: !this.state.expand }, () => {
-        if (this.state.expand) {
-          if (diff > 0.6 * height) {
-            finalVal = 0.5 * height;
-          } else {
-            if (diff <= 36) {
-              finalVal = 0;
+      this.setState(
+        {
+          expand: collapse ? false : !this.state.expand,
+          collapse: !!collapse,
+        },
+        () => {
+          if (this.state.expand) {
+            if (diff > 0.6 * height) {
+              finalVal = 0.5 * height;
             } else {
-              finalVal = diff - 16;
+              if (diff <= 36) {
+                finalVal = 0;
+              } else {
+                finalVal = diff - 16;
+              }
+            }
+            this.container.style.height = `${this.max(
+              160,
+              finalVal +
+                this.container.getBoundingClientRect().height,
+            )}px`;
+          } else {
+            if (collapse) {
+              console.log(`here`);
+              this.container.style.height = `3.4rem`;
+            } else {
+              this.container.style.height = `10rem`;
             }
           }
-          this.container.style.height = `${
-            finalVal + this.container.getBoundingClientRect().height
-          }px`;
-        } else {
-          this.containerBox.style.height = `0rem`;
-          this.container.style.height = `6rem`;
-        }
-      });
+        },
+      );
     }
   };
 
@@ -388,7 +435,12 @@ Hence, this only happens when the Starnum value is not 0
               value={this.state.text}
             />
           </form>
-
+          <div
+            className="collapse_wrap center"
+            onClick={() => this.expand(true)}
+          >
+            <i className="material-icons compress"></i>
+          </div>
           <div
             className="move_pad center"
             onMouseDown={this.dragMouseDown}
@@ -401,7 +453,7 @@ Hence, this only happens when the Starnum value is not 0
           ref={this.assignBoxRef}
           className={`dragBox_body scroller ${
             this.state.expand ? 'open' : ''
-          } w100`}
+          } ${this.state.collapse ? 'collapse' : ''} w100`}
         >
           <div className="dragBox_part"></div>
           {this.state.result.length && !this.state.searching ? (
@@ -567,7 +619,7 @@ Hence, this only happens when the Starnum value is not 0
             )}
           </div>
           <i
-            onClick={this.expand}
+            onClick={() => this.expand()}
             className={`material-icons expand_less ${
               this.state.expand ? 'reverse' : ''
             }`}

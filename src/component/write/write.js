@@ -16,6 +16,7 @@ import {
 } from '../../redux/edit/editQuestion';
 import QuestionTitle from '../create/questionTitle';
 import { randomize } from '../../microComp/randomize';
+import { makeRipple } from '../../microComp/ripple';
 const assert = require('assert');
 
 class Write extends PureComponent {
@@ -358,7 +359,12 @@ class Write extends PureComponent {
             className="Link inline auto examLogin_link"
           >
             {/*<button className="examLogin_btn">Home</button>*/}
-            <button className="btn">View Tags</button>
+            <button
+              onClick={(e) => makeRipple(e, true)}
+              className="btn"
+            >
+              View Tags
+            </button>
           </Link>
         </div>
         <div className="examWrite_body top w100">
@@ -382,12 +388,12 @@ class Write extends PureComponent {
                   <p>Are you sure you want to delete?</p>
                   <span>
                     <button
-                      onClick={(e) =>
+                      onClick={(e) => {
                         this.handleDeleteQuestion(
                           e,
                           this.state.questions[num]._id,
-                        )
-                      }
+                        );
+                      }}
                       className="btn"
                     >
                       Delete
@@ -418,9 +424,10 @@ class Write extends PureComponent {
               </div>
               <div className="examWrite_L_btn">
                 <button
-                  onClick={() =>
-                    this.setState({ clicked: !this.state.clicked })
-                  }
+                  onClick={(e) => {
+                    makeRipple(e);
+                    this.setState({ clicked: !this.state.clicked });
+                  }}
                   className="examLogin_btn next btn"
                 >
                   {this.state.clicked ? 'Hide' : 'View'} Answer
@@ -659,7 +666,13 @@ export class EditWrite extends PureComponent {
             />
           </span>
           <span>
-            <button onClick={handleEditQuestion} className="btn">
+            <button
+              onClick={(e) => {
+                makeRipple(e, true);
+                handleEditQuestion(e);
+              }}
+              className="btn"
+            >
               Finish
             </button>
           </span>

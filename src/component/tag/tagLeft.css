@@ -31,14 +31,14 @@
 .tagLeftPane {
   margin-bottom: 0.25rem;
 }
+
 .tagLeftPane > div.first {
   padding: 0.5rem 0;
 }
 .tagLeftPane > div.second {
   display: flex;
   align-items: center;
-  padding: 0.75rem 0.25rem;
-  border: 1px solid #ddd;
+  padding: 0.25rem;
   border-radius: inherit;
 }
 .tagLeftPane > div.second span {
@@ -70,6 +70,7 @@
 }
 .tagLeft_Inline_wrap.long {
   display: flex;
+  display: inline-flex;
   padding: 00.15rem;
 }
 .tagLeft_Inline {
@@ -121,10 +122,9 @@
   align-items: center;
 }
 .tagList_combine_body_inner input::placeholder {
-  color: #606060;
+  color: #989797;
   font-weight: 400;
   font-size: 0.8rem;
-  text-align: center;
 }
 .tagList_combine_body {
   flex: 1;

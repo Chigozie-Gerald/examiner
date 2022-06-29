@@ -28,6 +28,7 @@
 }
 .tagList_left_body {
   padding: 0.75rem;
+  flex: 1;
 }
 .tagList_left_search {
   overflow: hidden;
@@ -47,7 +48,7 @@
   margin-left: 00.325rem;
   width: auto;
   font-size: 0.7rem;
-  border-radius: 1rem;
+  border-radius: 0.25rem;
   min-width: auto;
   padding: 00.5rem;
 }
@@ -55,9 +56,11 @@
   font-size: 0.7rem;
   color: #fff;
 }
-.tagList_left_search input {
+.tagList_left_search input,
+.tagList_combine_body_inner form > input {
+  border: none;
   height: 1.6rem;
-  border-radius: 1rem;
+  border-radius: 0.25rem;
   flex: 1;
   background-color: rgb(240, 240, 240);
 }

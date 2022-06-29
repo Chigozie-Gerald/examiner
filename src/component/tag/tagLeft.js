@@ -4,6 +4,7 @@ import './tagList.css';
 import './tagLeft.css';
 import axios from 'axios';
 import { withRouter } from 'react-router-dom';
+import { makeRipple } from '../../microComp/ripple';
 
 export class TagLeft extends PureComponent {
   constructor(props) {
@@ -18,6 +19,7 @@ export class TagLeft extends PureComponent {
     questions: [],
     //Combine
     searchTag: ``,
+    searching: false,
     combine: false,
     tagRes: [],
     combineTags: [],
@@ -93,13 +95,6 @@ export class TagLeft extends PureComponent {
 
   handleSearch = (e) => {
     e.preventDefault();
-    console.log(
-      {
-        hasImage: this.state.hasImage,
-        search: this.state.search,
-      },
-      `fmdmdmdm`,
-    );
     if (!this.state.search || typeof this.state.search !== `string`)
       return;
 
@@ -108,6 +103,7 @@ export class TagLeft extends PureComponent {
       search: this.state.search,
     };
     const BODY = JSON.stringify(body);
+    this.setState({ searching: true });
     axios
       .post('http://localhost:6060/api/finder', BODY, {
         headers: {
@@ -118,6 +114,7 @@ export class TagLeft extends PureComponent {
         this.setState(
           {
             tags: details.data.tags,
+            searching: false,
             questions: details.data.questions,
           },
           () => console.log(this.state, `wer`),
@@ -126,6 +123,7 @@ export class TagLeft extends PureComponent {
       .catch((err) => {
         this.setState({
           search: ``,
+          searching: false,
           hasImage: false,
           tags: [],
           questions: [],
@@ -220,7 +218,13 @@ export class TagLeft extends PureComponent {
                   id=""
                   onChange={this.handleChange}
                 />
-                <button onClick={this.handleSearch} className="btn">
+                <button
+                  onClick={(e) => {
+                    makeRipple(e);
+                    this.handleSearch(e);
+                  }}
+                  className="btn"
+                >
                   <i className="material-icons search"></i>
                 </button>
               </form>
@@ -256,28 +260,10 @@ export class TagLeft extends PureComponent {
                 Has Image
               </span>
             </div>
-            <div className="tagList_left_body">
-              <div
-                onClick={() => {
-                  if (!this.state.tags.length) return;
-                  this.setState({ dropDown: !!!this.state.dropDown });
-                }}
-                className={`tagList_left_label res w100 ${
-                  !this.state.tags.length ? `gray` : ``
-                }`}
-              >
-                Tags{' '}
-                {`${
-                  this.state.tags.length
-                    ? `(${this.state.tags.length})`
-                    : ``
-                }`}
-                {this.state.tags.length ? (
-                  <i className="material-icons keyboard_arrow_down"></i>
-                ) : (
-                  ``
-                )}
-              </div>
+            <div
+              onClick={(e) => makeRipple(e, false, true, 70, true)}
+              className="tagList_left_body"
+            >
               <div
                 className={`tagList_tag_Result tags scroller ${
                   this.state.dropDown ? '' : 'inactive'
@@ -286,13 +272,6 @@ export class TagLeft extends PureComponent {
                 {this.state.tags.map((data) => (
                   <div className="tagLeftPane tags">{data.name}</div>
                 ))}
-              </div>
-              <div
-                className={`tagList_left_label res w100 mt1 ${
-                  !this.state.tags.length ? `gray` : ``
-                }`}
-              >
-                Body and Title results
               </div>
 
               {this.state.questions.length ? (
@@ -304,6 +283,15 @@ export class TagLeft extends PureComponent {
                     search: true,
                   }}
                 />
+              ) : this.state.searching ? (
+                <div className="blinker_wrap">
+                  Searching{' '}
+                  <div className="drag_box_empty inline">
+                    <div className="blinkers one"></div>
+                    <div className="blinkers two"></div>
+                    <div className="blinkers three"></div>
+                  </div>
+                </div>
               ) : (
                 ``
               )}
@@ -325,7 +313,6 @@ export class TagLeft extends PureComponent {
                   value={this.state.searchTag}
                   name="searchTag"
                   onChange={this.handleChange}
-                  id=""
                 />
               </form>
 
@@ -386,7 +373,10 @@ export class TagLeft extends PureComponent {
             </div>
             <div className="tagList_combine_btn_wrap center w100">
               <button
-                onClick={this.handleCombineSubmit}
+                onClick={(e) => {
+                  makeRipple(e);
+                  this.handleCombineSubmit(e);
+                }}
                 className="btn w100"
               >
                 Combine

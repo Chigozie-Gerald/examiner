@@ -48,6 +48,7 @@
   color: rgb(255, 255, 255);
   display: flex;
 }
+.dragBox_header i.compress,
 .dragBox_header i.drag_indicator {
   color: rgba(0, 0, 0, 0.6);
 }
@@ -68,6 +69,9 @@
   overflow: auto;
   background-color: #fff;
   padding: 0.5rem;
+}
+.dragBox_body.collapse {
+  padding: 0;
 }
 .dragBox_input {
   border-radius: 0;
@@ -90,6 +94,13 @@
   border-radius: inherit;
   cursor: move;
   background-color: transparent;
+  margin-left: 4px;
+}
+.collapse_wrap {
+  font-size: 1rem;
+  border-radius: inherit;
+  background-color: transparent;
+  margin-left: 4px;
 }
 .move_pad i {
   font-size: 1.2rem;

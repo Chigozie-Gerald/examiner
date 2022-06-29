@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 import './button.css';
+import { makeRipple } from './ripple';
 
 class Button extends PureComponent {
   render() {
@@ -9,7 +10,9 @@ class Button extends PureComponent {
         to={{ pathname: this.props.link || '/' }}
         className="Link inline auto"
       >
-        <button className="app_btn">{this.props.text}</button>
+        <button onClick={(e) => makeRipple(e)} className="app_btn">
+          {this.props.text}
+        </button>
       </Link>
     );
   }

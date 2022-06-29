@@ -102,6 +102,10 @@ a {
   flex-direction: inherit;
   transition: all 200ms ease;
 }
+.blinker_wrap {
+  color: #696969b0;
+  font-size: 0.8rem;
+}
 .inline {
   display: inline-flex;
   justify-self: flex-start;
@@ -225,4 +229,31 @@ button {
 
   width: auto;
   margin-right: 0.5rem;
+}
+/*Ripple*/
+.ripple {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.1);
+  width: 100px;
+  height: 100px;
+  margin-top: -50px;
+  margin-left: -50px;
+  animation: ripple 1300ms ease;
+  opacity: 0;
+}
+.ripple.light {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+@keyframes ripple {
+  from {
+    opacity: 1;
+    transform: scale(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(10);
+  }
 }

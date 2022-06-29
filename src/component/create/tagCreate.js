@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { makeRipple } from '../../microComp/ripple';
 import { createTag } from '../../redux/create/create';
 import { clearError } from '../../redux/error/errorAction';
 import QuestionTitle from './questionTitle';
@@ -124,7 +125,13 @@ class TagCreate extends PureComponent {
                 />
               </div>
             )}
-            <button onClick={this.handleSubmit} className="btn">
+            <button
+              onClick={(e) => {
+                makeRipple(e, true);
+                this.handleSubmit(e);
+              }}
+              className="btn"
+            >
               Create
             </button>
           </form>
