@@ -30,6 +30,10 @@
 }
 .tagLeftPane {
   margin-bottom: 0.25rem;
+  transition: all 200ms ease;
+}
+.tagLeftPane:hover {
+  background-color: rgba(246, 246, 246, 0.8);
 }
 
 .tagLeftPane > div.first {
@@ -66,20 +70,20 @@
 }
 .tagLeft_Inline_wrap {
   display: inline-flex;
-  padding: 00.24rem;
+  padding: 0.24rem;
 }
 .tagLeft_Inline_wrap.long {
   display: flex;
   display: inline-flex;
-  padding: 00.15rem;
+  padding: 0.15rem;
 }
 .tagLeft_Inline {
   background-color: rgb(238, 238, 238);
   --height: 1.45rem;
   display: flex;
   height: var(--height);
-  border-radius: calc(var(--height) / 2);
-  padding: 00.35rem;
+  border-radius: 0.25rem;
+  padding: 0.35rem;
   font-size: 0.55rem;
   color: #565656;
   font-weight: 500;
@@ -104,10 +108,10 @@
   padding: 0.75rem 0;
   padding-top: 0;
   flex: 1;
-  background-color: rgb(243, 243, 243);
+  /* background-color: rgb(243, 243, 243); */
 }
 .tagList_combine_body_inner form {
-  padding: 0 0.75rem;
+  padding: 2px calc(0.75rem + 2px);
   background-color: #fff;
 }
 .tagList_combine_body_inner input {
@@ -122,9 +126,9 @@
   align-items: center;
 }
 .tagList_combine_body_inner input::placeholder {
-  color: #989797;
+  color: #9a9a9a;
   font-weight: 400;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
 }
 .tagList_combine_body {
   flex: 1;
@@ -132,16 +136,18 @@
 }
 .tagList_combine_btn_wrap {
   padding: 0.75rem;
-  background-color: rgb(243, 243, 243);
+  /* background-color: rgb(243, 243, 243); */
 }
 .tagList_combine_body_result_list {
   overflow-y: auto;
-  margin: 1.5rem 0.75rem;
+  margin: 0.75rem 0.75rem;
   margin-top: 0;
   height: auto;
   max-height: 15rem;
-  width: 13rem;
   padding: 0.5rem;
+  padding: 0.125rem;
+  display: flex;
+  flex-wrap: wrap;
   background-color: #fff;
   border: 1px solid #eee;
   border-radius: 0.3rem;
@@ -152,12 +158,48 @@
   height: auto;
   flex: 1;
   overflow-y: auto;
-  background-color: rgb(243, 243, 243);
+  border-top: 1px solid #ddd;
 }
 .tagList_combine_body_result .tagList_left_label {
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.4rem;
   background-color: transparent;
+  font-weight: 500;
 }
 .tagLeft_combine_wrapper {
   padding: 0.5rem 0;
+}
+.tagLeftComposeQuest .tagLeftPane {
+  cursor: pointer;
+  background-color: #fff;
+  border: 1px solid rgb(245, 245, 245);
+  border-radius: 0.25rem;
+  padding: 0.25rem;
+  box-shadow: var(--ltShadow);
+  margin-bottom: 1rem;
+}
+.tagLeftComposeQuest .tagLeftPane {
+  margin-bottom: 0.25rem;
+  transition: all 200ms ease;
+}
+.tagLeftComposeQuest .tagLeftPane:hover {
+  background-color: #fff;
+}
+.tagLeftComposeQuest .tagLeftPane > div.second:hover {
+  background-color: rgba(246, 246, 246, 0.8);
+}
+.tagLeftComposeQuest .tagLeftPane > div.second {
+  padding: 0.25rem;
+  font-size: 0.7rem;
+}
+.tagLeftComposeQuest .tagLeftPane > div.second i {
+  font-size: 0.7rem;
+  border-radius: 50%;
+}
+.tagLeftComposeQuest .tagLeftPane > div.second i:hover {
+  background-color: rgba(227, 227, 227, 0.8);
+}
+.tagLeftComposeQuest .tagLeftPane > div.second span {
+  font-size: 0.7rem;
+  display: flex;
+  margin-left: 0.6rem;
 }

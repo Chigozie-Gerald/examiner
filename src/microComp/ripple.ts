@@ -1,5 +1,5 @@
 export const makeRipple = (
-  e: MouseEvent | React.MouseEvent<HTMLLabelElement, MouseEvent>,
+  e: React.MouseEvent,
   light = false,
   center = false,
   size = 4,

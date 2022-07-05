@@ -103,7 +103,6 @@ class Create extends PureComponent {
   };
 
   onChangeImage = (e) => {
-    console.log(e.target.files[0]);
     this.setState({ image: e.target.files[0] });
   };
 
@@ -216,16 +215,13 @@ export class CreateQuestion extends PureComponent {
 
   handleSelected = (start, stop) => {
     if (start !== stop) {
-      console.log(start, stop, `starrt stio`);
       this.setState({
         selected: [start, stop],
         textSelect: this.props.data.details.substring(start, stop),
       });
-      ////////////////////////////////////////////////////
-      ///////////////////////////////////////////////////
-      //////////////////////////////////////////////////
     }
   };
+
   handleSort = (start, stop) => {
     const details = this.props.data.details;
     if (start === stop) {

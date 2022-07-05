@@ -142,10 +142,10 @@ br {
   padding-bottom: 2rem;
 }
 .examWrite_inner_float {
-  background-color: var(--blue);
   background-color: rgba(255, 255, 255, 0);
   z-index: 999999999999999;
   position: absolute;
+  padding: 4px;
   --top: 0.75rem;
   --floatSize: 1.5rem;
   right: var(--top);
@@ -168,9 +168,13 @@ br {
   background-color: rgba(218, 218, 218, 0.918);
 }
 .examWrite_inner_float i {
-  font-size: 1rem;
-  color: #fff;
   color: var(--blue);
+}
+.examWrite_left_box .examWrite_inner_float i {
+  font-size: 1rem;
+}
+.examWrite_inner_float i:hover {
+  color: rgb(59, 119, 216);
 }
 .examWrite_inner_float.two i {
   font-size: 1.2rem;
@@ -242,6 +246,7 @@ br {
 .examLogin_btn {
   align-self: flex-start;
   justify-self: flex-end;
+  overflow: hidden;
 }
 .examLogin_btn.next {
   color: #3c3e8b;
@@ -325,4 +330,15 @@ br {
 }
 .examWrite_float_box textarea {
   height: 10rem;
+}
+.write_type_tag {
+  font-weight: 600;
+  font-size: 0.8rem;
+  border-radius: 0.25rem;
+  background-color: #adceffad;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+  margin-left: 0.5rem;
 }

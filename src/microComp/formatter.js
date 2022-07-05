@@ -106,7 +106,7 @@ exports.transformer = (text) => {
   return arr;
 };
 
-exports.formatter = (text) => {
+exports.formatter = (text = ``) => {
   //Split text based on line spaces
   return text.split(/(?:\r\n|\n)/g);
 };

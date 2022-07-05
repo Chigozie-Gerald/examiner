@@ -278,7 +278,6 @@ export class TagLeft extends PureComponent {
                 <TagLeftQuest
                   data={{
                     click: this.Click,
-                    tags: [],
                     questions: this.state.questions,
                     search: true,
                   }}
@@ -316,23 +315,30 @@ export class TagLeft extends PureComponent {
                 />
               </form>
 
-              {this.state.searchTag && this.state.tagRes.length ? (
+              {this.state.searchTag &&
+              this.state.tagRes.length &&
+              this.state.tagRes > this.state.combineTags ? (
                 <div className="tagList_combine_body_result_list scroller">
-                  {this.state.tagRes.map((tag) => (
-                    <div className="tagLeft_Inline_wrap long">
-                      <div className="tagLeft_Inline center">
-                        {!this.state.combineTags.filter(
-                          (data) => data._id === tag._id,
-                        ).length && (
-                          <i
-                            onClick={() => this.handleAdd(tag)}
-                            className="material-icons add"
-                          ></i>
-                        )}
-                        {tag.name}
-                      </div>
-                    </div>
-                  ))}
+                  {this.state.tagRes.map(
+                    (tag) =>
+                      !this.state.combineTags.filter(
+                        (data) => data._id === tag._id,
+                      ).length && (
+                        <div className="tagLeft_Inline_wrap long">
+                          <div className="tagLeft_Inline center">
+                            {!this.state.combineTags.filter(
+                              (data) => data._id === tag._id,
+                            ).length && (
+                              <i
+                                onClick={() => this.handleAdd(tag)}
+                                className="material-icons add"
+                              ></i>
+                            )}
+                            {tag.name}
+                          </div>
+                        </div>
+                      ),
+                  )}
                 </div>
               ) : (
                 ``
@@ -343,18 +349,12 @@ export class TagLeft extends PureComponent {
                     ? `Tags`
                     : `Results`}
                 </span>
-                {!this.state.combineResponse.length &&
-                  this.state.combineTags.map((tag, n) => (
-                    <div className="tagLeft_Inline_wrap long">
-                      <div className="tagLeft_Inline center">
-                        <i
-                          onClick={() => this.handleRemove(n)}
-                          className="material-icons remove"
-                        ></i>
-                        {tag.name}
-                      </div>
-                    </div>
-                  ))}
+                {!this.state.combineResponse.length && (
+                  <TagLeftComposeQuest
+                    tags={this.state.combineTags}
+                    remove={this.handleRemove}
+                  />
+                )}
                 <div className="tagLeft_combine_wrapper">
                   {this.state.combineResponse.length ? (
                     <TagLeftQuest
@@ -402,37 +402,13 @@ export default connect(
 
 export class TagLeftQuest extends PureComponent {
   render() {
-    const { tags, questions, click, search } = this.props.data;
+    const { questions, click, search } = this.props.data;
     const length = questions.length;
     return (
       <div
         onClick={(e) => click(e, questions, search)}
         className="tagLeftPane"
       >
-        {tags.length ? (
-          <div className="first">
-            {tags.map((data, n) =>
-              n < 5 ? (
-                <div className="tagLeft_Inline_wrap">
-                  <div className="tagLeft_Inline center">
-                    {data.name}
-                  </div>
-                </div>
-              ) : (
-                ''
-              ),
-            )}
-            {tags.length > 5 && (
-              <div className="tagLeft_Inline_wrap">
-                <div className="tagLeft_Inline center more">
-                  View {tags.length - 1} more...
-                </div>
-              </div>
-            )}
-          </div>
-        ) : (
-          ``
-        )}
         <div className="second">
           Questions: {length || ``}
           <span className="i material-icons keyboard_arrow_right"></span>
@@ -441,3 +417,32 @@ export class TagLeftQuest extends PureComponent {
     );
   }
 }
+
+const TagLeftComposeQuest = ({ tags, remove }) => {
+  return tags && tags.length > 0 ? (
+    <div className="tagLeftComposeQuest">
+      <div
+        onClick={() => console.log(`here`)}
+        className="tagLeftPane"
+      >
+        {tags.map((tag, index) => (
+          <div
+            onClick={() => remove(index)}
+            key={`TagLeftComposeQuest_${index}`}
+            className="second"
+          >
+            <i
+              onClick={() => remove(index)}
+              className="i material-icons remove"
+            ></i>
+            <span className="tagLeftComposeQuest_span">
+              {tag.name}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  ) : (
+    <div></div>
+  );
+};

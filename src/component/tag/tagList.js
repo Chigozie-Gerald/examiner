@@ -293,7 +293,7 @@ export class TagListPane extends PureComponent {
               <img
                 alt=""
                 className="img_div_cover"
-                src={`http://localhost:6060/api/loadImage/${data?.imageAddress}`}
+                src={`http://localhost:6060/api/loadImage/${data?.imageAddress}?resize=true`}
               />
             )}
           </div>

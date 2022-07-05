@@ -11,6 +11,8 @@ import { randomize } from '../../microComp/randomize';
 import { EditWrite } from './write';
 import { formatter, transform } from '../../microComp/formatter';
 import axios from 'axios';
+import { makeRipple } from '../../microComp/ripple';
+import WriteMicro from './writeMicro';
 const assert = require('assert');
 
 class WriteOpen extends PureComponent {
@@ -84,6 +86,7 @@ class WriteOpen extends PureComponent {
       () => this.props.deleteQuestion(ID),
     );
   };
+
   handleEditQuestion = (e) => {
     e.stopPropagation();
 
@@ -175,18 +178,30 @@ class WriteOpen extends PureComponent {
     });
   };
 
-  updateRand = (addition = false) => {
-    const rand = JSON.parse(
+  updateRand = (addition = 0, index) => {
+    let rand = JSON.parse(
       sessionStorage.getItem(`randomWriteArrayOpen`),
     ).arr;
-    if (!addition) {
-      rand.pop();
+    let newRand = [];
+    if (addition < 0) {
+      const oldValue = rand[index];
+      rand.forEach((num, ind) => {
+        if (num !== oldValue) {
+          if (num > oldValue) {
+            newRand.push(num - 1);
+          } else {
+            newRand.push(num);
+          }
+        }
+      });
     } else {
-      const len = rand.length;
-      rand.push(len);
+      const len = Array(addition)
+        .fill(0)
+        .map((val, ind) => rand.length + ind); //because
+      newRand = [...rand, ...len];
     }
     const RAND = JSON.stringify({
-      arr: rand,
+      arr: newRand,
     });
     return RAND;
   };
@@ -228,15 +243,34 @@ class WriteOpen extends PureComponent {
       });
   };
 
+  moveButton = (event) => {
+    if (!this.state.openEdit) {
+      if (event.keyCode === 37) {
+        //left
+        event.stopPropagation();
+        event.preventDefault();
+        this.handleDecrease();
+      } else if (event.keyCode === 39) {
+        //right
+        event.stopPropagation();
+        event.preventDefault();
+        this.handleIncrease();
+      } else if (event.keyCode === 13) {
+        this.setState({ clicked: !this.state.clicked });
+      }
+    }
+  };
+
   componentDidUpdate = async (prevProps) => {
     const { questions } = this.props;
     try {
       assert.deepStrictEqual(prevProps.questions, questions);
       return;
     } catch {
+      console.log(`heres`);
       let quest = [];
-      //If question i brought in isnt equal to present questions, change
-      //Current questions are
+      //If question I brought in isnt equal to present questions, change
+      //Current questions array
       if (JSON.parse(sessionStorage.getItem(`openDetails`)).combine) {
         let body = JSON.parse(
           sessionStorage.getItem(`openDetails`),
@@ -250,15 +284,15 @@ class WriteOpen extends PureComponent {
       }
 
       if (quest.length === 0) {
-        console.log(`leaving`);
         this.props.history.replace(`/tagList`);
       } else {
         if (this.state.questions.length !== quest.length) {
-          console.log(111111111111111111111111);
+          console.log(quest.length - this.state.questions.length);
           sessionStorage.setItem(
             `randomWriteArrayOpen`,
             this.updateRand(
-              quest.length > this.state.questions.length,
+              quest.length - this.state.questions.length,
+              this.state.number,
             ),
           );
         }
@@ -277,6 +311,7 @@ class WriteOpen extends PureComponent {
     }
   };
   componentDidMount = () => {
+    document.addEventListener('keydown', this.moveButton);
     //Set questions
     //Leave if no questions
 
@@ -288,25 +323,21 @@ class WriteOpen extends PureComponent {
       !this.props.location?.state?.openDetails?.search &&
       !this.props.location?.state?.openDetails?.combine
     ) {
-      console.log(`lerming`);
-      console.log(this.props.location?.state?.openDetails);
       this.props.history.replace(`/tagList`);
       return;
     }
     if (questions) {
       if (questions.length === 0) {
-        console.log(`leavinfdg`);
         this.props.history.replace(`/tagList`);
       } else {
         this.setState({ questions });
       }
     } else {
-      console.log(`leaving`);
       this.props.history.replace(`/tagList`);
     }
   };
   componentWillUnmount = () => {
-    console.log(`changerr`);
+    document.removeEventListener('keydown', this.moveButton);
   };
   handleDecrease = () => {
     if (this.state.number === 0) {
@@ -319,179 +350,33 @@ class WriteOpen extends PureComponent {
     }
   };
 
+  handleShowAnswer = (shouldShow) => {
+    this.setState({
+      clicked: shouldShow,
+    });
+  };
+
   render() {
     const { tags } = this.props;
 
     const num = this.state.randArr[this.state.number];
     const quest = this.state.questions[num];
     return (
-      <div className="examWrite_wrap fdCol">
-        {this.state.openEdit ? (
-          <EditWrite
-            data={{
-              handleOpenEdit: this.handleOpenEdit,
-              handleChange: this.handleChange,
-              state: this.state,
-              tags: tags,
-              getTag: this.getTag,
-              handleEditQuestion: this.handleEditQuestion,
-              handleTagSelect: this.handleTagSelect,
-            }}
-          />
-        ) : (
-          ''
-        )}
-        <div className="examWrite_header w100">
-          <div className="content">
-            <span>
-              <span>
-                {sessionStorage.getItem(`allQuest`) === `true`
-                  ? `All Questions`
-                  : quest?.tag?.name}
-              </span>
-            </span>
-          </div>
-          <Link
-            to={{ pathname: '/tagList' }}
-            className="Link inline auto examLogin_link"
-          >
-            {/*<button className="examLogin_btn">Home</button>*/}
-            <button className="btn">View Tags</button>
-          </Link>
-        </div>
-        <div className="examWrite_body top w100">
-          <div className="examWrite_left">
-            <div className="examWrite_left_box w100">
-              <div
-                onClick={this.handleOpenEdit}
-                className="examWrite_inner_float center"
-              >
-                <i className="material-icons edit"></i>
-              </div>
-              <div
-                onClick={this.handleOpenDelete}
-                className="examWrite_inner_float two center"
-              >
-                <div
-                  className={`examWrite_inner_delete_pane ${
-                    this.state.openDelete ? '' : 'noShow'
-                  }`}
-                >
-                  <p>Are you sure you want to delete?</p>
-                  <span>
-                    <button
-                      onClick={(e) =>
-                        this.handleDeleteQuestion(
-                          e,
-                          this.state.questions[num]._id,
-                        )
-                      }
-                      className="btn"
-                    >
-                      Delete
-                    </button>
-                  </span>
-                </div>
-                <i className="material-icons close"></i>
-              </div>
-              <div className="examWrite_L_header">
-                Question {this.state.number + 1} of{' '}
-                {this.state.questions.length}
-              </div>
-              <div className="examWrite_L_body">
-                {this.state.questions.length > 0
-                  ? this.state.questions[num]?.title
-                  : ''}
-              </div>
-              <div className="examWrite_L_image">
-                <div className="examWrite_L_image_inner">
-                  {quest?.imageAddress && (
-                    <img
-                      alt=""
-                      className="img_div_cover"
-                      src={`http://localhost:6060/api/loadImage/${quest.imageAddress}`}
-                    />
-                  )}
-                </div>
-              </div>
-              <div className="examWrite_L_btn">
-                <button
-                  onClick={() =>
-                    this.setState({ clicked: !this.state.clicked })
-                  }
-                  className="examLogin_btn next btn"
-                >
-                  {this.state.clicked ? 'Hide' : 'View'} Answer
-                </button>
-              </div>
-            </div>
-          </div>
-          <div
-            className={`examWrite_right ${
-              !this.state.clicked ? '' : 'active'
-            }`}
-          >
-            {this.state.questions.length > 0
-              ? formatter(this.state.questions[num]?.details).map(
-                  (data, n) => (
-                    <p key={`formatter_key${n}`}>
-                      {transform(data).map((txt, m) => {
-                        if (typeof txt === `object`) {
-                          return txt.format === `bold` ? (
-                            <b key={`formatter_key_bold_${m}`}>
-                              {txt.text.replace(/_/g, ` `)}
-                            </b>
-                          ) : (
-                            <span
-                              style={{ textDecoration: 'underline' }}
-                            >
-                              {txt.text.replace(/_/g, ` `)}
-                            </span>
-                          );
-                        } else {
-                          return txt;
-                        }
-                      })}
-                      <br />
-                    </p>
-                  ),
-                )
-              : ''}
-          </div>
-        </div>
-        <div className="examWrite_body second w100">
-          <div className="examWrite_left">
-            <div className="examWrite_left_inner one">
-              {this.state.number !== 0 && (
-                <>
-                  <span
-                    onClick={this.handleDecrease}
-                    className="center"
-                  >
-                    <i className="material-icons keyboard_arrow_left"></i>
-                  </span>
-                  Prev
-                </>
-              )}
-            </div>
-            <div className="examWrite_left_inner two">
-              {this.state.number !==
-                this.state.questions.length - 1 && (
-                <>
-                  Next
-                  <span
-                    onClick={this.handleIncrease}
-                    className="center"
-                  >
-                    <i className="material-icons keyboard_arrow_right"></i>
-                  </span>
-                </>
-              )}
-            </div>
-          </div>
-          <div className="examWrite_right"></div>
-        </div>
-      </div>
+      <WriteMicro
+        tags={tags}
+        handleOpenEdit={this.handleOpenEdit}
+        handleChange={this.handleChange}
+        state={this.state}
+        getTag={this.getTag}
+        handleEditQuestion={this.handleEditQuestion}
+        handleTagSelect={this.handleTagSelect}
+        handleDecrease={this.handleDecrease}
+        handleIncrease={this.handleIncrease}
+        quest={quest}
+        handleOpenDelete={this.handleOpenDelete}
+        handleShowAnswer={this.handleShowAnswer}
+        handleDeleteQuestion={this.handleDeleteQuestion}
+      />
     );
   }
 }

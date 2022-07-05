@@ -359,9 +359,18 @@ Hence, this only happens when the Starnum value is not 0
     }
   };
 
+  collapser = (event) => {
+    if (event.ctrlKey && event.keyCode === 81) {
+      event.stopPropagation();
+      event.preventDefault();
+      this.expand(!this.state.collapse);
+    }
+  };
+
   assignRef = (e) => (this.container = e);
   assignBoxRef = (e) => (this.containerBox = e);
   componentDidMount() {
+    document.addEventListener('keydown', this.collapser);
     this.setState({
       Y: this.container.getBoundingClientRect().top,
     });
@@ -393,6 +402,7 @@ Hence, this only happens when the Starnum value is not 0
     }
   }
   componentWillUnmount() {
+    document.removeEventListener('keydown', this.collapser);
     window.removeEventListener(`mousemove`, this.mover);
   }
 

@@ -17,6 +17,7 @@ import {
 import QuestionTitle from '../create/questionTitle';
 import { randomize } from '../../microComp/randomize';
 import { makeRipple } from '../../microComp/ripple';
+import WriteMicro from './writeMicro';
 const assert = require('assert');
 
 class Write extends PureComponent {
@@ -74,8 +75,8 @@ class Write extends PureComponent {
     };
   }
 
-  handleTagSelect = (data) => {
-    this.setState({ editObj: { ...this.state.editObj, tag: data } });
+  handleTagSelect = (tagId) => {
+    this.setState({ editObj: { ...this.state.editObj, tag: tagId } });
   };
   handleDeleteQuestion = (e, ID) => {
     e.stopPropagation();
@@ -243,7 +244,28 @@ class Write extends PureComponent {
       }
     }
   };
+
+  moveButton = (event) => {
+    if (!this.state.openEdit) {
+      if (event.keyCode === 37) {
+        //left
+        event.stopPropagation();
+        event.preventDefault();
+        this.handleDecrease();
+      } else if (event.keyCode === 39) {
+        //right
+        event.stopPropagation();
+        event.preventDefault();
+        this.handleIncrease();
+      } else if (event.keyCode === 13) {
+        this.setState({ clicked: !this.state.clicked });
+      }
+    }
+  };
+
   componentDidMount = () => {
+    document.addEventListener('keydown', this.moveButton);
+
     let tag =
       this.props.location?.state?.tag ||
       sessionStorage.getItem(`writeTag`);
@@ -273,6 +295,7 @@ class Write extends PureComponent {
     sessionStorage.removeItem(`writeLink`);
     sessionStorage.removeItem(`allQuest`);
     sessionStorage.removeItem(`randomWriteArray`);
+    document.removeEventListener('keydown', this.moveButton);
   };
   handleDecrease = () => {
     if (this.state.number === 0) {
@@ -285,234 +308,220 @@ class Write extends PureComponent {
     }
   };
 
-  clean = (text) => {
-    let single = /\*\*[A-z0-9\W]+\*\*/gi;
-    let line = /~~[A-z0-9\W]+~~/gi;
-    if (single.test(text)) {
-      text = text.split(`**`).join(``);
-    } else if (line.test(text)) {
-      text = text.split(`~~`).join(``);
-    } else {
-      text = text.split(`<<`).join(``);
-    }
-    return text;
-  };
-
-  transform = (text) => {
-    text = text.split(` `);
-    const arr = text.map((data) => {
-      let single = new RegExp(/\*\*[A-z0-9\W]+\*\*/gi);
-      let line = new RegExp(/~~[A-z0-9\W]+~~/gi);
-      let italicize = new RegExp(/<<[A-z0-9\W]+<</gi);
-      const bold = single.test(data);
-      const underline = line.test(data);
-      const italic = italicize.test(data);
-      if (!bold && !underline && !italic) {
-        return data + ` `;
-      } else {
-        return {
-          text: ` ` + this.clean(data) + ` `,
-          format: bold ? `bold` : underline ? `underline` : `italic`,
-        };
-      }
+  handleShowAnswer = (shouldShow) => {
+    this.setState({
+      clicked: shouldShow,
     });
-    return arr;
   };
 
-  formatter = (text) => {
-    return text.split(/(?:\r\n|\n)/g);
-  };
   render() {
     const { tags } = this.props;
     const num = this.state.randArr[this.state.number];
-
     const quest = this.state.questions[num];
     return (
-      <div className="examWrite_wrap fdCol">
-        {this.state.openEdit ? (
-          <EditWrite
-            data={{
-              handleOpenEdit: this.handleOpenEdit,
-              handleChange: this.handleChange,
-              state: this.state,
-              tags: tags,
-              getTag: this.getTag,
-              handleEditQuestion: this.handleEditQuestion,
-              handleTagSelect: this.handleTagSelect,
-            }}
-          />
-        ) : (
-          ''
-        )}
-        <div className="examWrite_header w100">
-          <div className="content">
-            <span>
-              <span>
-                {sessionStorage.getItem(`allQuest`) === `true`
-                  ? `All Questions`
-                  : this.state.questions[0]?.tag?.name}
-              </span>
-            </span>
-          </div>
-          <Link
-            to={{ pathname: '/tagList' }}
-            className="Link inline auto examLogin_link"
-          >
-            {/*<button className="examLogin_btn">Home</button>*/}
-            <button
-              onClick={(e) => makeRipple(e, true)}
-              className="btn"
-            >
-              View Tags
-            </button>
-          </Link>
-        </div>
-        <div className="examWrite_body top w100">
-          <div className="examWrite_left">
-            <div className="examWrite_left_box w100">
-              <div
-                onClick={this.handleOpenEdit}
-                className="examWrite_inner_float center"
-              >
-                <i className="material-icons edit"></i>
-              </div>
-              <div
-                onClick={this.handleOpenDelete}
-                className="examWrite_inner_float two center"
-              >
-                <div
-                  className={`examWrite_inner_delete_pane ${
-                    this.state.openDelete ? '' : 'noShow'
-                  }`}
-                >
-                  <p>Are you sure you want to delete?</p>
-                  <span>
-                    <button
-                      onClick={(e) => {
-                        this.handleDeleteQuestion(
-                          e,
-                          this.state.questions[num]._id,
-                        );
-                      }}
-                      className="btn"
-                    >
-                      Delete
-                    </button>
-                  </span>
-                </div>
-                <i className="material-icons close"></i>
-              </div>
-              <div className="examWrite_L_header">
-                Question {this.state.number + 1} of{' '}
-                {this.state.questions.length}
-              </div>
-              <div className="examWrite_L_body">
-                {this.state.questions.length > 0
-                  ? this.state.questions[num]?.title
-                  : ''}
-              </div>
-              <div className="examWrite_L_image">
-                <div className="examWrite_L_image_inner">
-                  {quest?.imageAddress && (
-                    <img
-                      alt=""
-                      className="img_div_cover"
-                      src={`http://localhost:6060/api/loadImage/${quest.imageAddress}`}
-                    />
-                  )}
-                </div>
-              </div>
-              <div className="examWrite_L_btn">
-                <button
-                  onClick={(e) => {
-                    makeRipple(e);
-                    this.setState({ clicked: !this.state.clicked });
-                  }}
-                  className="examLogin_btn next btn"
-                >
-                  {this.state.clicked ? 'Hide' : 'View'} Answer
-                </button>
-              </div>
-            </div>
-          </div>
-          <div
-            className={`examWrite_right ${
-              !this.state.clicked ? '' : 'active'
-            }`}
-          >
-            {this.state.questions.length > 0
-              ? formatter(this.state.questions[num]?.details).map(
-                  (data, n) => {
-                    return (
-                      <p key={`formatter_key${n}`}>
-                        {transform(data).map((txt, m) => {
-                          if (typeof txt === `object`) {
-                            return txt.format === `bold` ? (
-                              <b key={`formatter_key_bold_${m}`}>
-                                {txt.text}
-                              </b>
-                            ) : txt.format === `underline` ? (
-                              <span
-                                key={`formatter_key_span_${m}`}
-                                style={{
-                                  textDecoration: 'underline',
-                                }}
-                              >
-                                {txt.text}
-                              </span>
-                            ) : (
-                              <span
-                                key={`formatter_key_italic_${m}`}
-                                style={{ fontStyle: 'italic' }}
-                              >
-                                {txt.text}
-                              </span>
-                            );
-                          } else {
-                            return txt;
-                          }
-                        })}
-                        <br />
-                      </p>
-                    );
-                  },
-                )
-              : ''}
-          </div>
-        </div>
-        <div className="examWrite_body second w100">
-          <div className="examWrite_left">
-            <div className="examWrite_left_inner one">
-              {this.state.number !== 0 && (
-                <>
-                  <span
-                    onClick={this.handleDecrease}
-                    className="center"
-                  >
-                    <i className="material-icons keyboard_arrow_left"></i>
-                  </span>
-                  Prev
-                </>
-              )}
-            </div>
-            <div className="examWrite_left_inner two">
-              {this.state.number !==
-                this.state.questions.length - 1 && (
-                <>
-                  Next
-                  <span
-                    onClick={this.handleIncrease}
-                    className="center"
-                  >
-                    <i className="material-icons keyboard_arrow_right"></i>
-                  </span>
-                </>
-              )}
-            </div>
-          </div>
-          <div className="examWrite_right"></div>
-        </div>
-      </div>
+      <WriteMicro
+        tags={tags}
+        handleOpenEdit={this.handleOpenEdit}
+        handleChange={this.handleChange}
+        state={this.state}
+        getTag={this.getTag}
+        handleEditQuestion={this.handleEditQuestion}
+        handleTagSelect={this.handleTagSelect}
+        handleDecrease={this.handleDecrease}
+        handleIncrease={this.handleIncrease}
+        quest={quest}
+        handleOpenDelete={this.handleOpenDelete}
+        handleShowAnswer={this.handleShowAnswer}
+        handleDeleteQuestion={this.handleDeleteQuestion}
+      />
+      // <div className="examWrite_wrap fdCol">
+      //   {this.state.openEdit ? (
+      //     <EditWrite
+      //       data={{
+      //         handleOpenEdit: this.handleOpenEdit,
+      //         handleChange: this.handleChange,
+      //         state: this.state,
+      //         tags: tags,
+      //         getTag: this.getTag,
+      //         handleEditQuestion: this.handleEditQuestion,
+      //         handleTagSelect: this.handleTagSelect,
+      //       }}
+      //     />
+      //   ) : (
+      //     ''
+      //   )}
+      //   <div className="examWrite_header w100">
+      //     <div className="content">
+      //       <span>
+      //         <span>
+      //           {sessionStorage.getItem(`allQuest`) === `true`
+      //             ? `All Questions`
+      //             : `Tag`}
+      //         </span>
+
+      //         <span className="write_type_tag">
+      //           {quest?.tag?.name || ``}
+      //         </span>
+      //       </span>
+      //     </div>
+      //     <Link
+      //       to={{ pathname: '/tagList' }}
+      //       className="Link inline auto examLogin_link"
+      //     >
+      //       <button
+      //         onClick={(e) => makeRipple(e, true)}
+      //         className="btn"
+      //       >
+      //         View Tags
+      //       </button>
+      //     </Link>
+      //   </div>
+      //   <div className="examWrite_body top w100">
+      //     <div className="examWrite_left">
+      //       <div className="examWrite_left_box w100">
+      //         <div
+      //           onClick={this.handleOpenEdit}
+      //           className="examWrite_inner_float center"
+      //         >
+      //           <i className="material-icons edit"></i>
+      //         </div>
+      //         <div
+      //           onClick={this.handleOpenDelete}
+      //           className="examWrite_inner_float two center"
+      //         >
+      //           <div
+      //             className={`examWrite_inner_delete_pane ${
+      //               this.state.openDelete ? '' : 'noShow'
+      //             }`}
+      //           >
+      //             <p>Are you sure you want to delete?</p>
+      //             <span>
+      //               <button
+      //                 onClick={(e) => {
+      //                   this.handleDeleteQuestion(
+      //                     e,
+      //                     this.state.questions[num]._id,
+      //                   );
+      //                 }}
+      //                 className="btn"
+      //               >
+      //                 Delete
+      //               </button>
+      //             </span>
+      //           </div>
+      //           <i className="material-icons close"></i>
+      //         </div>
+      //         <div className="examWrite_L_header">
+      //           Question {this.state.number + 1} of{' '}
+      //           {this.state.questions.length}
+      //         </div>
+      //         <div className="examWrite_L_body">
+      //           {this.state.questions.length > 0
+      //             ? this.state.questions[num]?.title
+      //             : ''}
+      //         </div>
+      //         <div className="examWrite_L_image">
+      //           <div className="examWrite_L_image_inner">
+      //             {quest?.imageAddress && (
+      //               <img
+      //                 alt=""
+      //                 className="img_div_cover"
+      //                 src={`http://localhost:6060/api/loadImage/${quest.imageAddress}`}
+      //               />
+      //             )}
+      //           </div>
+      //         </div>
+      //         <div className="examWrite_L_btn">
+      //           <button
+      //             onClick={(e) => {
+      //               makeRipple(e);
+      //               this.setState({ clicked: !this.state.clicked });
+      //             }}
+      //             className="examLogin_btn next btn"
+      //           >
+      //             {this.state.clicked ? 'Hide' : 'View'} Answer
+      //           </button>
+      //         </div>
+      //       </div>
+      //     </div>
+      //     <div
+      //       className={`examWrite_right ${
+      //         !this.state.clicked ? '' : 'active'
+      //       }`}
+      //     >
+      //       {this.state.questions.length > 0
+      //         ? formatter(this.state.questions[num]?.details).map(
+      //             (data, n) => {
+      //               return (
+      //                 <p key={`formatter_key${n}`}>
+      //                   {transform(data).map((txt, m) => {
+      //                     if (typeof txt === `object`) {
+      //                       return txt.format === `bold` ? (
+      //                         <b key={`formatter_key_bold_${m}`}>
+      //                           {txt.text}
+      //                         </b>
+      //                       ) : txt.format === `underline` ? (
+      //                         <span
+      //                           key={`formatter_key_span_${m}`}
+      //                           style={{
+      //                             textDecoration: 'underline',
+      //                           }}
+      //                         >
+      //                           {txt.text}
+      //                         </span>
+      //                       ) : (
+      //                         <span
+      //                           key={`formatter_key_italic_${m}`}
+      //                           style={{ fontStyle: 'italic' }}
+      //                         >
+      //                           {txt.text}
+      //                         </span>
+      //                       );
+      //                     } else {
+      //                       return txt;
+      //                     }
+      //                   })}
+      //                   <br />
+      //                 </p>
+      //               );
+      //             },
+      //           )
+      //         : ''}
+      //     </div>
+      //   </div>
+      //   <div className="examWrite_body second w100">
+      //     <div className="examWrite_left">
+      //       <div className="examWrite_left_inner one">
+      //         {this.state.number !== 0 && (
+      //           <>
+      //             <span
+      //               onClick={this.handleDecrease}
+      //               className="center"
+      //             >
+      //               <i className="material-icons keyboard_arrow_left"></i>
+      //             </span>
+      //             Prev
+      //           </>
+      //         )}
+      //       </div>
+      //       <div className="examWrite_left_inner two">
+      //         {this.state.number !==
+      //           this.state.questions.length - 1 && (
+      //           <>
+      //             Next
+      //             <span
+      //               onClick={this.handleIncrease}
+      //               className="center"
+      //             >
+      //               <i className="material-icons keyboard_arrow_right"></i>
+      //             </span>
+      //           </>
+      //         )}
+      //       </div>
+      //     </div>
+      //     <div className="examWrite_right"></div>
+      //   </div>
+      // </div>
     );
   }
 }
@@ -588,8 +597,11 @@ export class EditWrite extends PureComponent {
     } = this.props.data;
 
     return (
-      <div className="examWrite_float">
-        <div className="examWrite_float_box">
+      <div onClick={handleOpenEdit} className="examWrite_float">
+        <div
+          onClick={(e) => e.stopPropagation()}
+          className="examWrite_float_box"
+        >
           <div
             onClick={handleOpenEdit}
             className="examWrite_inner_float center"

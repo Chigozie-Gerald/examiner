@@ -25,7 +25,7 @@ class Select extends PureComponent {
           {selected ? selected.name : holder}
         </div>
         <div
-          className={`selectBox_float_box ${
+          className={`selectBox_float_box scroller ${
             this.state.open ? 'open' : ''
           }`}
         >
