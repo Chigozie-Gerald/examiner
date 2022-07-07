@@ -107,6 +107,11 @@ exports.transformer = (text) => {
 };
 
 exports.formatter = (text = ``) => {
+  //Create bullet characters from `- `
+  text = text.replace(
+    /(?:\r\n|\n)-\s|(?:\r\n|\n)-|^(-\s)|^(-)/g,
+    `\n• `,
+  );
   //Split text based on line spaces
   return text.split(/(?:\r\n|\n)/g);
 };

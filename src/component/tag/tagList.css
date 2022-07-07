@@ -11,6 +11,9 @@
   box-shadow: var(--shadow);
   font-size: 0.8rem;
 }
+.tagList_left input[type='text']:focus {
+  outline: 3px solid hsla(238, 37%, 50%, 0.5) !important;
+}
 .tagList_left_head {
   display: flex;
   padding: 0;
@@ -62,7 +65,7 @@
   height: 1.6rem;
   border-radius: 0.25rem;
   flex: 1;
-  background-color: rgb(240, 240, 240);
+  background-color: rgb(245, 245, 245);
 }
 .tagList_search_span {
   cursor: pointer;

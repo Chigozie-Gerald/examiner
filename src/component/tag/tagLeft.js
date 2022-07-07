@@ -20,6 +20,7 @@ export class TagLeft extends PureComponent {
     //Combine
     searchTag: ``,
     searching: false,
+    combining: false,
     combine: false,
     tagRes: [],
     combineTags: [],
@@ -111,14 +112,11 @@ export class TagLeft extends PureComponent {
         },
       })
       .then((details) => {
-        this.setState(
-          {
-            tags: details.data.tags,
-            searching: false,
-            questions: details.data.questions,
-          },
-          () => console.log(this.state, `wer`),
-        );
+        this.setState({
+          tags: details.data.tags,
+          searching: false,
+          questions: details.data.questions,
+        });
       })
       .catch((err) => {
         this.setState({
@@ -139,6 +137,7 @@ export class TagLeft extends PureComponent {
         tagIds: this.state.combineTags.map((data) => data._id),
       };
       const BODY = JSON.stringify(body);
+      this.setState({ combining: true });
       axios
         .post('http://localhost:6060/api/combine', BODY, {
           headers: {
@@ -150,8 +149,8 @@ export class TagLeft extends PureComponent {
             combineResponse: details.data.questions,
             searchTag: ``,
             tagRes: [],
+            combining: false,
           });
-          console.log(details.data.questions);
         })
         .catch((err) => {
           this.setState({
@@ -159,6 +158,7 @@ export class TagLeft extends PureComponent {
             tagRes: [],
             combineTags: [],
             combineResponse: [],
+            combining: false,
           });
         });
     }
@@ -215,6 +215,7 @@ export class TagLeft extends PureComponent {
                   type="text"
                   name="search"
                   value={this.state.search}
+                  autoFocus
                   id=""
                   onChange={this.handleChange}
                 />
@@ -228,10 +229,6 @@ export class TagLeft extends PureComponent {
                   <i className="material-icons search"></i>
                 </button>
               </form>
-
-              {/*<span className="tagList_search_span center">
-              <i className="material-icons search"></i>
-            </span>*/}
             </div>
           </div>
         ) : (
@@ -254,11 +251,14 @@ export class TagLeft extends PureComponent {
                 value={this.state.hasImage}
                 type="checkbox"
                 name="hasImage"
-                id=""
+                id="hasImageId"
               />
-              <span className="tagList_left_label w100">
+              <label
+                htmlFor="hasImageId"
+                className="tagList_left_label w100"
+              >
                 Has Image
-              </span>
+              </label>
             </div>
             <div
               onClick={(e) => makeRipple(e, false, true, 70, true)}
@@ -308,7 +308,8 @@ export class TagLeft extends PureComponent {
                 <input
                   className="w100 center"
                   type="text"
-                  placeholder="Search Tags"
+                  autoFocus
+                  placeholder="Search Tags..."
                   value={this.state.searchTag}
                   name="searchTag"
                   onChange={this.handleChange}
@@ -349,12 +350,22 @@ export class TagLeft extends PureComponent {
                     ? `Tags`
                     : `Results`}
                 </span>
-                {!this.state.combineResponse.length && (
-                  <TagLeftComposeQuest
-                    tags={this.state.combineTags}
-                    remove={this.handleRemove}
-                  />
-                )}
+                {!this.state.combineResponse.length &&
+                  (this.state.combining ? (
+                    <div className="blinker_wrap">
+                      Combining{' '}
+                      <div className="drag_box_empty inline">
+                        <div className="blinkers one"></div>
+                        <div className="blinkers two"></div>
+                        <div className="blinkers three"></div>
+                      </div>
+                    </div>
+                  ) : (
+                    <TagLeftComposeQuest
+                      tags={this.state.combineTags}
+                      remove={this.handleRemove}
+                    />
+                  ))}
                 <div className="tagLeft_combine_wrapper">
                   {this.state.combineResponse.length ? (
                     <TagLeftQuest

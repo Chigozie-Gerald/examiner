@@ -199,12 +199,16 @@ Hence, this only happens when the Starnum value is not 0
         //And e cannot be gotten from other actions
         value = this.state.text;
       }
+      if (!value.trim()) {
+        this.setState({ searching: false });
+        return;
+      }
       const arr = this.state.tracker;
       if (update) {
         arr.splice(0, this.state.trackNum);
       }
       this.setState({ text: value }, () => {
-        const body = { text: this.state.text };
+        const body = { text: this.state.text.trim() };
         axios
           .post(
             'http://localhost:6060/api/dictSearch',
@@ -593,7 +597,14 @@ Hence, this only happens when the Starnum value is not 0
                   <div className="blinkers three"></div>
                 </React.Fragment>
               ) : this.state.text ? (
-                `Nothing was found`
+                !this.state.notFound &&
+                this.state.trackNum >=
+                  this.state.tracker.length - 1 &&
+                this.state.trackNum === 0 ? (
+                  ``
+                ) : (
+                  `Nothing was found`
+                )
               ) : (
                 `Start Searching...`
               )}

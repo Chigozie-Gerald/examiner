@@ -62,7 +62,8 @@
   align-items: center;
   border-bottom: 1px solid #ddd;
 }
-.tagList_left_head.check span {
+.tagList_left_head.check span,
+.tagList_left_head.check label {
   margin: 0;
   flex: 1;
   font-size: 0.7rem;
@@ -108,7 +109,6 @@
   padding: 0.75rem 0;
   padding-top: 0;
   flex: 1;
-  /* background-color: rgb(243, 243, 243); */
 }
 .tagList_combine_body_inner form {
   padding: 2px calc(0.75rem + 2px);
@@ -136,7 +136,6 @@
 }
 .tagList_combine_btn_wrap {
   padding: 0.75rem;
-  /* background-color: rgb(243, 243, 243); */
 }
 .tagList_combine_body_result_list {
   overflow-y: auto;
