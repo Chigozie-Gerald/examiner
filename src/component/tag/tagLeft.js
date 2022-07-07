@@ -26,6 +26,15 @@ export class TagLeft extends PureComponent {
     combineTags: [],
     combineResponse: [],
   };
+
+  tagCombineList = () => {
+    return this.state.tagRes.filter((tag) => {
+      return !this.state.combineTags.some(
+        (data) => data._id === tag._id,
+      );
+    });
+  };
+
   handleChange = (e) => {
     this.setState(
       {
@@ -39,7 +48,6 @@ export class TagLeft extends PureComponent {
         if (e.target.name === `search`) {
           return;
         } else {
-          console.log(this.state.tagRes);
           this.setState({ combineResponse: [] });
           this.handleFindTag(e);
         }
@@ -71,7 +79,6 @@ export class TagLeft extends PureComponent {
     });
   };
   handleCheck = (e) => {
-    console.log(this.state.hasImage);
     this.setState({ [e.target.name]: !this.state[e.target.name] });
   };
   handleAdd = (tag) => {
@@ -187,6 +194,7 @@ export class TagLeft extends PureComponent {
   };
 
   render() {
+    const tagCombineListArray = this.tagCombineList();
     return (
       <div className="tagList_left scroller fdCol">
         {!this.state.combine ? (
@@ -316,30 +324,22 @@ export class TagLeft extends PureComponent {
                 />
               </form>
 
-              {this.state.searchTag &&
-              this.state.tagRes.length &&
-              this.state.tagRes > this.state.combineTags ? (
+              {this.state.searchTag && tagCombineListArray.length ? (
                 <div className="tagList_combine_body_result_list scroller">
-                  {this.state.tagRes.map(
-                    (tag) =>
-                      !this.state.combineTags.filter(
-                        (data) => data._id === tag._id,
-                      ).length && (
-                        <div className="tagLeft_Inline_wrap long">
-                          <div className="tagLeft_Inline center">
-                            {!this.state.combineTags.filter(
-                              (data) => data._id === tag._id,
-                            ).length && (
-                              <i
-                                onClick={() => this.handleAdd(tag)}
-                                className="material-icons add"
-                              ></i>
-                            )}
-                            {tag.name}
-                          </div>
-                        </div>
-                      ),
-                  )}
+                  {tagCombineListArray.map((tag, index) => (
+                    <div
+                      key={index}
+                      className="tagLeft_Inline_wrap long"
+                    >
+                      <div className="tagLeft_Inline center">
+                        <i
+                          onClick={() => this.handleAdd(tag)}
+                          className="material-icons add"
+                        ></i>
+                        {tag.name}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               ) : (
                 ``
@@ -432,10 +432,7 @@ export class TagLeftQuest extends PureComponent {
 const TagLeftComposeQuest = ({ tags, remove }) => {
   return tags && tags.length > 0 ? (
     <div className="tagLeftComposeQuest">
-      <div
-        onClick={() => console.log(`here`)}
-        className="tagLeftPane"
-      >
+      <div className="tagLeftPane">
         {tags.map((tag, index) => (
           <div
             onClick={() => remove(index)}

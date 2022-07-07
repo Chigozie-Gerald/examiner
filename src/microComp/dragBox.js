@@ -304,7 +304,6 @@ Hence, this only happens when the Starnum value is not 0
             )}px`;
           } else {
             if (collapse) {
-              console.log(`here`);
               this.container.style.height = `3.4rem`;
             } else {
               this.container.style.height = `10rem`;
@@ -627,11 +626,10 @@ Hence, this only happens when the Starnum value is not 0
                       ...this.state.rawResult,
                       added: true,
                     };
-                    console.log(added, this.state.rawResult);
                     this.setState({ rawResult: { ...added } });
                     this.handleFav();
                   } else {
-                    console.log(`Cannot add`);
+                    return;
                   }
                 }}
               >
