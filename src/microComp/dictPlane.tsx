@@ -16,15 +16,18 @@ import { createQuestion, createTag } from '../redux/create/create';
 type tag = { _id: string; name: string; imageAddress: string };
 const DictPlane = ({
   tags,
+  openEdit,
   createQuestion,
   createTag,
 }: {
   tags: tag[];
+  openEdit: boolean;
   createQuestion: (data: any) => void;
   createTag: (data: any) => void;
 }) => {
   const assignRef = useRef<HTMLDivElement>(null);
   const assignBoxRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const [nextFnc, setNextFnc] = useState<{
     getTag: (...args: string[]) => tag[];
     title: string;
@@ -121,6 +124,20 @@ const DictPlane = ({
       return arr;
     }
   };
+
+  const preventBlur = () => {
+    if (!openEdit) {
+      inputRef.current?.focus();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('keydown', preventBlur);
+
+    return () => {
+      document.removeEventListener('keydown', preventBlur);
+    };
+  }, [openEdit]);
 
   const handleSearch = (
     e: React.FormEvent<HTMLFormElement> | MouseEvent | undefined,
@@ -294,6 +311,7 @@ Hence, this only happens when the Starnum value is not 0
         >
           <input
             type="text"
+            ref={inputRef}
             onChange={handleChange}
             placeholder="Dictionary"
             className="dragBox_input"

@@ -84,6 +84,7 @@ const WriteMicro = ({
         ''
       )}
       <div className="examWrite_header w100">
+        <div className="examWrite_dict_wrapper"></div>
         <div className="content">
           <span>
             <span>
@@ -112,7 +113,7 @@ const WriteMicro = ({
       <div className="examWrite_body top w100">
         <div className="examWrite_dict_wrapper">
           <div className="examWrite_dict_container">
-            <DictPlane />
+            <DictPlane openEdit={state.openEdit} />
           </div>
         </div>
         <div className="examWrite_left">

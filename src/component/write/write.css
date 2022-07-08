@@ -1,7 +1,8 @@
 .examWrite_header {
   height: var(--height);
   height: 48px !important;
-  padding: 0 1rem;
+  padding-left: 10vmax;
+  padding-right: 1rem;
   align-items: center;
   display: flex;
   align-items: center;
@@ -11,7 +12,6 @@
 }
 .examWrite_header .content {
   flex: 1;
-  padding-left: 10vmax;
 }
 .examWrite_right b {
   font-weight: 600;
@@ -51,6 +51,9 @@ br {
   background-color: #ddd;
 }
 @media (min-width: 1000px) {
+  .examWrite_header {
+    padding-left: 5vmax;
+  }
   .examWrite_wrap {
     --totalWidth: 90vmax;
     --BigWidth: 35vmax;
@@ -64,6 +67,9 @@ br {
   }
 }
 @media (min-width: 1200px) {
+  .examWrite_header {
+    padding-left: 5vmax;
+  }
   .examWrite_wrap {
     --totalWidth: 90vmax;
     --BigWidth: 40vmax;
