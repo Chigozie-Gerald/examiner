@@ -125,9 +125,15 @@ const DictPlane = ({
     }
   };
 
-  const preventBlur = () => {
+  const preventBlur = (event: KeyboardEvent) => {
     if (!openEdit) {
-      inputRef.current?.focus();
+      const isForbidden =
+        event.keyCode === 37 ||
+        event.keyCode === 39 ||
+        event.keyCode === 13;
+      if (!isForbidden) {
+        inputRef.current?.focus();
+      }
     }
   };
 
