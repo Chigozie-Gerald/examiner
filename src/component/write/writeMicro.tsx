@@ -5,6 +5,7 @@ import { makeRipple } from '../../microComp/ripple';
 import { EditWrite } from './write';
 //@ts-ignore
 import { Link, withRouter } from 'react-router-dom';
+import DictPlane from '../../microComp/dictPlane';
 
 type question = {
   _id: string;
@@ -109,6 +110,11 @@ const WriteMicro = ({
         </Link>
       </div>
       <div className="examWrite_body top w100">
+        <div className="examWrite_dict_wrapper">
+          <div className="examWrite_dict_container">
+            <DictPlane />
+          </div>
+        </div>
         <div className="examWrite_left">
           <div className="examWrite_left_box w100">
             <div
@@ -222,6 +228,7 @@ const WriteMicro = ({
         </div>
       </div>
       <div className="examWrite_body second w100">
+        <div className="examWrite_dict_wrapper"></div>
         <div className="examWrite_left">
           <div className="examWrite_left_inner one">
             {state.number !== 0 && (

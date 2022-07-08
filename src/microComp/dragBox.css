@@ -1,19 +1,25 @@
 .dragBox_wrap {
-  position: fixed;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  background-color: rgb(255, 255, 255);
+  border-radius: 0.25rem;
+  transition: height 500ms ease-in;
+  text-align: center;
+}
+.dragBox_wrap.movable {
+  position: fixed;
   bottom: 1rem;
   left: 1rem;
   height: 10rem;
   width: 20rem;
-  background-color: rgb(255, 255, 255);
   border: 2px solid rgb(211, 211, 211);
-  border-radius: 0.25rem;
-  transition: height 500ms ease-in;
-  /*padding: 0.25rem;*/
   z-index: 999999999;
-  text-align: center;
+}
+.dragBox_wrap.placed {
+  position: static;
+  height: 100%;
+  flex: 1;
 }
 .dragBox_header {
   background-color: #34a853;
@@ -172,7 +178,8 @@
 .dragBox_bottom_left i:hover {
   color: #ffffff;
 }
-.dragBox_bottom_left i[disabled] {
+.dragBox_bottom_left i[disabled],
+.dragBox_bottom_left i.navigator_disabled {
   color: rgba(255, 255, 255, 0.272);
   cursor: not-allowed;
 }

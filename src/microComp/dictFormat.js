@@ -1,4 +1,8 @@
-exports.singularize = (text, startVal = false, render = false) => {
+export const singularize = (
+  text,
+  startVal = false,
+  render = false,
+) => {
   //Render is used when putting into question bank
   //Gets the second to last value should a pipe separate texts
   //Only put text with info format around parentheses
@@ -18,11 +22,11 @@ exports.singularize = (text, startVal = false, render = false) => {
   }
 };
 
-exports.resolveMult = (newStr, both, render = false) => {
+export const resolveMult = (newStr, both, render = false) => {
   //Render is used to parsed text to be displayed in question bank
 
   //For nested formatters
-  newStr = this.singularize(
+  newStr = singularize(
     newStr.substr(2, newStr.length - 4),
     true,
     render,
@@ -31,7 +35,7 @@ exports.resolveMult = (newStr, both, render = false) => {
   //Removes the pipes if any, performs a transfor which return an
   //...array instead of an object or string
   //This will be flattened in the final transform return
-  return this.transform(newStr).map((data) => {
+  return transform(newStr).map((data) => {
     if (typeof data === `object`) {
       data.both = 1;
       //the both marker above marks the section for double formatting
@@ -55,16 +59,16 @@ exports.resolveMult = (newStr, both, render = false) => {
   });
 };
 
-exports.clean = (text, info, render = false) => {
+export const clean = (text, info, render = false) => {
   //removes the special characters
-  return this.singularize(
+  return singularize(
     text.replace(/\{\{|\[\[|\]\]|\}\}/g, ``),
     info,
     render,
   );
 };
 
-exports.transform = (text, render = false) => {
+export const transform = (text, render = false) => {
   //Render is used to parsed text to be displayed in question bank
 
   //Return matches for strings that
@@ -88,7 +92,7 @@ exports.transform = (text, render = false) => {
       return data;
     } else {
       if (link_info1 || link_info2) {
-        return this.resolveMult(
+        return resolveMult(
           data,
           link_info1 ? 1 : link_info2 ? 2 : -1,
           render,
@@ -98,13 +102,11 @@ exports.transform = (text, render = false) => {
         if (render) {
           const attach = link ? `**` : ``;
           return (
-            attach +
-            this.clean(data, link ? false : true, true) +
-            attach
+            attach + clean(data, link ? false : true, true) + attach
           );
         } else {
           return {
-            text: this.clean(data, link ? false : true),
+            text: clean(data, link ? false : true),
             format: link ? `link` : info ? `info` : ``,
             both: -1,
           };
@@ -112,11 +114,12 @@ exports.transform = (text, render = false) => {
       }
     }
   });
+  //string, {text:string, format:string, both:number}
   return arr.flat();
   //Nesetd formatters will always return an array instead of an object, hence the need to flatten the array
 };
 
-exports.formatter = (text) => {
+export const formatter = (text) => {
   //Split text based on line spaces
   return text.split(/(?:\r\n|\n)/g);
 };

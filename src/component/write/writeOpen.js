@@ -267,7 +267,6 @@ class WriteOpen extends PureComponent {
       assert.deepStrictEqual(prevProps.questions, questions);
       return;
     } catch {
-      console.log(`heres`);
       let quest = [];
       //If question I brought in isnt equal to present questions, change
       //Current questions array
@@ -287,7 +286,6 @@ class WriteOpen extends PureComponent {
         this.props.history.replace(`/tagList`);
       } else {
         if (this.state.questions.length !== quest.length) {
-          console.log(quest.length - this.state.questions.length);
           sessionStorage.setItem(
             `randomWriteArrayOpen`,
             this.updateRand(

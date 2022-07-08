@@ -18,7 +18,6 @@ export class DragBox extends PureComponent {
     nextFnc: null,
     searching: false,
     tracker: [],
-    pastTracker: [`value`, `index`],
     trackNum: 0,
     collapse: false,
     text: ``,
@@ -191,6 +190,7 @@ Hence, this only happens when the Starnum value is not 0
 
     this.setState({ searching: true }, () => {
       if (!value) {
+        //stop propgation from preventing short cuts from running
         e.preventDefault();
         //Sets the value to the state text value if action was from submit
         //This is because the submit action does not deliver any second parameter
@@ -411,7 +411,12 @@ Hence, this only happens when the Starnum value is not 0
 
   render() {
     return (
-      <div ref={this.assignRef} className="dragBox_wrap box">
+      <div
+        ref={this.assignRef}
+        className={`dragBox_wrap movable box ${
+          this.props.hide ? `noShow` : ``
+        }`}
+      >
         <div className="dragBox_header w100">
           <div className="dragBox_bottom_left">
             <i
@@ -438,7 +443,11 @@ Hence, this only happens when the Starnum value is not 0
               className="material-icons keyboard_arrow_right"
             ></i>
           </div>
-          <form action="POST" onSubmit={this.handleSearch}>
+          <form
+            action="POST"
+            onKeyDown={(e) => e.stopPropagation()}
+            onSubmit={this.handleSearch}
+          >
             <input
               autoFocus={true}
               type="text"

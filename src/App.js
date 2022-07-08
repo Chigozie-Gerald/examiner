@@ -16,12 +16,21 @@ import WriteOpen from './component/write/writeOpen';
 import DragBox from './microComp/dragBox';
 
 class App extends PureComponent {
+  state = {
+    hideDict: false,
+  };
   componentDidMount = () => {
     this.props.loadQuestion();
     this.props.loadTag();
     if (this.props.location.pathname === `/`) {
       this.props.history.push(`/tagList`);
     }
+  };
+
+  hideDictToggle = () => {
+    this.setState({
+      hideDict: !this.state.hideDict,
+    });
   };
 
   render() {
@@ -36,9 +45,19 @@ class App extends PureComponent {
       { route: 'writeOpen', comp: WriteOpen },
     ];
     const height = 3;
+    const blackListDictionay = ['/writeOpen', '/write'];
     return (
       <>
-        <DragBox />
+        <DictSwitch
+          hideDictToggle={this.hideDictToggle}
+          hideDict={this.state.hideDict}
+        />
+        <DragBox
+          hide={
+            this.state.hideDict ||
+            blackListDictionay.includes(this.props.location.pathname)
+          }
+        />
         <Switch>
           <Route exact path="/" render={(props) => <AppCont />} />
           {/* Dynamically creating routes */}
@@ -103,3 +122,20 @@ class AppCont extends PureComponent {
     );
   }
 }
+
+const DictSwitch = ({ hideDictToggle, hideDict }) => {
+  return (
+    <div className="dict_switch_wrapper box center">
+      <div
+        className={`dict_switch_block ${hideDict ? `` : `active`}`}
+      >
+        <div
+          onClick={hideDictToggle}
+          className={`dict_switch_roll box ${
+            hideDict ? `` : `active`
+          }`}
+        ></div>
+      </div>
+    </div>
+  );
+};
