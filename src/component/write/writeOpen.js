@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import './write.css';
 import '../account/login.css';
@@ -8,10 +8,7 @@ import {
   editQuestion,
 } from '../../redux/edit/editQuestion';
 import { randomize } from '../../microComp/randomize';
-import { EditWrite } from './write';
-import { formatter, transform } from '../../microComp/formatter';
 import axios from 'axios';
-import { makeRipple } from '../../microComp/ripple';
 import WriteMicro from './writeMicro';
 const assert = require('assert');
 

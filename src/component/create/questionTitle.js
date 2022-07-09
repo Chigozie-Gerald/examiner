@@ -4,25 +4,24 @@ import './questionTitle.css';
 const QuestionTitle = ({ data }) => {
   const [show, setShow] = useState(false);
 
-  const downButton = (event) => {
-    if (data?.labelFunc) {
-      if (event.ctrlKey && event.keyCode === 66) {
-        event.stopPropagation();
-        event.preventDefault();
-        data?.labelFunc();
-      } else if (event.ctrlKey && event.keyCode === 73) {
-        event.stopPropagation();
-        event.preventDefault();
-        data?.labelFunc(`<`);
-      } else if (event.ctrlKey && event.keyCode === 85) {
-        event.stopPropagation();
-        event.preventDefault();
-        data?.labelFunc(`~`);
-      }
-    }
-  };
-
   useEffect(() => {
+    const downButton = (event) => {
+      if (data?.labelFunc) {
+        if (event.ctrlKey && event.keyCode === 66) {
+          event.stopPropagation();
+          event.preventDefault();
+          data?.labelFunc();
+        } else if (event.ctrlKey && event.keyCode === 73) {
+          event.stopPropagation();
+          event.preventDefault();
+          data?.labelFunc(`<`);
+        } else if (event.ctrlKey && event.keyCode === 85) {
+          event.stopPropagation();
+          event.preventDefault();
+          data?.labelFunc(`~`);
+        }
+      }
+    };
     document.addEventListener('keydown', downButton);
 
     return () => {

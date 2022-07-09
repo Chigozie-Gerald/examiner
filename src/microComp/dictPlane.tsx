@@ -126,19 +126,24 @@ const DictPlane = ({
     }
   };
 
-  const preventBlur = (event: KeyboardEvent) => {
-    if (!openEdit) {
-      const isForbidden =
-        event.keyCode === 37 ||
-        event.keyCode === 39 ||
-        event.keyCode === 13;
-      if (!isForbidden) {
-        inputRef.current?.focus();
-      }
-    }
-  };
-
   useEffect(() => {
+    const preventBlur = (event: KeyboardEvent) => {
+      if (!openEdit) {
+        const key = event.key;
+        const isForbidden =
+          !(
+            key === `Backspace` ||
+            key === ` ` ||
+            (key.length === 1 && /[A-Za-z]/.test(key))
+          ) ||
+          event.altKey ||
+          event.ctrlKey ||
+          event.shiftKey;
+        if (!isForbidden) {
+          inputRef.current?.focus();
+        }
+      }
+    };
     document.addEventListener('keydown', preventBlur);
 
     return () => {
@@ -283,7 +288,13 @@ Hence, this only happens when the Starnum value is not 0
         ]);
       }
     }
-  }, [tags]);
+  }, [
+    tags,
+    nextFnc,
+    createQuestion,
+    rawResult.title,
+    rawResult.details,
+  ]);
 
   const leftBlur = () => !notFound && trackNum >= tracker.length - 1;
   const rightBlur = () => trackNum === 0;

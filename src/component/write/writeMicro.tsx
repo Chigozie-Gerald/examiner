@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { formatter, transform } from '../../microComp/formatter';
 import { makeRipple } from '../../microComp/ripple';
