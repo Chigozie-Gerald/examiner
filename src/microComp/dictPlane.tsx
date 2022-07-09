@@ -35,6 +35,7 @@ const DictPlane = ({
     name: string;
   } | null>(null);
   const [searching, setSearching] = useState(false);
+  const [focused, setFocused] = useState(false);
   const [notFound, setNotFound] = useState(false);
   const [tracker, setTracker] = useState<string[]>([]);
   const [trackNum, setTrackNum] = useState(0);
@@ -288,7 +289,12 @@ Hence, this only happens when the Starnum value is not 0
   const rightBlur = () => trackNum === 0;
 
   return (
-    <div ref={assignRef} className="dragBox_wrap placed box">
+    <div
+      ref={assignRef}
+      className={`dragBox_wrap placed box ${
+        focused ? `focused` : ``
+      }`}
+    >
       <div className="dragBox_header w100">
         <div className="dragBox_bottom_left">
           <i
@@ -317,6 +323,8 @@ Hence, this only happens when the Starnum value is not 0
         >
           <input
             type="text"
+            onFocus={() => setFocused(true)}
+            onBlur={() => setFocused(false)}
             ref={inputRef}
             onChange={handleChange}
             placeholder="Dictionary"

@@ -21,6 +21,10 @@
   height: 100%;
   flex: 1;
 }
+.dragBox_wrap.placed.focused {
+  /* outline: 3px solid hsla(36, 91%, 45%, 0.677); */
+  outline: 3px solid hsla(136, 53%, 43%, 0.65);
+}
 .dragBox_header {
   background-color: #34a853;
   border-top-left-radius: inherit;
