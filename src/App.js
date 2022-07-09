@@ -17,7 +17,7 @@ import DragBox from './microComp/dragBox';
 
 class App extends PureComponent {
   state = {
-    hideDict: false,
+    hideDict: true,
   };
   componentDidMount = () => {
     this.props.loadQuestion();

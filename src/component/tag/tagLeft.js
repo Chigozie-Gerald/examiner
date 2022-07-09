@@ -331,11 +331,11 @@ export class TagLeft extends PureComponent {
                       key={index}
                       className="tagLeft_Inline_wrap long"
                     >
-                      <div className="tagLeft_Inline center">
-                        <i
-                          onClick={() => this.handleAdd(tag)}
-                          className="material-icons add"
-                        ></i>
+                      <div
+                        onClick={() => this.handleAdd(tag)}
+                        className="tagLeft_Inline center"
+                      >
+                        <i className="material-icons add"></i>
                         {tag.name}
                       </div>
                     </div>
@@ -439,10 +439,7 @@ const TagLeftComposeQuest = ({ tags, remove }) => {
             key={`TagLeftComposeQuest_${index}`}
             className="second"
           >
-            <i
-              onClick={() => remove(index)}
-              className="i material-icons remove"
-            ></i>
+            <i className="i material-icons remove"></i>
             <span className="tagLeftComposeQuest_span">
               {tag.name}
             </span>

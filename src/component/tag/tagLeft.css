@@ -82,21 +82,23 @@
   background-color: rgb(238, 238, 238);
   --height: 1.45rem;
   display: flex;
+  cursor: pointer;
   height: var(--height);
   border-radius: 0.25rem;
   padding: 0.35rem;
   font-size: 0.55rem;
   color: #565656;
   font-weight: 500;
+  transition: all 200ms ease;
+}
+.tagLeft_Inline:hover {
+  background-color: #ddd;
 }
 .tagLeft_Inline i {
   font-size: 0.8rem;
   border-radius: 50%;
   margin-right: 0.25rem;
   transition: var(--transition);
-}
-.tagLeft_Inline i:hover {
-  background-color: #ddd;
 }
 .tagLeft_Inline.more {
   color: var(--btnCol);
