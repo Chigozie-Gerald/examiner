@@ -30,7 +30,6 @@ const Select = ({
   const ref = useRef<HTMLDivElement>(null);
 
   const removeDropOnClick = (e: MouseEvent) => {
-    console.log(`drop`);
     if (ref.current && !ref.current.contains(e.target as Node)) {
       setOpen(false);
     }

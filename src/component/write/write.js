@@ -209,7 +209,6 @@ class Write extends PureComponent {
       const tag = sessionStorage.getItem(`writeTag`);
       const allQuest = sessionStorage.getItem(`allQuest`);
       if (allQuest === `true`) {
-        console.log(`all quest is try`);
         quest = questions;
       } else {
         quest = questions.filter(
@@ -218,7 +217,6 @@ class Write extends PureComponent {
       }
       if (quest.length === 0) {
         //Happens when all the questions have been deleted
-        console.log(this.state.randArr, `move update`);
         this.props.history.replace(`/tagList`);
       } else {
         if (this.state.questions.length !== quest.length) {
@@ -627,7 +625,6 @@ export class EditWrite extends PureComponent {
               title: 'Body',
               labelIcon: true,
               labelFunc: (stringMark = `*`) => {
-                console.log(`fordsn`);
                 const start = this.state.selected[0];
                 const stop = this.state.selected[1];
 
