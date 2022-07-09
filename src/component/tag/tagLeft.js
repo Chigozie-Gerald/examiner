@@ -5,6 +5,7 @@ import './tagLeft.css';
 import axios from 'axios';
 import { withRouter } from 'react-router-dom';
 import { makeRipple } from '../../microComp/ripple';
+import { formatter, transform } from '../../microComp/formatter';
 
 export class TagLeft extends PureComponent {
   constructor(props) {
@@ -17,6 +18,7 @@ export class TagLeft extends PureComponent {
     hasImage: false,
     tags: [],
     questions: [],
+    readOnlyShow: null,
     //Combine
     searchTag: ``,
     searching: false,
@@ -25,6 +27,13 @@ export class TagLeft extends PureComponent {
     tagRes: [],
     combineTags: [],
     combineResponse: [],
+  };
+
+  showReadOnlyDetails = (_id) => {
+    const id = _id === this.state.readOnlyShow ? null : _id;
+    this.setState({
+      readOnlyShow: id,
+    });
   };
 
   tagCombineList = () => {
@@ -195,6 +204,7 @@ export class TagLeft extends PureComponent {
 
   render() {
     const tagCombineListArray = this.tagCombineList();
+    const { readOnly } = this.props;
     return (
       <div className="tagList_left scroller fdCol">
         {!this.state.combine ? (
@@ -213,6 +223,7 @@ export class TagLeft extends PureComponent {
               className="tagList_left_search center"
             >
               <form
+                onKeyDown={(e) => e.stopPropagation()}
                 onSubmit={this.handleSearch}
                 autoComplete="off"
                 action=""
@@ -269,7 +280,7 @@ export class TagLeft extends PureComponent {
               </label>
             </div>
             <div
-              onClick={(e) => makeRipple(e, false, true, 70, true)}
+              // onClick={(e) => makeRipple(e, false, true, 70, true)}
               className="tagList_left_body"
             >
               <div
@@ -283,13 +294,23 @@ export class TagLeft extends PureComponent {
               </div>
 
               {this.state.questions.length ? (
-                <TagLeftQuest
-                  data={{
-                    click: this.Click,
-                    questions: this.state.questions,
-                    search: true,
-                  }}
-                />
+                readOnly ? (
+                  this.state.questions.map((question) => (
+                    <QuestionList
+                      question={question}
+                      readOnlyShow={this.state.readOnlyShow}
+                      showReadOnlyDetails={this.showReadOnlyDetails}
+                    />
+                  ))
+                ) : (
+                  <TagLeftQuest
+                    data={{
+                      click: this.Click,
+                      questions: this.state.questions,
+                      search: true,
+                    }}
+                  />
+                )
               ) : this.state.searching ? (
                 <div className="blinker_wrap">
                   Searching{' '}
@@ -428,6 +449,72 @@ export class TagLeftQuest extends PureComponent {
     );
   }
 }
+
+const QuestionList = ({
+  question,
+  readOnlyShow,
+  showReadOnlyDetails,
+}) => {
+  return (
+    <div className="left_q_list_wrapper box">
+      <div className="left_q_list_tag">
+        {question?.tag?.name || ``}
+      </div>
+      <div className="left_q_list_title">
+        <span>{question.title}</span>
+        <i
+          onClick={() => showReadOnlyDetails(question._id)}
+          className={`i material-icons keyboard_arrow_down ${
+            readOnlyShow === question._id ? `rotate` : ``
+          }`}
+        ></i>
+      </div>
+
+      <div
+        className={`left_q_list_details ${
+          readOnlyShow === question._id ? `` : `noShow`
+        }`}
+      >
+        {question?.details
+          ? formatter(question.details).map((data, n) => {
+              return (
+                <p key={`formatter_key${n}`}>
+                  {transform(data).map((txt, m) => {
+                    if (typeof txt === `object`) {
+                      return txt.format === `bold` ? (
+                        <b key={`formatter_key_bold_${m}`}>
+                          {txt.text}
+                        </b>
+                      ) : txt.format === `underline` ? (
+                        <span
+                          key={`formatter_key_span_${m}`}
+                          style={{
+                            textDecoration: 'underline',
+                          }}
+                        >
+                          {txt.text}
+                        </span>
+                      ) : (
+                        <span
+                          key={`formatter_key_italic_${m}`}
+                          style={{ fontStyle: 'italic' }}
+                        >
+                          {txt.text}
+                        </span>
+                      );
+                    } else {
+                      return txt;
+                    }
+                  })}
+                  <br />
+                </p>
+              );
+            })
+          : ''}
+      </div>
+    </div>
+  );
+};
 
 const TagLeftComposeQuest = ({ tags, remove }) => {
   return tags && tags.length > 0 ? (

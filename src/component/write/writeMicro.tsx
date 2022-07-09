@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { formatter, transform } from '../../microComp/formatter';
 import { makeRipple } from '../../microComp/ripple';
@@ -6,6 +6,9 @@ import { EditWrite } from './write';
 //@ts-ignore
 import { Link, withRouter } from 'react-router-dom';
 import DictPlane from '../../microComp/dictPlane';
+import Select from '../select/select';
+import TagLeft from '../tag/tagLeft';
+import CreateMicro from '../create/createMicro';
 
 type question = {
   _id: string;
@@ -37,6 +40,21 @@ type writeQuestionState = {
 
 type tag = { imageAddress: string; name: string; _id: string };
 
+const selectOptions = [
+  {
+    name: 'Dictionary',
+    _id: '1',
+  },
+  {
+    name: 'Search',
+    _id: '2',
+  },
+  {
+    name: 'Add Question',
+    _id: '3',
+  },
+];
+
 const WriteMicro = ({
   tags,
   handleOpenEdit,
@@ -66,6 +84,13 @@ const WriteMicro = ({
   handleDeleteQuestion: (event: React.MouseEvent, ID: string) => void;
   handleShowAnswer: (shouldShow: boolean) => void;
 }) => {
+  const [selected, setSelected] = useState(selectOptions[0]);
+
+  const changeSelected = (_id: string) => {
+    const newSelect = selectOptions.find((opt) => opt._id === _id);
+    setSelected(newSelect || selected);
+  };
+
   return (
     <div className="examWrite_wrap fdCol">
       {state.openEdit ? (
@@ -84,7 +109,18 @@ const WriteMicro = ({
         ''
       )}
       <div className="examWrite_header w100">
-        <div className="examWrite_dict_wrapper"></div>
+        <div className="examWrite_extra_wrapper toFront">
+          <Select
+            data={{
+              selected: selected,
+              func: (_id: string) => {
+                changeSelected(_id);
+              },
+              holder: 'Select an Option',
+              data: selectOptions,
+            }}
+          />
+        </div>
         <div className="content">
           <span>
             <span>
@@ -111,9 +147,28 @@ const WriteMicro = ({
         </Link>
       </div>
       <div className="examWrite_body top w100">
-        <div className="examWrite_dict_wrapper">
-          <div className="examWrite_dict_container">
+        <div className="examWrite_extra_wrapper">
+          <div
+            className={`examWrite_extra_container ${
+              selected.name !== `Dictionary` ? `noShow` : ``
+            }`}
+          >
             <DictPlane openEdit={state.openEdit} />
+          </div>
+          <div
+            className={`examWrite_extra_container ${
+              selected.name !== `Search` ? `noShow` : ``
+            }`}
+          >
+            {/* @ts-ignore */}
+            <TagLeft readOnly={true} />
+          </div>
+          <div
+            className={`examWrite_extra_container ${
+              selected.name !== 'Add Question' ? `noShow` : ``
+            }`}
+          >
+            <CreateMicro />
           </div>
         </div>
         <div className="examWrite_left">
@@ -229,7 +284,7 @@ const WriteMicro = ({
         </div>
       </div>
       <div className="examWrite_body second w100">
-        <div className="examWrite_dict_wrapper"></div>
+        <div className="examWrite_extra_wrapper"></div>
         <div className="examWrite_left">
           <div className="examWrite_left_inner one">
             {state.number !== 0 && (
@@ -265,4 +320,5 @@ const mapStateToProps = (state: { loader: { tags: tag[] } }) => ({
 export default connect(
   mapStateToProps,
   undefined,
+  //@ts-ignore
 )(withRouter(WriteMicro));

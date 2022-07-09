@@ -34,7 +34,6 @@ exports.handleFormat = (
   onChange,
   func,
 ) => {
-  console.log(`formatiing`);
   if (start === stop) {
     return;
   }
@@ -65,10 +64,6 @@ exports.handleFormat = (
 };
 
 exports.handleSelected = (start, stop, func, details) => {
-  console.log({
-    selected: [start, stop],
-    textSelect: details.substring(start, stop),
-  });
   if (start !== stop) {
     func({
       selected: [start, stop],

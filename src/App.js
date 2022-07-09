@@ -127,6 +127,7 @@ const DictSwitch = ({ hideDictToggle, hideDict }) => {
   return (
     <div className="dict_switch_wrapper box center">
       <div
+        onClick={hideDictToggle}
         className={`dict_switch_block ${hideDict ? `` : `active`}`}
       >
         <div

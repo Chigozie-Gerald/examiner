@@ -99,21 +99,7 @@ class TagList extends PureComponent {
           {},{},{}
         </div>
         */}
-        <TagLeft
-          data={{
-            handleAddQuest: this.handleAddQuest,
-            handleEditTag: this.handleEditTag,
-            handleChange: this.handleChange,
-            handleEdit: this.handleEdit,
-            Click: this.Click,
-            state: this.state,
-            editText: this.state.editText,
-            editOpen: this.state.editOpen,
-            questions: questions,
-            allQuest: true,
-            n: 0,
-          }}
-        />
+        <TagLeft />
         <div className="tagList_right">
           {tags.length > 0 ? (
             <div className="tagList_box fdCol">

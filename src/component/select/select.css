@@ -1,4 +1,5 @@
 .selectWrap {
+  background-color: #fff;
   border: 1px solid #eee;
   box-shadow: var(--shadow);
   border-radius: 0.25rem;
@@ -9,7 +10,13 @@
   --width: 14rem;
   max-width: var(--width);
 }
+.selectWrap.fill {
+  --width: 100%;
+  max-width: var(--width);
+  width: var(--width);
+}
 .selectBox {
+  height: 2rem;
   font-style: italic;
   color: rgb(171, 171, 171);
   width: var(--width);
@@ -23,6 +30,7 @@
 }
 .selectBox_float_box {
   height: 0;
+  max-height: 0;
   background-color: #fff;
   overflow: hidden;
   top: 2rem;
@@ -31,8 +39,8 @@
 }
 .selectBox_float {
   cursor: pointer;
-  border-top: 1px solid #eee;
-  padding: 0.5rem;
+  border-radius: 0.25rem;
+  padding: 0.25rem 0.5rem;
   font-size: 0.7rem;
   transition: var(--transition);
 }
@@ -54,19 +62,24 @@
 }
 .selectBox_float_box.open {
   max-height: 10rem;
+  height: fit-content;
+  padding: 0.25rem;
+  padding-top: 0;
   overflow-y: auto;
-  animation-timing-function: ease-in-out;
+  animation-timing-function: ease;
   animation-name: slideDown;
-  animation-duration: 400ms;
+  animation-duration: 300ms;
   animation-fill-mode: both;
 }
 @keyframes slideDown {
   from {
-    height: 0;
+    max-height: 0;
     opacity: 0.4;
+    overflow: hidden;
   }
   to {
-    height: 10rem;
+    max-height: 10rem;
     opacity: 1;
+    overflow: auto;
   }
 }

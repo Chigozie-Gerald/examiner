@@ -31,6 +31,9 @@
   z-index: 9;
   text-align: center;
 }
+.toFront {
+  z-index: 9;
+}
 .white {
   background-color: rgb(224, 224, 224) !important;
 }
@@ -247,6 +250,7 @@ button {
 }
 .dict_switch_block {
   --size: 10px;
+  cursor: pointer;
   flex: 1;
   display: flex;
   align-items: center;

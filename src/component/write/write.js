@@ -650,7 +650,6 @@ export class EditWrite extends PureComponent {
           />
           <textarea
             className="createInputField"
-            type="text"
             name="details"
             ref={this.textareaRef}
             id=""

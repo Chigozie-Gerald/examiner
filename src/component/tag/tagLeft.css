@@ -57,7 +57,7 @@
 }
 .tagList_left_head.check {
   display: flex;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem var(--pad);
   padding-top: 0;
   align-items: center;
   border-bottom: 1px solid #ddd;
@@ -108,19 +108,19 @@
   position: relative;
 }
 .tagList_combine_body_inner {
-  padding: 0.75rem 0;
+  padding: var(--pad) 0;
   padding-top: 0;
   flex: 1;
 }
 .tagList_combine_body_inner form {
-  padding: 2px calc(0.75rem + 2px);
+  padding: 2px calc(var(--pad) + 2px);
   background-color: #fff;
 }
 .tagList_combine_body_inner input {
   height: 1.6rem;
   border-radius: 0.8rem;
   border: 1px solid #ddd;
-  padding-right: 0.75rem;
+  padding-right: var(--pad);
   padding-left: 1rem;
   background-color: transparent;
   margin-bottom: 0.5rem;
@@ -137,11 +137,11 @@
   position: relative;
 }
 .tagList_combine_btn_wrap {
-  padding: 0.75rem;
+  padding: var(--pad);
 }
 .tagList_combine_body_result_list {
   overflow-y: auto;
-  margin: 0.75rem 0.75rem;
+  margin: var(--pad) var(--pad);
   margin-top: 0;
   height: auto;
   max-height: 15rem;
@@ -155,7 +155,7 @@
   box-shadow: var(--ltShadow);
 }
 .tagList_combine_body_result {
-  padding: 0.5rem 0.75rem;
+  padding: 0.5rem var(--pad);
   height: auto;
   flex: 1;
   overflow-y: auto;
@@ -203,4 +203,57 @@
   font-size: 0.7rem;
   display: flex;
   margin-left: 0.6rem;
+}
+
+.left_q_list_wrapper {
+  margin-bottom: var(--pad);
+  padding: var(--pad);
+  font-size: 0.7rem;
+}
+.left_q_list_tag {
+  color: var(--primary);
+  font-size: 0.65rem;
+  font-weight: 600;
+  margin-bottom: calc(var(--pad) / 2);
+}
+.left_q_list_title {
+  display: flex;
+  margin-bottom: var(--pad);
+}
+.left_q_list_title > span {
+  align-self: center;
+  flex: 1;
+}
+.left_q_list_title > i {
+  align-self: center;
+  background-color: rgb(249, 249, 249);
+  border-radius: 50%;
+  margin: 0 var(--pad);
+  font-size: 1.3rem;
+}
+.left_q_list_title > i {
+  align-self: center;
+  background-color: rgb(249, 249, 249);
+  border-radius: 50%;
+  margin: 0 var(--pad);
+  font-size: 1.3rem;
+  transition: all 200ms ease;
+}
+.left_q_list_title > i.rotate {
+  transform: rotateZ(180deg);
+}
+.left_q_list_title > i:hover {
+  background-color: #eee;
+}
+.left_q_list_details {
+  font-size: 0.63rem;
+  background-color: rgb(249, 249, 249);
+  border-radius: inherit;
+  padding: var(--pad);
+}
+.left_q_list_details p {
+  margin: 00.125rem 0;
+}
+.left_q_list_details b {
+  font-weight: 600;
 }

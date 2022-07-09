@@ -336,6 +336,11 @@ Hence, this only happens when the Starnum value is not 0
             type="text"
             onFocus={() => setFocused(true)}
             onBlur={() => setFocused(false)}
+            onKeyDown={(event) => {
+              if (event.key === `Shift`) {
+                inputRef.current?.blur();
+              }
+            }}
             ref={inputRef}
             onChange={handleChange}
             placeholder="Dictionary"
@@ -484,20 +489,30 @@ Hence, this only happens when the Starnum value is not 0
                 `Nothing was found`
               )
             ) : (
-              `Start Searching...`
+              <div className="center">
+                <div className="dicSearch_init">
+                  <img
+                    src={
+                      require(`../assets/dictLogoBlob.png`).default
+                    }
+                    alt=""
+                    className="img_div_contain"
+                  />
+                </div>
+              </div>
             )}
           </div>
         )}
       </div>
       <div className="dragBox_bottom w100">
         <div className="dragBox_bottom_btn_wrap">
-          {rawResult.details && (
+          {rawResult.details.length ? (
             <div
               className={`dragBox_bottom_btn center box ${
                 rawResult.added ? `mute` : ``
               }`}
               onClick={() => {
-                if (!rawResult.added && rawResult.details) {
+                if (!rawResult.added) {
                   const added = {
                     ...rawResult,
                     added: true,
@@ -511,6 +526,8 @@ Hence, this only happens when the Starnum value is not 0
             >
               {rawResult.added ? `Already Added` : `Add`}
             </div>
+          ) : (
+            ``
           )}
         </div>
       </div>

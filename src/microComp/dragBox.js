@@ -22,7 +22,7 @@ export class DragBox extends PureComponent {
     collapse: false,
     text: ``,
     result: [],
-    rawResult: { title: ``, details: ``, added: false },
+    rawResult: { title: ``, details: [], added: false },
     expand: false,
     X: null,
     Y: null,
@@ -621,16 +621,13 @@ Hence, this only happens when the Starnum value is not 0
         </div>
         <div className="dragBox_bottom w100">
           <div className="dragBox_bottom_btn_wrap">
-            {this.state.rawResult.details && (
+            {this.state.rawResult.details.length ? (
               <div
                 className={`dragBox_bottom_btn center box ${
                   this.state.rawResult.added ? `mute` : ``
                 }`}
                 onClick={() => {
-                  if (
-                    !this.state.rawResult.added &&
-                    this.state.rawResult.details
-                  ) {
+                  if (!this.state.rawResult.added) {
                     const added = {
                       ...this.state.rawResult,
                       added: true,
@@ -644,6 +641,8 @@ Hence, this only happens when the Starnum value is not 0
               >
                 {this.state.rawResult.added ? `Already Added` : `Add`}
               </div>
+            ) : (
+              ``
             )}
           </div>
           <i
