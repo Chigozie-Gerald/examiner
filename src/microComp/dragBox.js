@@ -221,7 +221,7 @@ Hence, this only happens when the Starnum value is not 0
           )
           .then((details) => {
             const result = details?.data?.text.map((data) =>
-              formatter(data).map((da, n) => transform(da)),
+              formatter(data, false).map((da) => transform(da)),
             );
 
             this.setState({

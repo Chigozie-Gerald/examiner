@@ -14,6 +14,20 @@
 .examWrite_header .content {
   flex: 1;
 }
+.examWrite_header .content span {
+  display: flex;
+  align-items: center;
+}
+.write_back_wrap {
+  border-radius: 50%;
+  padding: 2px;
+  margin-right: 0.5rem;
+  background-color: #fff;
+  transition: var(--transition);
+}
+.write_back_wrap:hover {
+  background-color: rgb(249, 249, 249);
+}
 .examWrite_right b {
   font-weight: 600;
 }

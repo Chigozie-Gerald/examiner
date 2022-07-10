@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { formatter, transform } from '../../microComp/formatter';
+import {
+  formatter,
+  getFormatResult,
+  transform,
+} from '../../microComp/formatter';
 import { makeRipple } from '../../microComp/ripple';
 import { EditWrite } from './write';
 //@ts-ignore
@@ -123,28 +127,19 @@ const WriteMicro = ({
         </div>
         <div className="content">
           <span>
-            <span>
-              {sessionStorage.getItem(`allQuest`) === `true`
-                ? `All Questions`
-                : `Tag`}
-            </span>
-
+            <Link
+              to={{ pathname: '/tagList' }}
+              className="Link inline auto examLogin_link"
+            >
+              <span className="write_back_wrap box">
+                <i className="material-icons arrow_back"></i>
+              </span>
+            </Link>
             <span className="write_type_tag">
               {quest?.tag?.name || ``}
             </span>
           </span>
         </div>
-        <Link
-          to={{ pathname: '/tagList' }}
-          className="Link inline auto examLogin_link"
-        >
-          <button
-            onClick={(e) => makeRipple(e, true)}
-            className="btn"
-          >
-            View Tags
-          </button>
-        </Link>
       </div>
       <div className="examWrite_body top w100">
         <div className="examWrite_extra_wrapper">
@@ -241,40 +236,23 @@ const WriteMicro = ({
             ? formatter(quest?.details).map((data, n) => {
                 return (
                   <p key={`formatter_key${n}`}>
-                    {(
-                      transform(data) as (
-                        | string
-                        | {
-                            format: `bold` | `underline` | `italic`;
-                            text: string;
-                          }
-                      )[]
-                    ).map((txt, m) => {
-                      if (typeof txt === `object`) {
-                        return txt.format === `bold` ? (
-                          <b key={`formatter_key_bold_${m}`}>
-                            {txt.text}
-                          </b>
-                        ) : txt.format === `underline` ? (
-                          <span
-                            key={`formatter_key_span_${m}`}
-                            style={{
-                              textDecoration: 'underline',
-                            }}
-                          >
-                            {txt.text}
-                          </span>
-                        ) : (
-                          <span
-                            key={`formatter_key_italic_${m}`}
-                            style={{ fontStyle: 'italic' }}
-                          >
-                            {txt.text}
-                          </span>
-                        );
-                      } else {
-                        return txt;
-                      }
+                    {transform(data).map((parsedObject, m) => {
+                      const { bold, italic, underline } =
+                        getFormatResult(parsedObject);
+                      return (
+                        <span
+                          key={`formatter_key_span_${m}`}
+                          style={{
+                            fontWeight: bold ? `bold` : undefined,
+                            textDecoration: underline
+                              ? 'underline'
+                              : undefined,
+                            fontStyle: italic ? 'italic' : undefined,
+                          }}
+                        >
+                          {parsedObject.text}
+                        </span>
+                      );
                     })}
                     <br />
                   </p>

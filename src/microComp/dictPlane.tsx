@@ -209,7 +209,7 @@ Hence, this only happens when the Starnum value is not 0
       )
       .then((details) => {
         const result = details?.data?.text.map((data: string) =>
-          formatter(data).map((da, n) => transform(da)),
+          formatter(data, false).map((da, n) => transform(da)),
         );
 
         setSearching(false);

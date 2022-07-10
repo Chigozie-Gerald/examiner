@@ -5,7 +5,11 @@ import './tagLeft.css';
 import axios from 'axios';
 import { withRouter } from 'react-router-dom';
 import { makeRipple } from '../../microComp/ripple';
-import { formatter, transform } from '../../microComp/formatter';
+import {
+  formatter,
+  transform,
+  getFormatResult,
+} from '../../microComp/formatter';
 
 export class TagLeft extends PureComponent {
   constructor(props) {
@@ -479,32 +483,23 @@ const QuestionList = ({
           ? formatter(question.details).map((data, n) => {
               return (
                 <p key={`formatter_key${n}`}>
-                  {transform(data).map((txt, m) => {
-                    if (typeof txt === `object`) {
-                      return txt.format === `bold` ? (
-                        <b key={`formatter_key_bold_${m}`}>
-                          {txt.text}
-                        </b>
-                      ) : txt.format === `underline` ? (
-                        <span
-                          key={`formatter_key_span_${m}`}
-                          style={{
-                            textDecoration: 'underline',
-                          }}
-                        >
-                          {txt.text}
-                        </span>
-                      ) : (
-                        <span
-                          key={`formatter_key_italic_${m}`}
-                          style={{ fontStyle: 'italic' }}
-                        >
-                          {txt.text}
-                        </span>
-                      );
-                    } else {
-                      return txt;
-                    }
+                  {transform(data).map((parsedObject, m) => {
+                    const { bold, italic, underline } =
+                      getFormatResult(parsedObject);
+                    return (
+                      <span
+                        key={`formatter_key_span_${m}`}
+                        style={{
+                          fontWeight: bold ? `bold` : undefined,
+                          textDecoration: underline
+                            ? 'underline'
+                            : undefined,
+                          fontStyle: italic ? 'italic' : undefined,
+                        }}
+                      >
+                        {parsedObject.text}
+                      </span>
+                    );
                   })}
                   <br />
                 </p>

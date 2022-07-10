@@ -61,7 +61,7 @@ const CreateMicro = (props: connectT) => {
   };
 
   const interFuncDetails = (formatObj: {
-    target: { name: 'details'; value: string };
+    target: { name: string; value: string };
   }) => {
     const value = formatObj.target.value;
     setDetails(value);
@@ -151,8 +151,8 @@ const CreateMicro = (props: connectT) => {
               ref={textareaRef}
               onSelect={() => {
                 handleSelected(
-                  textareaRef.current?.selectionStart,
-                  textareaRef.current?.selectionEnd,
+                  textareaRef.current?.selectionStart!,
+                  textareaRef.current?.selectionEnd!,
                   selectFunc,
                   details,
                 );

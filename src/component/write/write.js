@@ -579,7 +579,7 @@ export class EditWrite extends PureComponent {
     textSelect: '',
   };
   func = (obj) => {
-    this.setState(obj, () => console.log(this.state));
+    this.setState(obj);
   };
   render() {
     const {
