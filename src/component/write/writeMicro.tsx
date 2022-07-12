@@ -89,6 +89,7 @@ const WriteMicro = ({
   handleShowAnswer: (shouldShow: boolean) => void;
 }) => {
   const [selected, setSelected] = useState(selectOptions[0]);
+  const [viewingStats, setViewingStats] = useState(false);
 
   const changeSelected = (_id: string) => {
     const newSelect = selectOptions.find((opt) => opt._id === _id);
@@ -203,16 +204,28 @@ const WriteMicro = ({
             <div className="examWrite_L_body">
               {state.questions.length > 0 ? quest?.title : ''}
             </div>
+            <div
+              onClick={() => setViewingStats(!viewingStats)}
+              className="examWrite_L_stats"
+            >
+              {viewingStats ? 'Go Back' : ' View Stats'}
+            </div>
             <div className="examWrite_L_image">
-              <div className="examWrite_L_image_inner">
-                {quest?.imageAddress && (
-                  <img
-                    alt=""
-                    className="img_div_cover"
-                    src={`http://localhost:6060/api/loadImage/${quest.imageAddress}`}
-                  />
-                )}
-              </div>
+              {viewingStats ? (
+                <div className="examWrite_L_image_inner">
+                  <h1>Coming Soon...</h1>
+                </div>
+              ) : (
+                <div className="examWrite_L_image_inner">
+                  {quest?.imageAddress && (
+                    <img
+                      alt=""
+                      className="img_div_cover"
+                      src={`http://localhost:6060/api/loadImage/${quest.imageAddress}`}
+                    />
+                  )}
+                </div>
+              )}
             </div>
             <div className="examWrite_L_btn">
               <button

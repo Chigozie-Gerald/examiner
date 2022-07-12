@@ -299,13 +299,29 @@ br {
 .examWrite_L_body {
   border: 1.5px dashed #dddddd;
   border-radius: inherit;
-  padding: 1rem 00.5rem;
+  padding: 1rem 0.5rem;
   margin: 1rem 0;
+  margin-bottom: 0.5rem;
   font-size: 0.8rem;
+}
+.examWrite_L_stats {
+  color: var(--blue);
+  cursor: pointer;
+  display: inline-flex;
+  width: fit-content;
+  font-size: 0.75rem;
+  text-decoration: underline;
+  padding-bottom: 0.5rem;
+}
+.examWrite_L_stats:hover {
+  color: rgb(55, 108, 194);
 }
 .examWrite_L_image {
   flex: 1;
   overflow-y: auto;
+}
+.examWrite_L_image h1 {
+  font-size: 1.4rem;
 }
 .examWrite_L_image_inner {
   min-height: 15rem;
