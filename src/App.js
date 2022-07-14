@@ -55,7 +55,10 @@ class App extends PureComponent {
         <DragBox
           hide={
             this.state.hideDict ||
-            blackListDictionay.includes(this.props.location.pathname)
+            (blackListDictionay.includes(
+              this.props.location.pathname,
+            ) &&
+              window.innerWidth >= 1000)
           }
         />
         <Switch>

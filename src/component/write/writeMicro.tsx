@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import {
   formatter,
@@ -90,14 +90,78 @@ const WriteMicro = ({
 }) => {
   const [selected, setSelected] = useState(selectOptions[0]);
   const [viewingStats, setViewingStats] = useState(false);
+  const [showFloat, setShowFloat] = useState(false);
+
+  const floatRef = useRef<HTMLDivElement>(null);
 
   const changeSelected = (_id: string) => {
     const newSelect = selectOptions.find((opt) => opt._id === _id);
     setSelected(newSelect || selected);
   };
 
+  const removeDropOnClick = (e: MouseEvent) => {
+    if (
+      floatRef.current &&
+      !floatRef.current.contains(e.target as Node)
+    ) {
+      setShowFloat(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('click', removeDropOnClick);
+
+    return () => {
+      window.removeEventListener('click', removeDropOnClick);
+    };
+  }, []);
+
   return (
     <div className="examWrite_wrap fdCol">
+      <div
+        ref={floatRef}
+        className={`examWrite_float_left box ${
+          showFloat ? `active` : ``
+        }`}
+      >
+        <div className="examWrite_extra_wrapper toFront">
+          <Select
+            data={{
+              selected: selected,
+              func: (_id: string) => {
+                changeSelected(_id);
+              },
+              holder: 'Select an Option',
+              data: selectOptions,
+            }}
+            fill
+          />
+        </div>
+        <div className="examWrite_float_bot">
+          <div
+            className={`examWrite_extra_container ${
+              selected.name !== `Dictionary` ? `noShow` : ``
+            }`}
+          >
+            <DictPlane openEdit={state.openEdit} />
+          </div>
+          <div
+            className={`examWrite_extra_container ${
+              selected.name !== `Search` ? `noShow` : ``
+            }`}
+          >
+            {/* @ts-ignore */}
+            <TagLeft readOnly={true} />
+          </div>
+          <div
+            className={`examWrite_extra_container ${
+              selected.name !== 'Add Question' ? `noShow` : ``
+            }`}
+          >
+            <CreateMicro />
+          </div>
+        </div>
+      </div>
       {state.openEdit ? (
         <EditWrite
           data={{
@@ -126,6 +190,13 @@ const WriteMicro = ({
             }}
           />
         </div>
+        <span
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowFloat(!showFloat);
+          }}
+          className="material-icons menu write_menu"
+        ></span>
         <div className="content">
           <span>
             <Link

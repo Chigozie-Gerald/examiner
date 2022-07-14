@@ -387,14 +387,15 @@ Hence, this only happens when the Starnum value is not 0
                                 fontStyle:
                                   txt.both > 0 ? 'italic' : 'inherit',
                               }}
-                              onClick={(e) =>
+                              onClick={(e) => {
+                                e.stopPropagation();
                                 handleSearch(
                                   e,
                                   txt.text,
                                   true,
                                   trackNum,
-                                )
-                              }
+                                );
+                              }}
                               dangerouslySetInnerHTML={{
                                 __html: txt.text,
                               }}

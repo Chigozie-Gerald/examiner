@@ -292,19 +292,23 @@ export class TagLeft extends PureComponent {
                   this.state.dropDown ? '' : 'inactive'
                 }`}
               >
-                {this.state.tags.map((data) => (
-                  <div className="tagLeftPane tags">{data.name}</div>
+                {this.state.tags.map((data, ind) => (
+                  <div key={ind} className="tagLeftPane tags">
+                    {data.name}
+                  </div>
                 ))}
               </div>
 
               {this.state.questions.length ? (
                 readOnly ? (
-                  this.state.questions.map((question) => (
-                    <QuestionList
-                      question={question}
-                      readOnlyShow={this.state.readOnlyShow}
-                      showReadOnlyDetails={this.showReadOnlyDetails}
-                    />
+                  this.state.questions.map((question, ind) => (
+                    <React.Fragment key={ind}>
+                      <QuestionList
+                        question={question}
+                        readOnlyShow={this.state.readOnlyShow}
+                        showReadOnlyDetails={this.showReadOnlyDetails}
+                      />
+                    </React.Fragment>
                   ))
                 ) : (
                   <TagLeftQuest

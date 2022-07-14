@@ -33,10 +33,11 @@ export const tagError = () => {
   };
 };
 
-export const createQuestion = (body) => {
+export const createQuestion = (Body) => {
   return (dispatch) => {
     dispatch(questionLoading());
-    body.forEach((body) => {
+    for (let i = Body.length - 1; i >= 0; i--) {
+      const body = Body[i];
       const fd = new FormData();
       fd.append(`tag`, body.tag);
       fd.append(`title`, body.title);
@@ -66,7 +67,7 @@ export const createQuestion = (body) => {
           );
           dispatch(questionError());
         });
-    });
+    }
   };
 };
 
