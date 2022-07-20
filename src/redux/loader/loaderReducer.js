@@ -71,7 +71,7 @@ const loaderReducer = (state = initialState, action) => {
         ...state,
         questionError: '',
         questionLoading: false,
-        questions: action.payload,
+        questions: [...action.payload],
       };
     }
     case TAGLOADING: {

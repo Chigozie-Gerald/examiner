@@ -56,7 +56,7 @@ class Write extends PureComponent {
     }
     this.state = {
       randArr:
-        JSON.parse(sessionStorage.getItem(`randomWriteArray`)).arr ||
+        JSON.parse(sessionStorage.getItem(`randomWriteArray`))?.arr ||
         [],
       clicked: false,
       number: 0,
@@ -183,21 +183,25 @@ class Write extends PureComponent {
     });
   };
 
-  updateRand = (addition = false) => {
-    const rand = JSON.parse(
-      sessionStorage.getItem(`randomWriteArray`),
-    ).arr;
-    if (!addition) {
-      rand.pop();
+  updateRand = (addition = 0) => {
+    const rand =
+      JSON.parse(sessionStorage.getItem(`randomWriteArray`))?.arr ||
+      [];
+    let newRand = rand;
+    if (addition < 0) {
+      newRand = newRand.slice(0, addition);
     } else {
-      const len = rand.length;
-      rand.push(len);
+      const len = Array(addition)
+        .fill(0)
+        .map((val, ind) => rand.length + ind);
+      newRand = [...rand, ...len];
     }
     const RAND = JSON.stringify({
-      arr: rand,
+      arr: newRand,
     });
     return RAND;
   };
+
   componentDidUpdate = (prevProps) => {
     const { questions } = this.props;
     try {
@@ -223,7 +227,7 @@ class Write extends PureComponent {
           sessionStorage.setItem(
             `randomWriteArray`,
             this.updateRand(
-              quest.length > this.state.questions.length,
+              quest.length - this.state.questions.length,
             ),
           );
         }
@@ -231,7 +235,7 @@ class Write extends PureComponent {
           questions: quest,
           randArr:
             JSON.parse(sessionStorage.getItem(`randomWriteArray`))
-              .arr || [],
+              ?.arr || [],
           number:
             this.state.number === quest.length
               ? this.state.number - 1

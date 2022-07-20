@@ -48,7 +48,7 @@ class WriteOpen extends PureComponent {
     this.state = {
       randArr:
         JSON.parse(sessionStorage.getItem(`randomWriteArrayOpen`))
-          .arr || [],
+          ?.arr || [],
       clicked: false,
       number: 0,
       openDelete: false,
@@ -176,9 +176,9 @@ class WriteOpen extends PureComponent {
   };
 
   updateRand = (addition = 0, index) => {
-    let rand = JSON.parse(
-      sessionStorage.getItem(`randomWriteArrayOpen`),
-    ).arr;
+    let rand =
+      JSON.parse(sessionStorage.getItem(`randomWriteArrayOpen`))
+        ?.arr || [];
     let newRand = [];
     if (addition < 0) {
       const oldValue = rand[index];
@@ -267,7 +267,9 @@ class WriteOpen extends PureComponent {
       let quest = [];
       //If question I brought in isnt equal to present questions, change
       //Current questions array
-      if (JSON.parse(sessionStorage.getItem(`openDetails`)).combine) {
+      if (
+        JSON.parse(sessionStorage.getItem(`openDetails`))?.combine
+      ) {
         let body = JSON.parse(
           sessionStorage.getItem(`openDetails`),
         ).combine;
@@ -275,7 +277,7 @@ class WriteOpen extends PureComponent {
       } else {
         let body = JSON.parse(
           sessionStorage.getItem(`openDetails`),
-        ).search;
+        )?.search;
         quest = await this.handleSearch(body);
       }
 
@@ -296,7 +298,7 @@ class WriteOpen extends PureComponent {
           questions: quest,
           randArr:
             JSON.parse(sessionStorage.getItem(`randomWriteArrayOpen`))
-              .arr || [],
+              ?.arr || [],
           number:
             this.state.number === quest.length
               ? this.state.number - 1
@@ -313,7 +315,7 @@ class WriteOpen extends PureComponent {
     const questions =
       this.props.location?.state?.questionsWriteOpen ||
       JSON.parse(sessionStorage.getItem(`questionWriteOpen`))
-        .question;
+        ?.question;
     if (
       !this.props.location?.state?.openDetails?.search &&
       !this.props.location?.state?.openDetails?.combine
